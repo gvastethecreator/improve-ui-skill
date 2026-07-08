@@ -6,12 +6,18 @@ Use this file when the user asks for an audit, review, polish readiness check, o
 
 Score only what you can inspect. Use screenshots, browser state, code, computed styles, tests, detector output, and runtime audit output as evidence. Use [proof-recipes.md](proof-recipes.md) to choose the smallest evidence set that matches the claim. Do not let a clean detector result replace visual judgment.
 
+When the task is a design verdict, screenshot critique, UI audit, or roast, read [forensic-roast.md](forensic-roast.md) and use its screenshot/code cross-reference before scoring. A detector-only or code-only report is evidence, not the design analysis.
+
+When the task is to improve, polish, harden, or make production-ready, read [relentless-mode.md](relentless-mode.md) before scoring. A score below `14/20`, any unresolved P1, or repeated/systemic in-scope P2 findings means the pass is not done unless blocked or explicitly scoped down.
+
 If the task is a code review, lead with findings. If the task is a design audit, lead with the score and the highest-impact findings.
 
 For deep review, produce a ledger before the verdict:
 
 - Context: register, workflow, viewport/state scope, constraints.
 - Evidence: files/lines, screenshots, detector JSON, runtime/browser output, or blocker.
+- Forensic design read: product intent, main task, intended hierarchy, accidental priority, screenshot/code cross-reference, and first five cuts when the task asks for design analysis.
+- Relentless gate: target bar, P1/P2 stop condition, whether actionable findings were patched or blocked.
 - Findings: P1/P2 first, grouped by systemic cause.
 - Change ambition: local fix, component primitive, token/system, layout shell, or state model.
 - Proof: before/after state or reason proof is blocked.
@@ -111,7 +117,7 @@ Rating bands:
 - `6-9`: poor, major overhaul.
 - `0-5`: critical, fundamentals broken.
 
-If a requested detector, runtime, visual, or async-state gate is blocked, the verdict is `blocked` even when the visible finding count is low. Do not convert missing evidence into a high score.
+If a requested detector, runtime, visual, or async-state gate is blocked, the verdict is `blocked` even when the visible finding count is low. Do not convert missing evidence into a high score. If the user asked for implementation-quality improvement, `acceptable` is not a stopping point by itself; keep moving until the top in-scope P1/P2 problems are fixed or blocked.
 
 ## Evidence Rules
 
@@ -130,10 +136,11 @@ If a requested detector, runtime, visual, or async-state gate is blocked, the ve
 3. Visually inspect the target state for frontend changes or live UI bugs.
 4. Score dimensions.
 5. Report highest severity first.
-6. Recommend smallest next actions.
+6. Patch the highest-impact in-scope issue when the repo is editable and the user asked to improve.
+7. Rerun evidence and only then recommend remaining next actions.
 
 Harness:
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --fail-on=P1
+node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --fail-on=P2
 ```

@@ -496,6 +496,7 @@ function evaluateGates(targetReview) {
 }
 
 function renderMarkdown(targetReview, jsonPath) {
+  const screenshotPaths = (targetReview.runtime?.results || []).map((result) => result.screenshot).filter(Boolean);
   const lines = [
     "# Interface Review",
     "",
@@ -516,6 +517,17 @@ function renderMarkdown(targetReview, jsonPath) {
     "",
     "Gates:",
     ...targetReview.gates.map((gate) => `- ${gate.gate}: ${gate.status} - ${gate.detail}`),
+    "",
+    "Relentless improvement gate:",
+    "- Treat this report as red until P1 and repeated/systemic P2 issues in scope are fixed, blocked, or explicitly deferred.",
+    "- If the user asked to improve the interface and source files are editable, convert the top in-scope finding into a patch and rerun evidence before finalizing.",
+    "- Do not use detector-only output as visual judgment; inspect the rendered state or name runtime proof as blocked.",
+    "",
+    "Forensic design pass:",
+    "- This harness is an evidence pack, not the final design critique.",
+    "- For design analysis, screenshot critique, UI audit, or roast, complete `skills/improve-ui/forensic-roast.md` before writing the final verdict.",
+    `- Cross-reference: screenshots=${screenshotPaths.length ? screenshotPaths.join(", ") : "none"}; source=${targetReview.target.path || "none"}; blockers=${targetReview.ledger.blockers.length ? "see ledger" : "none"}`,
+    "- Required read: product intent, main user task, intended hierarchy, accidental priority, visual problem, source/code cause, concrete fix, first five cuts.",
     "",
     "Findings:",
   ];

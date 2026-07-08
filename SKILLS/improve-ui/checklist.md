@@ -2,6 +2,11 @@
 
 - [ ] Context identified before recipe chosen
 - [ ] Register identified: product, brand, or hybrid
+- [ ] `relentless-mode.md` was used for improvement/audit/polish/readiness work, or the task was explicitly quick-scope
+- [ ] Target bar and stop condition were explicit before finalizing
+- [ ] Actionable UI improvement did not stop at advice when source was editable
+- [ ] Design analysis/review/roast used `forensic-roast.md`, or was explicitly out of scope
+- [ ] Screenshot/browser evidence and source code were cross-referenced for design criticism when both existed
 - [ ] Design read and visual dials set when visual quality is in scope
 - [ ] Distinction note names rejected default, rejected second reflex, signature move, and proof for open-ended visual work
 - [ ] Brand/marketing/prototype work used references or explicit skip reason when image/reference generation would improve fidelity
@@ -14,6 +19,8 @@
 - [ ] Anti-slop scan/manual pass done when the design looked generic or generated
 - [ ] Detector run completed for local frontend files, or skipped with reason
 - [ ] Deep-review ledger includes context, evidence, findings, systemic cause, change ambition, and proof
+- [ ] Unresolved P1 and repeated/systemic in-scope P2 findings were fixed, blocked, or explicitly deferred
+- [ ] Final claim does not say done/fixed when evidence is missing
 - [ ] Before/after or reference/after artifacts are named when visual change is claimed
 - [ ] Semantic elements and accessible names are correct
 - [ ] Focus-visible state exists and is not suppressed
