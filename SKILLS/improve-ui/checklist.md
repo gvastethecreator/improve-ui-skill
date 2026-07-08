@@ -1,0 +1,56 @@
+## Checklist
+
+- [ ] Context identified before recipe chosen
+- [ ] Register identified: product, brand, or hybrid
+- [ ] Design read and visual dials set when visual quality is in scope
+- [ ] Distinction note names rejected default, rejected second reflex, signature move, and proof for open-ended visual work
+- [ ] Brand/marketing/prototype work used references or explicit skip reason when image/reference generation would improve fidelity
+- [ ] Supplied URL/video/screenshot/HTML reference was extracted into concrete layout, type, surface, motion, and proof decisions
+- [ ] Landing/pricing pages address offer, audience, proof, objections, CTA flow, and comparison clarity before visual effects
+- [ ] Redesign preserves IA, routes, nav labels, copy voice, analytics hooks, form names/order, SEO, legal copy, and accessibility wins unless explicitly in scope
+- [ ] Existing design system/patterns reused
+- [ ] Proof recipe chosen for the task: static, runtime, interaction, responsive, async, motion, reference-led, or blocked
+- [ ] Visual verification done for frontend changes, or blocker stated
+- [ ] Anti-slop scan/manual pass done when the design looked generic or generated
+- [ ] Detector run completed for local frontend files, or skipped with reason
+- [ ] Deep-review ledger includes context, evidence, findings, systemic cause, change ambition, and proof
+- [ ] Before/after or reference/after artifacts are named when visual change is claimed
+- [ ] Semantic elements and accessible names are correct
+- [ ] Focus-visible state exists and is not suppressed
+- [ ] Forms have labels, autocomplete/name/type, and inline error flow
+- [ ] Content handles empty and long values
+- [ ] Empty, loading, error, permission, and retry states exist where async data can fail
+- [ ] Long text, translation expansion, CJK/RTL where relevant, and unbroken strings do not break layout
+- [ ] Navigation state is URL-backed when it should be shareable/restorable
+- [ ] Locale formatting uses `Intl.*`
+- [ ] Hydration-sensitive values are stable
+- [ ] Text wraps intentionally
+- [ ] Dynamic numbers do not shift
+- [ ] Nested surfaces have sensible radii
+- [ ] Borders/shadows match the surface job
+- [ ] No reflexive nested cards, side stripes, giant radii, or decorative glass unless justified by register
+- [ ] No reflexive centered hero, three-card feature row, repeated eyebrows, fake metadata strip, or generic premium palette unless justified by design read
+- [ ] Visual recipes are named, bounded, and tied to hierarchy, affordance, proof, or brand/product artifact
+- [ ] Hero/first viewport fits small laptop when present: readable headline, concise support, visible CTA, no cluttered tag soup
+- [ ] Structural borders use readable width/opacity without making dense dividers heavy
+- [ ] Custom scrollbars, if present, match the interface and remain visible
+- [ ] Images/media have neutral edge treatment when useful
+- [ ] Icons and controls are optically aligned
+- [ ] Hit areas are large enough and non-overlapping
+- [ ] Motion is interruptible for interactions
+- [ ] Motion has a frequency-appropriate purpose, or was removed/reduced
+- [ ] Vague animation descriptions or findings use precise motion vocabulary
+- [ ] Motion review blockers checked when animation is part of the change
+- [ ] Canvas/WebGL/3D/physics effects have purpose, reduced motion, fallback, offscreen pause, density caps, and cleanup
+- [ ] Runtime review checked offscreen animations/canvas activity when a URL was available
+- [ ] Keyboard/high-frequency actions do not use distracting travel animation
+- [ ] UI motion avoids `ease-in` entry/opening and `scale(0)` appearances
+- [ ] Anchored surfaces use trigger-aware transform origins
+- [ ] Hover motion is gated to hover-capable fine pointers
+- [ ] Common UI motion uses an existing project primitive, an exact bounded CSS/Motion pattern, or is deliberately skipped
+- [ ] Transition tokens/root variables are installed once, not duplicated per component
+- [ ] Shared layout IDs are unique when used
+- [ ] Exits are subtle or deliberately absent
+- [ ] Reduced-motion behavior remains clear
+- [ ] Transitions name exact properties
+- [ ] `will-change` is exact, sparse, and justified
