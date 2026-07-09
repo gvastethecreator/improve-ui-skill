@@ -17,8 +17,10 @@ Review only what you can inspect: code, computed styles, screenshots/video, brow
 - Physical origin: anchored popovers, dropdowns, and tooltips scale from the trigger; modals can stay centered.
 - No `scale(0)`: start from roughly `0.9-0.97` plus opacity.
 - Interruptibility: rapidly triggered and gesture motion retargets from current state through transitions or springs, not keyframes that restart.
+- Direct manipulation: press feedback appears on pointer-down, drag tracks 1:1 with the pointer, and release motion preserves velocity where the toolchain supports it.
 - Compositor first: prefer `transform` and `opacity`; layout-property animation needs a deliberate low-frequency reason.
 - Accessibility: reduced-motion path exists, and hover motion is gated behind `(hover: hover) and (pointer: fine)`.
+- Material fallback: translucent or blurred functional chrome has reduced-transparency and high-contrast fallback behavior when the platform/user base makes those settings relevant.
 - Cohesion: motion matches the product register and component personality.
 
 ## Escalation Triggers
@@ -36,8 +38,10 @@ Treat these as P1/P2 unless the project has a documented exception and visual pr
 - Framer Motion `x`, `y`, or `scale` shorthand on motion that must survive page load or busy UI.
 - Parent CSS variable updates driving many child transforms.
 - Missing reduced-motion path.
+- Translucent or blurred chrome without a solid or higher-contrast fallback when it carries structure or text.
 - Ungated hover motion.
 - Symmetric timing on hold/press interactions where deliberate phase should be slower than release.
+- Drag/swipe/sheet interaction without pointer capture, grab-offset preservation, or velocity-aware release.
 
 ## Remedial Order
 
@@ -49,9 +53,10 @@ Prefer earlier fixes over later ones:
 4. Fix origin and physicality: trigger-aware origin, no `scale(0)`.
 5. Make it interruptible: keyframes to transitions, gestures to springs/direct transforms.
 6. Move work to compositor properties or WAAPI when JS control is required.
-7. Make timing asymmetric for hold/press/destructive confirmations.
-8. Add subtle polish: blur for awkward crossfades, small stagger, `@starting-style`.
-9. Add or verify reduced-motion and hover gating.
+7. Make gesture behavior physical: pointer-down feedback, 1:1 tracking, velocity handoff, projected snap points, and rubber-band boundaries.
+8. Make timing asymmetric for hold/press/destructive confirmations.
+9. Add subtle polish: blur for awkward crossfades, small stagger, `@starting-style`.
+10. Add or verify reduced-motion, reduced-transparency, contrast, and hover gating.
 
 ## Finding Shape
 
@@ -75,5 +80,8 @@ Decision:
 - Step frame-by-frame for coordinated transform, opacity, color, blur, and clip-path.
 - Test real touch hardware for drag, swipe, drawer, and dismiss gestures when possible.
 - Verify fast repeated trigger: open/close/open, rapid toggle, rapid toast add/remove.
+- Verify pointer-down feedback before async completion on pressable controls.
+- Verify drag/swipe with a short flick, a slow drag, a reversal mid-motion, and release outside the element bounds.
 - Verify reduced-motion behavior preserves state clarity without travel-heavy motion.
+- Verify translucent/blurred chrome remains readable with reduced transparency or higher contrast when those settings matter.
 - Verify hover behavior does not become a hidden touch affordance.

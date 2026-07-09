@@ -1,7 +1,7 @@
 # Skills
 
-This repo currently ships one Codex skill:
+This repo ships one Codex skill:
 
-- [`improve-ui`](./improve-ui/SKILL.md): relentless UI improvement, forensic design review/roast, motion, accessibility, typography, proof, and hardening workflow.
+- [`improve-ui`](./improve-ui/SKILL.md): ruthless existing-interface improvement, forensic design review/roast, visual bug fixing, accessibility, motion, typography, systemic UI surgery, strict evidence gates, proof, and hardening workflow.
 
-Download this repo or ask Codex to install it in your workspace.
+Use `improve-ui` when the interface already exists. For blank-canvas UI creation, install the separate `ruthless-designer` skill.

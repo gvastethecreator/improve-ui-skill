@@ -10,9 +10,11 @@ Motion should explain state, not decorate every state. Pick the cheapest pattern
 - Common UI transition patterns: reuse existing project primitives before inventing custom motion.
 - Page/section entrance: keyframes or Motion variants are fine because the sequence runs once.
 - Drag, resize, reordering: preserve responsiveness over choreography.
+- Gesture-driven UI should feel directly manipulated: feedback starts on pointer-down, the object tracks the pointer 1:1, interruption starts from the current on-screen value, and release hands velocity into the settle animation when possible.
 - Dense operational UI: shorter, quieter motion; avoid stagger that slows scanning.
 - Marketing/editorial UI: staged entry can help hierarchy if it does not block reading.
 - Reduced motion: keep opacity/color/state changes, remove travel, blur, and scale-heavy effects.
+- Reduced transparency/contrast: if motion uses translucent material or blur as functional chrome, provide a solid or higher-contrast fallback.
 - Set `transform-origin` deliberately for scale/rotate. Defaults often look wrong.
 - Avoid `scale(0)` entry states; start around `scale(0.9-0.97)` with opacity.
 - Avoid `ease-in` for UI entry/opening; users should see motion immediately after intent.
@@ -104,6 +106,21 @@ Decision order:
 - Preserve reduced-motion behavior.
 - Keep JS orchestration minimal and tied to CSS variable durations.
 - Skip custom motion if project primitives already solve the state change cleanly.
+
+Tooltip pattern:
+
+- Delay the first tooltip enough to avoid accidental hover.
+- After one tooltip is open, adjacent tooltip targets should switch nearly instantly and without a full entrance animation.
+- Keep the instant state local to the tooltip group; do not remove all tooltip delay globally.
+
+Gesture pattern:
+
+- Use Pointer Events and `setPointerCapture` once drag intent is established.
+- Preserve the pointer's grab offset so the element does not jump under the cursor/finger.
+- Track a short position/time history to compute release velocity.
+- Choose dismissal or snap target from distance plus velocity; a quick flick can commit even if distance is short.
+- Use rubber-band/friction beyond natural boundaries instead of a hard stop.
+- Use springs or direct transforms for user-driven motion; avoid fixed keyframes for anything the user can reverse mid-flight.
 
 ## Motion Vocabulary Routing
 
@@ -372,6 +389,7 @@ Drag and swipe interactions need physical details more than decorative easing:
 - Ignore extra touch points once a drag is active.
 - Apply damping or friction beyond natural boundaries instead of hard stops.
 - Prefer springs for gestures the user can interrupt or reverse.
+- Pass release velocity into the spring when supported so the object does not visibly change speed at release.
 
 ## Initial Page Load
 

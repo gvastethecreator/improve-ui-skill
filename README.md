@@ -2,59 +2,65 @@
 
 ![Improve UI banner](./assets/readme-banner.png)
 
-> Relentless Codex skill pack for frontend polish, UI review, accessibility, motion, typography, and interface hardening.
+> Relentless Codex skill pack for improving existing UI, forensic design review, accessibility, motion, typography, and evidence-backed interface hardening.
 
 [![License: MIT](https://shieldcn.dev/badge/license-MIT-yellow.svg?variant=secondary&size=xs)](./LICENSE)
 [![Status](https://shieldcn.dev/badge/status-preview-purple.svg?variant=secondary&size=xs)](#status)
 
-Improve UI helps Codex make interfaces materially better from evidence. It routes by surface, task, design register, constraints, and proof so a polish pass can stay small without becoming shallow, and so a review cannot hide behind vague "looks good" commentary.
+Improve UI is the surgeon for existing interfaces. Use it when there is already code, a screenshot, a prototype, a route, a component, or a running app. It preserves the real product path, attacks visible/systemic weakness, patches implementation when editable, and proves the fix.
 
-- Start in relentless mode for improvement, audit, polish, production-readiness, screenshot critique, and visible UI bugs.
-- Review product apps, dashboards, marketing pages, visual bugs, and design-system components with screenshot/code cross-reference.
-- Produce brutal forensic design roasts when asked for design analysis, then turn top findings into fixes when the repo is editable.
-- Run a static detector for common generated-UI and production-readiness issues.
-- Use compact references for typography, surfaces, motion, accessibility, performance, state hardening, anti-slop, visual distinction, and proof recipes.
-- Keep runtime or screenshot proof attached to frontend changes when available.
-- Prefer systemic fixes over repeated one-off patches; P1 and repeated/systemic P2 findings stay red until fixed, blocked, or explicitly deferred.
+It is self-contained. When `ruthless-designer` is also installed, the two skills can work together: use `ruthless-designer` for blank-canvas direction and Improve UI for targeted hardening of the implemented result.
 
 ## Quick Install
 
-Download this repo or ask Codex to install `improve-ui` in your workspace.
+Install with the Skills CLI:
+
+```powershell
+npx skills add gvastethecreator/improve-ui-skill --skill improve-ui
+```
+
+Or download this repo and ask Codex to install `improve-ui` in your workspace.
 
 ## Behavior Contract
 
-The skill is intentionally demanding:
-
-- `relentless-mode.md` defines the default improvement loop, failure conditions, challenge language, and stop rules.
-- `forensic-roast.md` defines the screenshot-plus-code design analysis format for audits, roasts, and visual verdicts.
-- `audit-score.md` treats detector output as evidence, not design judgment, and keeps low-score/P1/P2 work from being called done too early.
-- `checklist.md` is the final guardrail for proof, accessibility, state coverage, motion, and visual-system health.
+- Improve UI starts from evidence of an existing UI and treats advice-only output as failure when source is editable.
+- It uses progressive references for typography, surfaces, motion, accessibility, performance, hardening, anti-slop, distinction, and proof.
+- It keeps runtime or screenshot proof attached to frontend changes when available.
+- P1 and repeated/systemic P2 findings stay red until fixed, blocked, or explicitly deferred.
 
 ## Useful Commands
 
-Run the detector against the included fixture:
+Run the existing-interface detector:
 
 ```powershell
 node .\SKILLS\improve-ui\scripts\detect-ui-antipatterns.mjs .\SKILLS\improve-ui\fixtures\deep-review-bad.tsx
 ```
 
-Run the broader review harness:
+Run the broader existing-interface review harness:
 
 ```powershell
 node .\SKILLS\improve-ui\scripts\run-interface-review.mjs --path <frontend-path> --out .scratch\improve-ui\<slug> --fail-on=P2
 ```
 
-Run the package smoke used by this repo:
+Run a strict evidence-backed pass when you have a local URL:
 
 ```powershell
-node .\SKILLS\improve-ui\scripts\run-interface-review.mjs --path .\SKILLS\improve-ui\fixtures\deep-review-bad.tsx --out .scratch\improve-ui-readme-smoke --fail-on=P0
+node .\SKILLS\improve-ui\scripts\run-interface-review.mjs --path <frontend-path> --url <local-url> --out .scratch\improve-ui\<slug> --require-runtime --require-change-proof --change-proof "before/after screenshots cover the changed main path and one edge state" --fail-verdict=good
+```
+
+Run the package smoke check:
+
+```powershell
+node .\SKILLS\improve-ui\scripts\run-interface-review.mjs --path .\SKILLS\improve-ui\fixtures\deep-review-bad.tsx --out .scratch\improve-ui-readme-smoke --expect-finding=ease-in-ui-motion --expect-finding=scale-zero-entry --expect-finding=interactive-div --expect-finding=fake-product-preview --expect-finding=heavy-blur-effect --expect-finding=missing-reduced-transparency-fallback --expect-finding=gesture-missing-pointer-capture --expect-verdict=poor --fail-verdict=poor
 ```
 
 ## What's Inside
 
-- [`SKILL.md`](./SKILLS/improve-ui/SKILL.md): router and output contract.
-- [`relentless-mode.md`](./SKILLS/improve-ui/relentless-mode.md): required execution stance and iteration loop.
-- [`forensic-roast.md`](./SKILLS/improve-ui/forensic-roast.md): brutal screenshot/code design analysis format.
+- [`SKILL.md`](./SKILLS/improve-ui/SKILL.md): existing-interface improvement, audit, roast, hardening, motion, accessibility, and proof workflow.
+- [`interface-surgery.md`](./SKILLS/improve-ui/interface-surgery.md): existing-interface diagnosis, cut order, preservation rules, and proof.
+- [`surgical-patterns.md`](./SKILLS/improve-ui/surgical-patterns.md): recurring UI failure patterns and systemic repairs.
+- [`templates/`](./SKILLS/improve-ui/templates): surgical read, surgery log, evidence ledger, and final checklist.
+- [`examples/`](./SKILLS/improve-ui/examples): compact golden examples for dashboard, component, and landing-page repair.
 - [`scripts/`](./SKILLS/improve-ui/scripts): static detector and review harness.
 - [`*.md`](./SKILLS/improve-ui): focused references for typography, surfaces, animation, performance, hardening, audits, visual distinction, proof, and real-data resilience.
 
@@ -64,7 +70,9 @@ From this repo:
 
 ```powershell
 git diff --check
-node .\SKILLS\improve-ui\scripts\run-interface-review.mjs --path .\SKILLS\improve-ui\fixtures\deep-review-bad.tsx --out .scratch\improve-ui-readme-smoke --fail-on=P0
+node .\scripts\validate-skill.mjs .\SKILLS\improve-ui
+node --check .\SKILLS\improve-ui\scripts\run-interface-review.mjs
+node .\SKILLS\improve-ui\scripts\run-interface-review.mjs --path .\SKILLS\improve-ui\fixtures\deep-review-bad.tsx --out .scratch\improve-ui-readme-smoke --expect-finding=ease-in-ui-motion --expect-finding=scale-zero-entry --expect-finding=interactive-div --expect-finding=fake-product-preview --expect-finding=heavy-blur-effect --expect-finding=missing-reduced-transparency-fallback --expect-finding=gesture-missing-pointer-capture --expect-verdict=poor --fail-verdict=poor
 ```
 
 From the canonical skills workspace when this repo is linked into an `agents-matrix` checkout:
@@ -81,6 +89,7 @@ Preview skill pack.
 - Static detector and fixture are included.
 - Browser/runtime proof depends on the target project being runnable.
 - Motion and visual recommendations must be verified on the real UI before being called done, or reported as blocked.
+- For blank-canvas design, install the separate `ruthless-designer` skill.
 
 ## License
 

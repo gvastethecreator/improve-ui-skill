@@ -91,6 +91,25 @@ element.animate(
 );
 ```
 
+For gesture-driven UI, performance proof is about continuity:
+
+- Move the element directly during pointer tracking; do not wait for state reconciliation before the object follows the pointer.
+- Capture the pointer after drag intent so updates continue outside the original bounds.
+- Use a spring or direct compositor transform for the release; avoid restarting a fixed keyframe from zero.
+- Hand off velocity where the toolchain supports it, or state why the interaction is intentionally distance-only.
+
+## Blur, Transparency, And Materials
+
+Blur is expensive enough to deserve a job. Use it to support a real material layer, soften an awkward crossfade, or separate floating chrome from content. Do not use it as a default card treatment.
+
+Rules:
+
+- Keep crossfade blur tiny, often around `2px`.
+- Treat `20px+` blur as a functional material choice that needs runtime inspection, not polish by default.
+- Avoid large blur/backdrop-filter inside repeated rows or cards.
+- Provide reduced-transparency and high-contrast fallbacks when blurred/translucent surfaces carry text or navigation.
+- Verify Safari-sensitive blur and backdrop-filter work on the actual target browser when that browser matters.
+
 ## `will-change`
 
 `will-change` is a browser hint. It may promote an element to its own compositing layer before the animation starts, smoothing the first frame. It also costs memory, and browsers may ignore it.
@@ -182,6 +201,8 @@ node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --fail-on=P1 <p
 - Look for layout properties animated on hover/open/drag.
 - Check parent CSS variable updates inside drag or pointer loops.
 - Check Motion shorthand on animations that run during page transitions/loading.
+- Check gesture interactions for pointer capture, 1:1 tracking, velocity handoff, and no restart-on-release keyframes.
+- Check backdrop-filter or heavy blur surfaces for reduced-transparency/contrast fallback and repeated-list cost.
 - Check layout reads near writes: `getBoundingClientRect`, `offset*`, `scroll*`, `client*` paired with `style`, `classList`, or state updates in the same handler/frame.
 - Check asset pressure: missing image dimensions, oversized rendered images, duplicate font families, above-fold lazy images, and broken network requests.
 - Check runtime pressure when a URL is available: long tasks, frame p95/max, unexpected layout shifts, console errors, mobile overflow, offscreen running animations, and active offscreen canvas/WebGL regions.

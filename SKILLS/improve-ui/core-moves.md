@@ -93,7 +93,10 @@ See [visual-recipes.md](visual-recipes.md).
 - Exit: make softer than enter; skip dramatic exits unless spatial context matters.
 - Contextual icon swaps: opacity + scale + blur; keep CSS-only if no Motion dependency exists.
 - Press feedback: `scale(0.96)` is a safe default, but skip where motion distracts or component semantics say static.
+- Direct manipulation: pointer-down feedback, 1:1 drag tracking, grab-offset preservation, pointer capture, velocity-aware release, and rubber-band boundaries matter more than choreographed easing.
+- Tooltips: delay the first accidental hover, then switch adjacent tooltips with little or no delay/animation while the tooltip group is active.
 - Reduced motion: preserve state clarity without travel/blur-heavy effects.
+- Translucent/blurred chrome: use only when it functions as floating material over content; pair it with reduced-transparency/contrast fallback.
 
 See [animations.md](animations.md).
 See [motion-craft.md](motion-craft.md) for the stricter motion decision and review bar.

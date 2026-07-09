@@ -10,6 +10,35 @@ Surfaces carry hierarchy, touch targets, media edges, and state. Keep fixes tied
 - Design systems: prefer token fixes over one-off component overrides.
 - Anti-slop: avoid nested cards, one-sided accent stripes, huge card radii, glass-by-default, and hairline border plus wide soft shadow unless the design system explicitly owns them.
 
+## Functional Translucency
+
+Treat translucent/blurred material as functional chrome, not a decoration. It can work for sticky nav, toolbars, sidebars, sheets, command surfaces, and overlays that float above real content. It is usually wrong for ordinary cards, feature tiles, pricing panels, or fake depth.
+
+Use it only when all are true:
+
+- The surface overlaps or floats above content that remains conceptually present.
+- The blur/transparency improves hierarchy or spatial continuity.
+- Text on the material remains readable over busy and plain backgrounds.
+- Larger surfaces use stronger separation than small chips; do not stack light translucent surfaces on light translucent surfaces.
+- `prefers-reduced-transparency` or high-contrast mode can fall back to a solid or near-solid surface.
+
+```css
+.floating-toolbar {
+  background: rgb(255 255 255 / 0.78);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 10px 30px rgb(0 0 0 / 0.12);
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .floating-toolbar {
+    background: rgb(255 255 255 / 0.98);
+    backdrop-filter: none;
+  }
+}
+```
+
+Avoid hard dividers on floating chrome when the problem is overlap with scrolling content. A tiny fade, scrim, or shadow edge can read better than a permanent `1px` line, but verify it against real content.
+
 ## Concentric Border Radius
 
 For tight nested rounded elements:
@@ -264,6 +293,7 @@ Rules:
 - No cards inside cards unless the nested surface has a real interaction or containment job.
 - No thick one-sided accent border unless it is a table/grid boundary, not decoration.
 - No decorative glass or stripe backgrounds by default.
+- Translucent material, if used, is functional chrome with reduced-transparency/contrast fallback.
 - No hairline border plus broad shadow stack unless the design system documents it.
 - Icon buttons: visual center, not only flex center.
 - Media cards: neutral image edge.

@@ -177,6 +177,16 @@ function rules() {
       patterns: [/\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(/gi],
     },
     {
+      id: "heavy-blur-effect",
+      category: "performance",
+      severity: "P2",
+      message: "20px+ blur is expensive and should be a functional material/crossfade choice with runtime proof.",
+      patterns: [
+        /(?:filter|backdrop-filter|backdropFilter)\s*:?\s*["']?[^;"'\n]*blur\(\s*(?:2\d|[3-9]\d|\d{3,})px\s*\)/gi,
+        /\b(?:blur|backdrop-blur)-\[(?:2\d|[3-9]\d|\d{3,})px\]/gi,
+      ],
+    },
+    {
       id: "hero-eyebrow",
       category: "slop",
       severity: "P3",
@@ -501,6 +511,25 @@ function runFileRules(file, text) {
     );
   }
 
+  const hasTranslucentMaterial = /\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(|backdropFilter\s*:?\s*["']?[^;"'\n]*blur\(/i.test(text);
+  const hasTransparencyFallback = /prefers-reduced-transparency|prefers-contrast|forced-colors/i.test(text);
+  if (hasTranslucentMaterial && !hasTransparencyFallback) {
+    out.push(
+      toFinding(
+        {
+          id: "missing-reduced-transparency-fallback",
+          category: "accessibility",
+          severity: "P2",
+          message: "Blurred/translucent chrome needs a solid or higher-contrast fallback when it carries structure or text.",
+        },
+        file,
+        text,
+        Math.max(0, text.search(/\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(|backdropFilter\s*:?\s*["']?[^;"'\n]*blur\(/i)),
+        "translucent material without prefers-reduced-transparency, prefers-contrast, or forced-colors fallback",
+      ),
+    );
+  }
+
   const willChangeMatches = [...text.matchAll(/will-change\s*:|will-change-\[/gi)];
   if (willChangeMatches.length >= 5) {
     out.push(
@@ -534,6 +563,26 @@ function runFileRules(file, text) {
         text,
         Math.max(0, text.search(/(?::hover|hover:)[\s\S]{0,220}(?:transform|scale|translate|rotate|animation|transition)/i)),
         "hover motion without @media (hover: hover) and (pointer: fine)",
+      ),
+    );
+  }
+
+  const hasPointerGesture =
+    /\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i.test(text) &&
+    /\b(?:client[XY]|page[XY]|screen[XY]|movement[XY]|translate[XY]?|transform|drag|swipe|velocity)\b/i.test(text);
+  if (hasPointerGesture && !/setPointerCapture\b/i.test(text)) {
+    out.push(
+      toFinding(
+        {
+          id: "gesture-missing-pointer-capture",
+          category: "motion",
+          severity: "P3",
+          message: "Pointer-driven drag/swipe code should usually capture the pointer after drag intent so motion survives leaving bounds.",
+        },
+        file,
+        text,
+        Math.max(0, text.search(/\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i)),
+        "pointer gesture without setPointerCapture",
       ),
     );
   }

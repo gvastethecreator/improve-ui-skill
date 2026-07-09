@@ -19,6 +19,13 @@ export function DeepReviewBadFixture() {
       >
         Open
       </div>
+      <div
+        onPointerMove={(event) => {
+          event.currentTarget.style.transform = `translateY(${event.clientY}px)`;
+        }}
+      >
+        Drag surface
+      </div>
       <style>{toastCss}</style>
       <img src="/placeholder" />
       {items.map((item) => (

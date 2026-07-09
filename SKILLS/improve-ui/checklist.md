@@ -50,14 +50,17 @@
 - [ ] Motion review blockers checked when animation is part of the change
 - [ ] Canvas/WebGL/3D/physics effects have purpose, reduced motion, fallback, offscreen pause, density caps, and cleanup
 - [ ] Runtime review checked offscreen animations/canvas activity when a URL was available
+- [ ] Pressable controls give feedback on pointer-down/active state when feedback is useful
 - [ ] Keyboard/high-frequency actions do not use distracting travel animation
 - [ ] UI motion avoids `ease-in` entry/opening and `scale(0)` appearances
 - [ ] Anchored surfaces use trigger-aware transform origins
+- [ ] Drag/swipe/sheet motion tracks 1:1, captures pointer, preserves grab offset, and handles velocity/reversal when applicable
 - [ ] Hover motion is gated to hover-capable fine pointers
 - [ ] Common UI motion uses an existing project primitive, an exact bounded CSS/Motion pattern, or is deliberately skipped
 - [ ] Transition tokens/root variables are installed once, not duplicated per component
 - [ ] Shared layout IDs are unique when used
 - [ ] Exits are subtle or deliberately absent
 - [ ] Reduced-motion behavior remains clear
+- [ ] Translucent/blurred functional chrome has reduced-transparency or high-contrast fallback when it carries structure/text
 - [ ] Transitions name exact properties
 - [ ] `will-change` is exact, sparse, and justified

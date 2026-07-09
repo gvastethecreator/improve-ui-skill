@@ -4,9 +4,10 @@ Use this file as the stricter motion bar for `improve-ui`: decide if motion belo
 
 Source fit:
 
-- Keep: vocabulary-first diagnosis, frequency gating, motion purpose, strong easing, duration ranges, physical origins, interruptibility, gesture polish, reduced-motion and hover gating, performance caveats, blocker criteria, and slow-motion review.
+- Keep: vocabulary-first diagnosis, frequency gating, motion purpose, strong easing, duration ranges, physical origins, interruptibility, gesture polish, perceived performance, reduced-motion and hover gating, performance caveats, blocker criteria, and slow-motion review.
+- Also keep from Apple-style fluid interface guidance: input response on pointer-down, 1:1 drag tracking, velocity handoff, momentum projection, rubber-banding, and fallbacks for reduced transparency/contrast.
 - Adapt: output format. This repo prefers terse findings and avoids tables unless they genuinely improve scanning.
-- Omit: persona prompts, brand/course copy, rigid review theatrics, and component-library naming advice unless the user is designing a public library.
+- Omit: persona prompts, brand/course copy, rigid review theatrics, decorative glass as a default, and component-library naming advice unless the user is designing a public library.
 
 Open [motion-vocabulary.md](motion-vocabulary.md) when the effect is described by feel or when a finding needs the exact term. Open [motion-review.md](motion-review.md) when the task is an animation review or when motion quality decides pass/fail.
 
@@ -29,6 +30,13 @@ Motion needs one clear job:
 
 If the only reason is "it looks cool", remove it for product UI and reserve it for rare expressive surfaces.
 
+Perceived speed matters:
+
+- The first visible response should happen immediately after intent. Press feedback belongs on pointer-down or `:active`, not after async work completes.
+- A spinner, skeleton, or loading affordance can make the same wait feel faster or slower; do not use slow decorative loaders in task UI.
+- Tooltips should usually delay the first accidental hover, then skip delay and animation while the user is moving across adjacent tooltip targets.
+- Remove delays from command palettes, toolbar shortcuts, and repeated navigation once the action is clearly intentional.
+
 ## Easing And Timing
 
 Choose easing by motion job:
@@ -48,7 +56,7 @@ Useful starting points:
 }
 ```
 
-Avoid `ease-in` for UI entry/opening. It delays the first visible movement and makes the interface feel late.
+Avoid `ease-in` for UI entry/opening. It delays the first visible movement and makes the interface feel late. Do not invent curves from scratch when the project has no token; start from a proven strong curve or a documented easing reference, then tune against the actual interaction.
 
 Duration guide:
 
@@ -86,13 +94,25 @@ Interactive motion should retarget when the user changes their mind:
 
 ## Gestures
 
-Gesture polish is mostly invisible correctness:
+Gesture polish is mostly invisible correctness. Treat drag/swipe/sheet motion as behavior, not choreography:
 
+- Start feedback on pointer-down.
+- Track the pointer 1:1 during the gesture and preserve the grab offset; do not snap the moving element to its center.
+- Animate from the current on-screen value when interrupted, not from stale target state.
+- Hand release velocity into the settling spring when the library supports it.
+- Project momentum before choosing the final snap point; a flick should land where it is going, not merely near the release point.
 - Dismiss by distance or velocity. A fast flick should not need to cross the same threshold as a slow drag.
 - Apply damping/friction beyond natural boundaries instead of hard stops.
 - Capture the pointer after drag starts so the drag survives leaving the element bounds.
 - Ignore extra touch points after a drag starts to avoid jumping between fingers.
 - Honor `prefers-reduced-motion` by dropping travel/position motion while preserving state clarity.
+
+Useful starting points:
+
+- Require a small movement threshold, around `8px-12px`, before committing to drag direction.
+- For swipe dismissal, treat velocity around `0.11 px/ms` as a valid flick threshold when distance alone is not enough.
+- Rubber-band beyond bounds with progressive resistance, not a binary clamp.
+- Default springs should be critically damped or near it; add bounce only when user momentum caused the movement.
 
 ## Performance Triggers
 
