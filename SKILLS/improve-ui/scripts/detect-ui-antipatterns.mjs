@@ -67,6 +67,7 @@ for (const target of targets) {
 
 const scanTargets = targets.length ? targets.map((target) => path.resolve(target)) : [process.cwd()];
 const pathBase = determinePathBase(scanTargets);
+const canonicalPathBase = pathBase.path ? canonicalPlannedPath(pathBase.path) : null;
 validateProtectedOutputInput(options.out, options.baseline, "--baseline");
 validateProtectedOutputInput(options.out, options.allowlist, "--allowlist");
 const allowlist = loadFindingMultiset(options.allowlist);
@@ -103,7 +104,7 @@ const filtered = assignFingerprints(uniqueFindings(findings))
 const payload = {
   scannedAt: new Date().toISOString(),
   cwd: process.cwd(),
-  pathBase: { kind: pathBase.kind, path: pathBase.path ? normalizePath(pathBase.path) : null },
+  pathBase: { kind: pathBase.kind, path: canonicalPathBase ? normalizePath(canonicalPathBase) : null },
   files: scanFiles.length,
   targets,
   options: publicOptions(options),
@@ -990,8 +991,9 @@ function collectFiles(target, out, changedFiles, visitedDirectories) {
   if (!stat.isFile()) return;
   if (!VALID_EXT.has(path.extname(target).toLowerCase())) return;
 
-  if (changedFiles && !changedFiles.has(normalizeAbsolutePath(target))) return;
-  out.push(target);
+  const canonicalTarget = fs.realpathSync.native(target);
+  if (changedFiles && !changedFiles.has(normalizeAbsolutePath(canonicalTarget))) return;
+  out.push(canonicalTarget);
 }
 
 function gitChangedFiles(scanTargets) {
@@ -1143,8 +1145,11 @@ function isWithin(base, candidate) {
 }
 
 function reportPath(file) {
-  if (pathBase.path && isWithin(pathBase.path, file)) return normalizePath(path.relative(pathBase.path, file));
-  return normalizePath(path.resolve(file));
+  const canonicalFile = path.resolve(file);
+  if (canonicalPathBase && isWithin(canonicalPathBase, canonicalFile)) {
+    return normalizePath(path.relative(canonicalPathBase, canonicalFile));
+  }
+  return normalizePath(canonicalFile);
 }
 
 function loadFindingMultiset(file) {

@@ -27,7 +27,7 @@ test("reproducibility metadata follows the absolute path target repository, not 
   assert.equal(result.status, 0, result.stdout || result.stderr);
   const reproducibility = readReview(outDir).metadata.reproducibility;
   assert.equal(reproducibility.targetGit.source, "path");
-  assert.equal(fs.realpathSync(reproducibility.targetGit.root), fs.realpathSync(workspace));
+  assert.equal(fs.realpathSync.native(reproducibility.targetGit.root), fs.realpathSync.native(workspace));
   assert.equal(reproducibility.targetGit.commit, targetCommit);
   assert.equal(reproducibility.targetGit.dirty, false);
   assert.notEqual(reproducibility.harnessGit.commit, targetCommit);

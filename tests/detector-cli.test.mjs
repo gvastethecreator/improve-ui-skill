@@ -283,7 +283,7 @@ test("baseline paths remain stable across caller working directories", (t) => {
 
   assert.deepEqual(first.pathBase, {
     kind: "git-root",
-    path: repository.replaceAll("\\", "/"),
+    path: fs.realpathSync.native(repository).replaceAll("\\", "/"),
   });
   assert.equal(first.findings.find(({ id }) => id === "missing-img-alt").file, "ui/image.tsx");
   assert.equal(second.findings.some(({ id }) => id === "missing-img-alt"), false);
@@ -370,17 +370,17 @@ test("changed-only scans staged, unstaged, and untracked web files from a nested
   fs.writeFileSync(path.join(ui, "untracked.scss"), ".button { transition: all 100ms; }\n");
 
   const result = runDetector(["--changed-only", "--json", "."], { cwd: ui });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
   const payload = JSON.parse(result.stdout);
   const fromOutside = runDetector(["--changed-only", "--json", ui], { cwd: repoRoot });
+  assert.equal(fromOutside.status, 0, fromOutside.stderr || fromOutside.stdout);
   const outsidePayload = JSON.parse(fromOutside.stdout);
 
-  assert.equal(result.status, 0);
   assert.equal(payload.files, 3);
   assert.deepEqual(
     [...new Set(payload.findings.map(({ file }) => file))].sort(),
     ["ui/staged.mjs", "ui/tracked.tsx", "ui/untracked.scss"],
   );
-  assert.equal(fromOutside.status, 0);
   assert.equal(outsidePayload.files, 3);
   assert.deepEqual(payload.pathBase, outsidePayload.pathBase);
   assert.equal(payload.pathBase.kind, "git-root");
@@ -400,10 +400,10 @@ test("changed-only preserves Unicode paths from staged and untracked Git output"
   run("git", ["add", "café.tsx"], repository);
 
   const result = runDetector(["--changed-only", "--strict", "--json", "."], { cwd: repository });
+  assert.equal(result.status, 1, result.stderr || result.stdout);
   const payload = JSON.parse(result.stdout);
   const files = payload.findings.filter(({ id }) => id === "missing-img-alt").map(({ file }) => file).sort();
 
-  assert.equal(result.status, 1);
   assert.equal(payload.files, 2);
   assert.deepEqual(files, ["café.tsx", "niño.tsx"]);
 });
