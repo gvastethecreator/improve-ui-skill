@@ -1,0 +1,20 @@
+{
+  "name": "component-polish",
+  "surface": "component",
+  "runtimeAfter": "after/fixture.html",
+  "runtimeSource": "after/CommandMenu.js",
+  "expectedBefore": [
+    "button-name-risk",
+    "interactive-div",
+    "missing-img-alt",
+    "scale-zero-entry",
+    "transition-all"
+  ],
+  "expectedAfterAbsent": [
+    "button-name-risk",
+    "interactive-div",
+    "missing-img-alt",
+    "scale-zero-entry",
+    "transition-all"
+  ]
+}

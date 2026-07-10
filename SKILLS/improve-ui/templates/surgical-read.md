@@ -1,46 +1,39 @@
 # Surgical Read
 
-Use this before changing an existing interface when the target is broader than a tiny visual bug.
+## Scope
 
-## Target
-
-- Surface:
-- Route/component/screenshot:
+- Permission mode: `read-only | implementation`
+- Profile: `micro | focused | deep`
+- Surface / route / component / state:
 - Main user task:
-- Register:
-- Existing design system or visual language:
+- Register: `product | brand | hybrid`
+- Existing system and constraints:
 
-## Visible Problem
+## Diagnosis
 
-- First thing that looks wrong:
+- Visible symptom:
+- User consequence:
+- Intended hierarchy:
 - Accidental priority:
-- User task being slowed or obscured:
-- Repeated/systemic pattern:
+- Source cause:
+- Repeated or isolated:
+- Evidence ID(s):
 
-## Source Cause
+## Change
 
-- Component/primitive/token/layout/state source:
-- Evidence path or screenshot:
-- File/line if known:
+- Change ambition: `local | primitive | token/system | layout shell | state model`
+- First cut:
+- Main-path repair:
+- Edge/recovery repair:
+- Preserve:
+- Explicitly out of scope:
 
-## Cut Order
+## Proof
 
-1. 
-2. 
-3. 
-4. 
-5. 
-
-## Preservation Rules
-
-- Keep:
-- Change:
-- Do not touch:
-
-## Proof Target
-
-- Main viewport/state:
-- Edge or recovery viewport/state:
-- Required command/artifact:
-- Blockers:
-
+- Baseline artifact/state:
+- Main state setup → action → assertion:
+- Edge state setup → action → assertion:
+- Source/test checks:
+- Runtime/viewports:
+- Blockers/unknowns:
+- Stop condition:

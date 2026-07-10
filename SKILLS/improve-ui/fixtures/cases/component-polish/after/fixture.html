@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Command menu runtime fixture</title>
+    <link rel="stylesheet" href="./menu.css" />
+  </head>
+  <body>
+    <main id="fixture-root"></main>
+    <script src="./CommandMenu.js"></script>
+    <script>
+      window.mountCommandMenu(document.querySelector("#fixture-root"), {
+        triggerId: "command-menu-trigger",
+        menuId: "commands",
+        recentProjectId: "recent-project",
+        onOpenRecentProject() {
+          document.body.dataset.command = "recent-project";
+        },
+      });
+    </script>
+  </body>
+</html>

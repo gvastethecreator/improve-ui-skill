@@ -1,31 +1,25 @@
-# Golden Example: Landing Repair
+# Executable Example: Landing Repair
 
-## Brief
+This example is backed by a detector fixture, not a narrative claim.
 
-Implemented landing page looks generic and the product is not visible in the first viewport.
+## Fixture
 
-## Surgical Read
+- Contract: [case.json](../fixtures/cases/landing-repair/case.json)
+- Before: [Hero.tsx](../fixtures/cases/landing-repair/before/Hero.tsx)
+- After: [Hero.tsx](../fixtures/cases/landing-repair/after/Hero.tsx)
+- Executable assertion: repository test `tests/golden-fixtures.test.mjs`
 
-- Surface: marketing page already implemented.
-- Main task: understand what the product is and why it matters.
-- Visible problem: decorative hero treatment and generic claims outrank product evidence.
-- Source cause: split hero uses a fake product preview, oversized cards, and vague CTA stack.
-- Cut order: first-viewport product signal, real proof section, CTA hierarchy, mobile wrap, media edge.
+The case contract names objective and advisory findings that must appear before and be absent after. The repository test runs the detector and evaluates that contract; this document does not substitute prose for the result.
 
-## Changes
-
-- Replaced fake preview with real product screenshot or live capture.
-- Made headline literal and moved value prop into support copy.
-- Reduced CTA set to one primary and one secondary.
-- Added media outline, reserved image dimensions, and mobile crop rules.
-
-## Proof
+## Reproduce
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path src/app/page.tsx --url http://localhost:3000 --out output/improve-ui/landing-repair --require-runtime --require-change-proof --change-proof "before/after first viewport and product proof section captured on desktop and mobile" --fail-verdict=good
+node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --include-advisory SKILLS/improve-ui/fixtures/cases/landing-repair/before
+node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --include-advisory SKILLS/improve-ui/fixtures/cases/landing-repair/after
 ```
 
-## Final Claim
+Compare finding IDs with `expectedBefore` and `expectedAfterAbsent` in `case.json`, or run the repository test suite.
 
-The page is stronger only if the first viewport shows the real product or a truthful state, mobile preserves the CTA/product read, and the final report names any SEO/copy areas intentionally left untouched.
+## Claim Limit
 
+This fixture proves detector behavior against authored source examples. It does not prove offer clarity, conversion, first-viewport fit, mobile layout, authenticity of proof, or visual improvement. For a real landing repair, collect first-viewport and proof-section artifacts on relevant viewports with [proof-recipes.md](../proof-recipes.md).

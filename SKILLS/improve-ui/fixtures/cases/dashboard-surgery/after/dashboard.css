@@ -1,0 +1,14 @@
+.account-dashboard {
+  inline-size: min(100%, 72rem);
+}
+
+.account-row {
+  overflow-wrap: anywhere;
+  transition: background-color 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-row {
+    transition: none;
+  }
+}

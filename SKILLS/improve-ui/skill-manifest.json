@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "improve-ui",
+  "version": "0.2.0",
+  "source": {
+    "repository": "https://github.com/gvastethecreator/improve-ui-skill"
+  },
+  "runtime": {
+    "node": ">=20.11",
+    "browserProof": "optional-playwright"
+  },
+  "entrypoints": [
+    "scripts/detect-ui-antipatterns.mjs",
+    "scripts/run-interface-review.mjs"
+  ]
+}

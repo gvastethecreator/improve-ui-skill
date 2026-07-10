@@ -1,26 +1,26 @@
 # Surgery Log
 
-Use this to track implementation-level UI improvement across one pass.
+| Severity | Symptom and impact | Source cause | Repair | File/area | Evidence ID |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
 
-| Problem | Source Cause | Action | File/Area | Proof |
-| --- | --- | --- | --- | --- |
-|  |  |  |  |  |
+## Preservation Check
 
-## Before
+- Routes/IA/forms/data:
+- Analytics/SEO/legal:
+- Accessibility/design system:
+- Unrelated user changes:
 
-- Visual state:
-- Static/runtime finding:
-- User impact:
+## Iterations
 
-## Actions
+| Pass | Main state result | Edge state result | Objective gate | Decision |
+|---|---|---|---|---|
+| 1 |  |  |  | `continue | stop | blocked` |
 
-- Primitive/token/layout/state fix:
-- Instance fix:
-- Deferred or rejected change:
+## Closeout
 
-## After
-
-- Screenshot/runtime artifact:
-- Detector or test:
+- Changed files:
+- Proof manifest/report:
+- Skipped checks:
 - Remaining risk:
-
+- Claim limit:

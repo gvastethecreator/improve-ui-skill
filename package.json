@@ -1,0 +1,22 @@
+{
+  "name": "improve-ui-skill",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Evidence-gated Codex skill for improving existing web interfaces.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.mjs",
+    "test:unit": "node scripts/run-tests.mjs --exclude runtime-",
+    "test:browser": "node scripts/run-tests.mjs --match runtime-",
+    "validate": "node scripts/validate-skill.mjs SKILLS/improve-ui",
+    "validate:evals": "node scripts/validate-evals.mjs evals/scenarios.json",
+    "check:syntax": "node --check SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs && node --check SKILLS/improve-ui/scripts/run-interface-review.mjs",
+    "check": "npm run validate && npm run validate:evals && npm run check:syntax && npm test"
+  },
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

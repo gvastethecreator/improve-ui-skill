@@ -1,0 +1,8 @@
+.account-dashboard {
+  width: 960px;
+}
+
+.account-row {
+  white-space: nowrap;
+  transition: all 240ms;
+}

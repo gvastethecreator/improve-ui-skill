@@ -1,0 +1,18 @@
+{
+  "name": "landing-repair",
+  "surface": "marketing",
+  "expectedBefore": [
+    "empty-img-src",
+    "fake-product-preview",
+    "missing-img-alt",
+    "missing-img-dimensions",
+    "purple-blue-gradient"
+  ],
+  "expectedAfterAbsent": [
+    "empty-img-src",
+    "fake-product-preview",
+    "missing-img-alt",
+    "missing-img-dimensions",
+    "purple-blue-gradient"
+  ]
+}

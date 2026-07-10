@@ -1,16 +1,24 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 
 const VALID_EXT = new Set([
   ".astro",
+  ".cjs",
+  ".cts",
   ".css",
   ".html",
   ".js",
   ".jsx",
+  ".less",
   ".mdx",
+  ".mjs",
+  ".mts",
+  ".sass",
+  ".scss",
   ".svelte",
+  ".svg",
   ".ts",
   ".tsx",
   ".vue",
@@ -31,38 +39,72 @@ const SKIP_DIRS = new Set([
 ]);
 
 const severityRank = { P0: 0, P1: 1, P2: 2, P3: 3 };
-const { options, targets } = parseArgs(process.argv.slice(2));
+const classifications = new Set(["objective", "advisory"]);
+const confidenceLevels = new Set(["high", "medium", "low"]);
+let cachedLineSource = null;
+let cachedLineStarts = [0];
+const RULES = rules();
+validateRuleCatalog(RULES);
+const rawArgs = process.argv.slice(2);
+if (rawArgs.includes("--help") || rawArgs.includes("-h")) {
+  usage(process.stdout);
+  process.exit(0);
+}
+const { options, targets } = parseArgs(rawArgs);
 
 if (!targets.length && !options.changedOnly) {
   usage();
   process.exit(2);
 }
 
-const allowlist = loadFindingSet(options.allowlist);
-const baseline = loadFindingSet(options.baseline);
-const changedFiles = options.changedOnly ? new Set(gitChangedFiles()) : null;
-const files = [];
-
-for (const target of targets.length ? targets : [process.cwd()]) {
-  collectFiles(path.resolve(target), files, changedFiles);
+for (const target of targets) {
+  const resolvedTarget = path.resolve(target);
+  if (!fs.existsSync(resolvedTarget)) {
+    console.error(`Scan target does not exist: ${target}`);
+    process.exit(2);
+  }
 }
 
+const scanTargets = targets.length ? targets.map((target) => path.resolve(target)) : [process.cwd()];
+const pathBase = determinePathBase(scanTargets);
+validateProtectedOutputInput(options.out, options.baseline, "--baseline");
+validateProtectedOutputInput(options.out, options.allowlist, "--allowlist");
+const allowlist = loadFindingMultiset(options.allowlist);
+const baseline = loadFindingMultiset(options.baseline);
+const changedFiles = options.changedOnly ? new Set(gitChangedFiles(scanTargets)) : null;
+const files = [];
+const visitedDirectories = new Set();
+
+for (const target of scanTargets) {
+  collectFiles(target, files, changedFiles, visitedDirectories);
+}
+
+const scanFiles = [...new Map(files.map((file) => [normalizeAbsolutePath(file), file])).values()].sort();
+
+if (!scanFiles.length) {
+  console.error("No supported files found in the requested scan targets.");
+  process.exit(2);
+}
+
+validateOutputPath(options.out, scanFiles);
+
 const findings = [];
-for (const file of [...new Set(files)].sort()) {
+for (const file of scanFiles) {
   const text = fs.readFileSync(file, "utf8");
   findings.push(...runPatternRules(file, text));
   findings.push(...runFileRules(file, text));
 }
 
-const filtered = uniqueFindings(findings)
+const filtered = assignFingerprints(uniqueFindings(findings))
   .filter((finding) => !options.category || finding.category === options.category || finding.id === options.category)
-  .filter((finding) => !allowlist.has(fingerprint(finding)))
-  .filter((finding) => !baseline.has(fingerprint(finding)));
+  .filter((finding) => !consumeFinding(allowlist, finding))
+  .filter((finding) => !consumeFinding(baseline, finding));
 
 const payload = {
   scannedAt: new Date().toISOString(),
   cwd: process.cwd(),
-  files: files.length,
+  pathBase: { kind: pathBase.kind, path: pathBase.path ? normalizePath(pathBase.path) : null },
+  files: scanFiles.length,
   targets,
   options: publicOptions(options),
   findings: filtered,
@@ -77,7 +119,14 @@ if (options.out) {
   process.stdout.write(rendered);
 }
 
-if (options.failOn && filtered.some((finding) => severityRank[finding.severity] <= severityRank[options.failOn])) {
+if (
+  options.failOn &&
+  filtered.some(
+    (finding) =>
+      (finding.classification === "objective" || options.includeAdvisory) &&
+      severityRank[finding.severity] <= severityRank[options.failOn],
+  )
+) {
   process.exitCode = 1;
 }
 
@@ -249,13 +298,17 @@ function rules() {
       id: "transition-all",
       category: "performance",
       severity: "P2",
+      classification: "objective",
+      confidence: "high",
       message: "Broad transitions hide bugs and animate unintended properties. Name exact properties.",
       patterns: [/\btransition-all\b|transition\s*:\s*all\b/gi],
     },
     {
       id: "layout-transition",
       category: "performance",
-      severity: "P1",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "medium",
       message: "Layout-property transitions can cause jank. Prefer transform/opacity or a deliberate layout technique.",
       patterns: [
         /transition(?:-property)?\s*:\s*[^;\n]*(?:width|height|padding|margin|top|left|right|bottom)/gi,
@@ -265,7 +318,9 @@ function rules() {
     {
       id: "ease-in-ui-motion",
       category: "motion",
-      severity: "P1",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "medium",
       message: "ease-in on UI entry/opening feels delayed. Prefer ease-out or a strong custom curve.",
       patterns: [
         /(?:transition(?:-timing-function)?|animation(?:-timing-function)?)\s*:[^;\n]*(?<![\w-])ease-in(?!-out|\w)/gi,
@@ -275,7 +330,9 @@ function rules() {
     {
       id: "scale-zero-entry",
       category: "motion",
-      severity: "P1",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "medium",
       message: "scale(0) makes elements appear from nowhere. Start around scale(0.9-0.97) plus opacity.",
       patterns: [
         /scale(?:3d|X|Y)?\(\s*0(?:\.0+)?(?:\s|,|\))/gi,
@@ -344,10 +401,12 @@ function rules() {
       id: "will-change-broad",
       category: "performance",
       severity: "P2",
+      classification: "objective",
+      confidence: "high",
       message: "will-change must name sparse exact properties. Broad or layout-heavy hints cost memory and can hurt performance.",
       patterns: [
-        /will-change\s*:\s*(?:all|auto|width|height|top|left|right|bottom|padding|margin)/gi,
-        /\bwill-change-\[(?:all|auto|width|height|top|left|right|bottom|padding|margin)[^\]]*\]/gi,
+        /will-change\s*:\s*(?:all|width|height|top|left|right|bottom|padding|margin)/gi,
+        /\bwill-change-\[(?:all|width|height|top|left|right|bottom|padding|margin)[^\]]*\]/gi,
       ],
     },
     {
@@ -363,8 +422,19 @@ function rules() {
       id: "missing-img-alt",
       category: "accessibility",
       severity: "P1",
+      classification: "objective",
+      confidence: "high",
       message: "Meaningful images need alt text; decorative images need empty alt.",
-      patterns: [/<img\b(?![^>]*\balt=)[^>]*>/gi],
+      patterns: [/<img\b(?![^>]*\balt\s*=)(?![^>]*\{\s*\.\.\.)[^>]*>/gi],
+    },
+    {
+      id: "img-alt-spread-unknown",
+      category: "accessibility",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "low",
+      message: "Image props are spread without an explicit alt, so static analysis cannot prove the accessible name contract.",
+      patterns: [/<img\b(?![^>]*\balt\s*=)(?=[^>]*\{\s*\.\.\.)[^>]*>/gi],
     },
     {
       id: "missing-img-dimensions",
@@ -377,25 +447,73 @@ function rules() {
       id: "empty-img-src",
       category: "quality",
       severity: "P1",
-      message: "Empty or placeholder image sources ship broken visuals. Use real assets or remove the tag.",
-      patterns: [/<img\b[^>]*\bsrc=["'](?:|#|placeholder|TODO|\/?placeholder[^"']*)["'][^>]*>/gi],
+      classification: "objective",
+      confidence: "high",
+      message: "Empty image sources ship broken visuals. Use a real asset or remove the tag.",
+      patterns: [/<img\b[^>]*\bsrc=["']#?["'][^>]*>/gi],
+    },
+    {
+      id: "placeholder-img-src",
+      category: "quality",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "medium",
+      message: "Placeholder-named image sources need verification before release.",
+      patterns: [/<img\b[^>]*\bsrc=["'](?:TODO|\/?placeholder(?:[^"']*)?)["'][^>]*>/gi],
+    },
+    {
+      id: "empty-button-name",
+      category: "accessibility",
+      severity: "P1",
+      classification: "objective",
+      confidence: "high",
+      message: "A truly empty button has no accessible name. Add visible text or an explicit accessible-name attribute.",
+      patterns: [/<button\b(?![^>]*(?:aria-label|aria-labelledby|title)\s*=)(?![^>]*\{\s*\.\.\.)[^>]*>\s*<\/button>/gi],
+    },
+    {
+      id: "button-name-spread-unknown",
+      category: "accessibility",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "low",
+      message: "Button props are spread without visible content or an explicit name, so static analysis cannot prove the accessible-name contract.",
+      patterns: [/<button\b(?![^>]*(?:aria-label|aria-labelledby|title)\s*=)(?=[^>]*\{\s*\.\.\.)[^>]*>\s*<\/button>/gi],
     },
     {
       id: "button-name-risk",
       category: "accessibility",
-      severity: "P1",
-      message: "Icon-only or empty buttons need accessible names through visible text, aria-label, aria-labelledby, or title.",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "medium",
+      message: "An icon-only button may derive its name from rendered icon content. Confirm the computed accessible name at runtime.",
       patterns: [
-        /<button\b(?![^>]*(?:aria-label|aria-labelledby|title)=)[^>]*>\s*(?:<svg[\s\S]*?<\/svg>|<Icon\b[\s\S]*?\/?>|{?\s*}?)\s*<\/button>/gi,
+        /<button\b(?![^>]*(?:aria-label|aria-labelledby|title)\s*=)[^>]*>\s*(?:<svg\b[^>]*\/>|<svg\b[\s\S]*?<\/svg>|<(?:Icon|[A-Z][\w.]*Icon)\b[^>]*\/?>)\s*<\/button>/gi,
       ],
+      matchFilter: (snippet) =>
+        !/<title\b/i.test(snippet) &&
+        !/<(?:svg|Icon|[A-Z][\w.]*Icon)\b[^>]*\b(?:aria-label|aria-labelledby)\s*=/i.test(snippet),
     },
     {
       id: "interactive-div",
       category: "accessibility",
-      severity: "P1",
-      message: "Clickable div/span needs semantic button/link or full keyboard role handling.",
+      severity: "P2",
+      classification: "advisory",
+      confidence: "medium",
+      message: "A div/span handler may be a custom control or event delegation. Confirm semantics, focus, and keyboard behavior in context.",
       patterns: [
-        /<(?:div|span)\b(?=[^>]*\bon(?:Click|PointerDown|MouseDown|KeyDown)=)(?![^>]*\brole=)[^>]*>/g,
+        /<(?:div|span)\b(?=[^>]*\bon(?:Click|PointerDown|MouseDown)=)(?![^>]*\brole\s*=\s*["'](?:button|link|checkbox|radio|switch|menuitem(?:checkbox|radio)?|option|tab)["'])[^>]*>/gi,
+      ],
+    },
+    {
+      id: "interactive-role-contract",
+      category: "accessibility",
+      severity: "P1",
+      classification: "objective",
+      confidence: "high",
+      message: "An explicit interactive role with a pointer handler needs both focusability and keyboard activation.",
+      patterns: [
+        /<(?:div|span)\b(?=[^>]*\bon(?:Click|PointerDown|MouseDown)=)(?=[^>]*\brole\s*=\s*["'](?:button|link|checkbox|radio|switch|menuitem(?:checkbox|radio)?|option|tab)["'])(?![^>]*\{\s*\.\.\.)(?![^>]*\btabIndex\s*=)[^>]*>/gi,
+        /<(?:div|span)\b(?=[^>]*\bon(?:Click|PointerDown|MouseDown)=)(?=[^>]*\brole\s*=\s*["'](?:button|link|checkbox|radio|switch|menuitem(?:checkbox|radio)?|option|tab)["'])(?![^>]*\{\s*\.\.\.)(?![^>]*\bonKey(?:Down|Up)\s*=)[^>]*>/gi,
       ],
     },
     {
@@ -443,45 +561,22 @@ function rules() {
       message: "Repeated literal colors can drift from tokens. Prefer semantic tokens when a design system exists.",
       patterns: [/(?:color|background|border(?:-color)?)\s*:\s*#[0-9a-f]{3,8}\b/gi],
     },
-    {
-      id: "gpt-thin-border-wide-shadow",
-      category: "slop",
-      severity: "P3",
-      provider: "gpt",
-      message: "Hairline border plus diffuse shadow is a common generated-card signature.",
-      patterns: [/\bborder\b[^"\n]{0,80}\bbox-shadow\b|\bbox-shadow\b[^"\n]{0,80}\bborder\b/gi],
-    },
-    {
-      id: "gpt-repeating-stripes",
-      category: "slop",
-      severity: "P3",
-      provider: "gpt",
-      message: "Repeating stripe decoration is a common generated UI filler pattern.",
-      patterns: [/repeating-linear-gradient\(/gi],
-    },
-    {
-      id: "gemini-image-hover-transform",
-      category: "slop",
-      severity: "P3",
-      provider: "gemini",
-      message: "Image hover scale/rotate can be a generated default. Verify it helps inspection.",
-      patterns: [/(?:img|image|photo)[^;\n]{0,160}:hover[^;\n]*(?:scale|rotate)|hover:[^\s"']*(?:scale|rotate)[^\s"']*(?:img|image|photo)/gi],
-    },
   ];
 }
 
 function runPatternRules(file, text) {
   const out = [];
-  for (const rule of rules()) {
-    if (rule.provider === "gpt" && !options.gpt) continue;
-    if (rule.provider === "gemini" && !options.gemini) continue;
+  const source = maskEmbeddedTagAngles(maskComments(text));
+  const suppressTestP1 = isTestFixture(file) && !options.includeTestFixtures;
+  for (const rule of RULES) {
+    if (suppressTestP1 && rule.severity === "P1" && ruleClassification(rule) === "objective") continue;
     for (const pattern of rule.patterns) {
       pattern.lastIndex = 0;
-      let count = 0;
       let match;
-      while ((match = pattern.exec(text)) && count < 8) {
-        out.push(toFinding(rule, file, text, match.index, match[0]));
-        count += 1;
+      while ((match = pattern.exec(source))) {
+        const snippet = text.slice(match.index, match.index + match[0].length);
+        if (rule.matchFilter && !rule.matchFilter(snippet)) continue;
+        out.push(toFinding(rule, file, text, match.index, snippet));
         if (match.index === pattern.lastIndex) pattern.lastIndex += 1;
       }
     }
@@ -491,9 +586,10 @@ function runPatternRules(file, text) {
 
 function runFileRules(file, text) {
   const out = [];
+  const source = maskComments(text);
   const hasMotion =
-    /@keyframes\b|animation(?:-name)?\s*:|\banimate-[\w-]+\b|\btransition(?:-\[|:|-property)?/.test(text);
-  const hasReducedMotion = /prefers-reduced-motion/.test(text);
+    /@keyframes\b|animation(?:-name)?\s*:|\banimate-[\w-]+\b|\btransition(?:-\[|:|-property)?/.test(source);
+  const hasReducedMotion = /prefers-reduced-motion/.test(source);
   if (hasMotion && !hasReducedMotion) {
     out.push(
       toFinding(
@@ -501,18 +597,20 @@ function runFileRules(file, text) {
           id: "missing-reduced-motion-guard",
           category: "accessibility",
           severity: "P2",
+          classification: "advisory",
+          confidence: "low",
           message: "Motion-heavy files need a reduced-motion path or a documented reason it is not required.",
         },
         file,
         text,
-        Math.max(0, text.search(/@keyframes\b|animation(?:-name)?\s*:|\banimate-[\w-]+\b|\btransition(?:-\[|:|-property)?/)),
+        Math.max(0, source.search(/@keyframes\b|animation(?:-name)?\s*:|\banimate-[\w-]+\b|\btransition(?:-\[|:|-property)?/)),
         "motion without prefers-reduced-motion",
       ),
     );
   }
 
-  const hasTranslucentMaterial = /\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(|backdropFilter\s*:?\s*["']?[^;"'\n]*blur\(/i.test(text);
-  const hasTransparencyFallback = /prefers-reduced-transparency|prefers-contrast|forced-colors/i.test(text);
+  const hasTranslucentMaterial = /\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(|backdropFilter\s*:?\s*["']?[^;"'\n]*blur\(/i.test(source);
+  const hasTransparencyFallback = /prefers-reduced-transparency|prefers-contrast|forced-colors/i.test(source);
   if (hasTranslucentMaterial && !hasTransparencyFallback) {
     out.push(
       toFinding(
@@ -520,17 +618,19 @@ function runFileRules(file, text) {
           id: "missing-reduced-transparency-fallback",
           category: "accessibility",
           severity: "P2",
+          classification: "advisory",
+          confidence: "low",
           message: "Blurred/translucent chrome needs a solid or higher-contrast fallback when it carries structure or text.",
         },
         file,
         text,
-        Math.max(0, text.search(/\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(|backdropFilter\s*:?\s*["']?[^;"'\n]*blur\(/i)),
+        Math.max(0, source.search(/\bbackdrop-blur\b|backdrop-filter\s*:\s*blur\(|backdropFilter\s*:?\s*["']?[^;"'\n]*blur\(/i)),
         "translucent material without prefers-reduced-transparency, prefers-contrast, or forced-colors fallback",
       ),
     );
   }
 
-  const willChangeMatches = [...text.matchAll(/will-change\s*:|will-change-\[/gi)];
+  const willChangeMatches = [...source.matchAll(/will-change\s*:|will-change-\[/gi)];
   if (willChangeMatches.length >= 5) {
     out.push(
       toFinding(
@@ -548,8 +648,8 @@ function runFileRules(file, text) {
     );
   }
 
-  const hasHoverMotion = /(?::hover|hover:)[\s\S]{0,220}(?:transform|scale|translate|rotate|animation|transition)/i.test(text);
-  const hasHoverGate = /@media\s*\(\s*hover\s*:\s*hover\s*\)\s*and\s*\(\s*pointer\s*:\s*fine\s*\)/i.test(text);
+  const hasHoverMotion = /(?::hover|hover:)[\s\S]{0,220}(?:transform|scale|translate|rotate|animation|transition)/i.test(source);
+  const hasHoverGate = /@media\s*\(\s*hover\s*:\s*hover\s*\)\s*and\s*\(\s*pointer\s*:\s*fine\s*\)/i.test(source);
   if (hasHoverMotion && !hasHoverGate) {
     out.push(
       toFinding(
@@ -561,16 +661,16 @@ function runFileRules(file, text) {
         },
         file,
         text,
-        Math.max(0, text.search(/(?::hover|hover:)[\s\S]{0,220}(?:transform|scale|translate|rotate|animation|transition)/i)),
+        Math.max(0, source.search(/(?::hover|hover:)[\s\S]{0,220}(?:transform|scale|translate|rotate|animation|transition)/i)),
         "hover motion without @media (hover: hover) and (pointer: fine)",
       ),
     );
   }
 
   const hasPointerGesture =
-    /\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i.test(text) &&
-    /\b(?:client[XY]|page[XY]|screen[XY]|movement[XY]|translate[XY]?|transform|drag|swipe|velocity)\b/i.test(text);
-  if (hasPointerGesture && !/setPointerCapture\b/i.test(text)) {
+    /\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i.test(source) &&
+    /\b(?:client[XY]|page[XY]|screen[XY]|movement[XY]|translate[XY]?|transform|drag|swipe|velocity)\b/i.test(source);
+  if (hasPointerGesture && !/setPointerCapture\b/i.test(source)) {
     out.push(
       toFinding(
         {
@@ -581,7 +681,7 @@ function runFileRules(file, text) {
         },
         file,
         text,
-        Math.max(0, text.search(/\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i)),
+        Math.max(0, source.search(/\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i)),
         "pointer gesture without setPointerCapture",
       ),
     );
@@ -591,52 +691,247 @@ function runFileRules(file, text) {
 }
 
 function uniqueFindings(value) {
-  const seen = new Set();
+  const rangesByRuleAndFile = new Map();
   const out = [];
   for (const finding of value) {
-    const key = `${finding.id}|${finding.file}|${finding.line}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
+    const key = `${finding.id}|${finding.file}`;
+    const ranges = rangesByRuleAndFile.get(key) || [];
+    if (!insertNonOverlappingRange(ranges, finding._offset, finding._end)) continue;
+    rangesByRuleAndFile.set(key, ranges);
     out.push(finding);
   }
   return out;
 }
 
+function insertNonOverlappingRange(ranges, start, end) {
+  let low = 0;
+  let high = ranges.length;
+  while (low < high) {
+    const middle = (low + high) >>> 1;
+    if (ranges[middle].start < start) low = middle + 1;
+    else high = middle;
+  }
+  const previous = ranges[low - 1];
+  const next = ranges[low];
+  if (previous && start < previous.end) return false;
+  if (next && next.start < end) return false;
+  ranges.splice(low, 0, { start, end });
+  return true;
+}
+
 function toFinding(rule, file, text, index, snippet) {
-  return {
+  const classification = ruleClassification(rule);
+  const confidence = rule.confidence ?? (rule.category === "slop" ? "low" : "medium");
+  if (rule.severity === "P1" && (classification !== "objective" || confidence !== "high")) {
+    throw new Error(`P1 detector rule ${rule.id} must be objective and high confidence`);
+  }
+  const finding = {
     id: rule.id,
     category: rule.category,
     severity: rule.severity,
+    classification,
+    confidence,
     message: rule.message,
-    file: path.relative(process.cwd(), file),
+    file: reportPath(file),
     line: lineForIndex(text, index),
     snippet: cleanSnippet(snippet),
   };
+  Object.defineProperties(finding, {
+    _offset: { value: index, enumerable: false },
+    _end: { value: index + Math.max(1, String(snippet).length), enumerable: false },
+  });
+  return finding;
+}
+
+function assignFingerprints(findings) {
+  const occurrences = new Map();
+  for (const finding of findings) {
+    const base = fingerprintBase(finding);
+    const occurrence = (occurrences.get(base) || 0) + 1;
+    occurrences.set(base, occurrence);
+    finding.occurrence = occurrence;
+    finding.fingerprint = `${base}|occurrence=${occurrence}`;
+  }
+  return findings;
+}
+
+function ruleClassification(rule) {
+  return rule.classification ?? "advisory";
+}
+
+function validateRuleCatalog(catalog) {
+  const ids = new Set();
+  for (const rule of catalog) {
+    const classification = ruleClassification(rule);
+    const confidence = rule.confidence ?? (rule.category === "slop" ? "low" : "medium");
+    if (!rule.id || ids.has(rule.id)) throw new Error(`Detector rule id must be unique: ${rule.id || "<missing>"}`);
+    if (!Object.hasOwn(severityRank, rule.severity)) throw new Error(`Invalid severity for detector rule ${rule.id}`);
+    if (!classifications.has(classification)) throw new Error(`Invalid classification for detector rule ${rule.id}`);
+    if (!confidenceLevels.has(confidence)) throw new Error(`Invalid confidence for detector rule ${rule.id}`);
+    if (!Array.isArray(rule.patterns) || !rule.patterns.length) throw new Error(`Detector rule ${rule.id} needs a pattern`);
+    if (rule.provider) throw new Error(`Provider stereotypes require a calibrated corpus: ${rule.id}`);
+    if (rule.category === "slop" && classification !== "advisory") {
+      throw new Error(`Taste rule ${rule.id} must remain advisory`);
+    }
+    if (rule.severity === "P1" && (classification !== "objective" || confidence !== "high")) {
+      throw new Error(`P1 detector rule ${rule.id} must be objective and high confidence`);
+    }
+    ids.add(rule.id);
+  }
+}
+
+function isTestFixture(file) {
+  const normalized = normalizePath(file).toLowerCase();
+  const basename = path.basename(normalized);
+  return (
+    /(?:^|\/)(?:__tests__|__fixtures__|tests?|snapshots?)(?:\/|$)/.test(normalized) ||
+    /\.(?:test|spec|stories?|fixture|snap)\.[^.]+$/.test(basename)
+  );
+}
+
+function maskComments(text) {
+  const chars = text.split("");
+  let quote = null;
+  let escaped = false;
+
+  const isEscapedAt = (position) => {
+    let slashCount = 0;
+    for (let cursor = position - 1; cursor >= 0 && text[cursor] === "\\"; cursor -= 1) slashCount += 1;
+    return slashCount % 2 === 1;
+  };
+
+  const blank = (start, end) => {
+    for (let index = start; index < end; index += 1) {
+      if (chars[index] !== "\n" && chars[index] !== "\r") chars[index] = " ";
+    }
+  };
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+
+    if (quote) {
+      if (escaped) escaped = false;
+      else if (char === "\\") escaped = true;
+      else if (char === quote) quote = null;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+
+    if (char === "/" && next === "/" && !isEscapedAt(index)) {
+      const end = text.indexOf("\n", index + 2);
+      const stop = end === -1 ? text.length : end;
+      blank(index, stop);
+      index = stop - 1;
+      continue;
+    }
+
+    if (char === "/" && next === "*" && !isEscapedAt(index)) {
+      const end = text.indexOf("*/", index + 2);
+      const stop = end === -1 ? text.length : end + 2;
+      blank(index, stop);
+      index = stop - 1;
+      continue;
+    }
+
+    if (text.startsWith("<!--", index)) {
+      const end = text.indexOf("-->", index + 4);
+      const stop = end === -1 ? text.length : end + 3;
+      blank(index, stop);
+      index = stop - 1;
+    }
+  }
+
+  return chars.join("");
+}
+
+function maskEmbeddedTagAngles(text) {
+  const chars = text.split("");
+  let inTag = false;
+  let quote = null;
+  let escaped = false;
+  let braceDepth = 0;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+
+    if (!inTag) {
+      if (char === "<" && /[A-Za-z]/.test(text[index + 1] || "")) {
+        inTag = true;
+        braceDepth = 0;
+      }
+      continue;
+    }
+
+    if (quote) {
+      if (char === ">") chars[index] = " ";
+      if (escaped) escaped = false;
+      else if (char === "\\") escaped = true;
+      else if (char === quote) quote = null;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+
+    if (char === "{") {
+      braceDepth += 1;
+      continue;
+    }
+    if (char === "}" && braceDepth > 0) {
+      braceDepth -= 1;
+      continue;
+    }
+    if (char === ">") {
+      if (braceDepth > 0) chars[index] = " ";
+      else inTag = false;
+    }
+  }
+
+  return chars.join("");
 }
 
 function parseArgs(args) {
   const options = {
     format: "text",
-    gpt: false,
-    gemini: false,
     failOn: null,
     out: null,
     allowlist: null,
     baseline: null,
     changedOnly: false,
     category: null,
+    includeAdvisory: false,
+    strict: false,
+    includeTestFixtures: false,
   };
   const targets = [];
 
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
-    const [name, inlineValue] = arg.split("=", 2);
-    const nextValue = () => inlineValue ?? args[++i];
+    const equalsIndex = arg.indexOf("=");
+    const name = equalsIndex === -1 ? arg : arg.slice(0, equalsIndex);
+    const inlineValue = equalsIndex === -1 ? undefined : arg.slice(equalsIndex + 1);
+    const nextValue = () => {
+      const value = inlineValue ?? args[i + 1];
+      if (typeof value !== "string" || !value.trim() || (inlineValue === undefined && value.startsWith("--"))) {
+        console.error(`${name} requires a value.`);
+        process.exit(2);
+      }
+      if (inlineValue === undefined) i += 1;
+      return value;
+    };
 
     if (arg === "--json") options.format = "json";
-    else if (arg === "--gpt") options.gpt = true;
-    else if (arg === "--gemini") options.gemini = true;
     else if (arg === "--changed-only") options.changedOnly = true;
+    else if (arg === "--include-advisory") options.includeAdvisory = true;
+    else if (arg === "--strict") options.strict = true;
+    else if (arg === "--include-test-fixtures") options.includeTestFixtures = true;
     else if (name === "--format") options.format = normalizeFormat(nextValue());
     else if (name === "--fail-on") options.failOn = normalizeSeverity(nextValue());
     else if (name === "--out") options.out = nextValue();
@@ -650,6 +945,12 @@ function parseArgs(args) {
       targets.push(arg);
     }
   }
+
+  if (options.strict && options.failOn) {
+    console.error("Choose either --strict or --fail-on, not both.");
+    process.exit(2);
+  }
+  if (options.strict) options.failOn = "P1";
 
   return { options, targets };
 }
@@ -671,57 +972,233 @@ function normalizeSeverity(value) {
   return severity;
 }
 
-function collectFiles(target, out, changedFiles) {
+function collectFiles(target, out, changedFiles, visitedDirectories) {
   if (!fs.existsSync(target)) return;
-  const stat = fs.statSync(target);
+  const stat = fs.lstatSync(target);
+  if (stat.isSymbolicLink()) return;
   if (stat.isDirectory()) {
     const name = path.basename(target);
     if (SKIP_DIRS.has(name)) return;
-    for (const entry of fs.readdirSync(target)) collectFiles(path.join(target, entry), out, changedFiles);
+    const directoryKey = normalizeAbsolutePath(fs.realpathSync.native(target));
+    if (visitedDirectories.has(directoryKey)) return;
+    visitedDirectories.add(directoryKey);
+    for (const entry of fs.readdirSync(target)) {
+      collectFiles(path.join(target, entry), out, changedFiles, visitedDirectories);
+    }
     return;
   }
   if (!stat.isFile()) return;
-  if (!VALID_EXT.has(path.extname(target))) return;
+  if (!VALID_EXT.has(path.extname(target).toLowerCase())) return;
 
-  const rel = path.relative(process.cwd(), target).replaceAll("\\", "/");
-  if (changedFiles && !changedFiles.has(rel)) return;
+  if (changedFiles && !changedFiles.has(normalizeAbsolutePath(target))) return;
   out.push(target);
 }
 
-function gitChangedFiles() {
+function gitChangedFiles(scanTargets) {
   try {
-    const output = execSync("git diff --name-only --diff-filter=ACMRTUXB HEAD", {
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    });
-    return output
-      .split(/\r?\n/)
-      .map((line) => line.trim().replaceAll("\\", "/"))
-      .filter(Boolean);
+    const git = (args, cwd = process.cwd()) =>
+      execFileSync("git", args, {
+        cwd,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      });
+    const anchors = scanTargets.length ? scanTargets.map((target) => path.resolve(target)) : [process.cwd()];
+    const roots = new Set(
+      anchors.map((anchor) => {
+        const cwd = fs.statSync(anchor).isDirectory() ? anchor : path.dirname(anchor);
+        return git(["rev-parse", "--show-toplevel"], cwd).trim();
+      }),
+    );
+    const names = new Set();
+    for (const root of roots) {
+      for (const args of [
+        ["diff", "--name-only", "--diff-filter=ACMRTUXB", "-z"],
+        ["diff", "--cached", "--name-only", "--diff-filter=ACMRTUXB", "-z"],
+        ["ls-files", "--others", "--exclude-standard", "-z"],
+      ]) {
+        for (const name of git(args, root).split("\0")) {
+          if (name) names.add(normalizeAbsolutePath(path.resolve(root, name)));
+        }
+      }
+    }
+    return [...names];
   } catch {
-    return [];
+    console.error("--changed-only requires a readable Git worktree.");
+    process.exit(2);
   }
 }
 
-function loadFindingSet(file) {
-  const set = new Set();
-  if (!file) return set;
+function normalizeAbsolutePath(value) {
+  const normalized = path.resolve(value).replaceAll("\\", "/");
+  return process.platform === "win32" ? normalized.toLowerCase() : normalized;
+}
+
+function validateProtectedOutputInput(output, input, label) {
+  if (!output || !input) return;
+  const outputPath = path.resolve(output);
+  const inputPath = path.resolve(input);
+  const sameCanonicalPath =
+    normalizeAbsolutePath(canonicalPlannedPath(outputPath)) ===
+    normalizeAbsolutePath(canonicalPlannedPath(inputPath));
+  if (sameCanonicalPath || samePhysicalFile(outputPath, inputPath)) {
+    console.error(`Refusing detector output that resolves to its ${label} input: ${outputPath}`);
+    process.exit(2);
+  }
+}
+
+function samePhysicalFile(left, right) {
+  if (!fs.existsSync(left) || !fs.existsSync(right)) return false;
+  const leftStat = fs.statSync(left, { bigint: true });
+  const rightStat = fs.statSync(right, { bigint: true });
+  return leftStat.dev === rightStat.dev && leftStat.ino === rightStat.ino;
+}
+
+function validateOutputPath(output, inputFiles) {
+  if (!output) return;
+  const outputPath = path.resolve(output);
+  let current = outputPath;
+  while (true) {
+    try {
+      const stat = fs.lstatSync(current);
+      if (stat.isSymbolicLink()) {
+        console.error(`Refusing detector output through a symbolic link, junction, or reparse point: ${current}`);
+        process.exit(2);
+      }
+      if (current === outputPath && stat.isDirectory()) {
+        console.error(`Detector output must be a file, not a directory: ${outputPath}`);
+        process.exit(2);
+      }
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+    const parent = path.dirname(current);
+    if (parent === current) break;
+    current = parent;
+  }
+
+  const canonicalOutput = canonicalPlannedPath(outputPath);
+  const overlapsInput = inputFiles.some((input) => {
+    if (normalizeAbsolutePath(fs.realpathSync.native(input)) === normalizeAbsolutePath(canonicalOutput)) return true;
+    return samePhysicalFile(outputPath, input);
+  });
+  if (overlapsInput) {
+    console.error(`Refusing detector output that resolves to a scanned source file: ${outputPath}`);
+    process.exit(2);
+  }
+}
+
+function canonicalPlannedPath(value) {
+  let existing = path.resolve(value);
+  const missing = [];
+  while (!fs.existsSync(existing)) {
+    const parent = path.dirname(existing);
+    if (parent === existing) return path.resolve(value);
+    missing.unshift(path.basename(existing));
+    existing = parent;
+  }
+  return path.resolve(fs.realpathSync.native(existing), ...missing);
+}
+
+function determinePathBase(scanTargets) {
+  const directories = scanTargets.map((target) => (fs.statSync(target).isDirectory() ? target : path.dirname(target)));
+  const gitRoots = directories.map((directory) => tryGitRoot(directory));
+  if (
+    gitRoots.every(Boolean) &&
+    gitRoots.every((root) => normalizeAbsolutePath(root) === normalizeAbsolutePath(gitRoots[0]))
+  ) {
+    return { kind: "git-root", path: path.resolve(gitRoots[0]) };
+  }
+  const common = commonDirectory(directories);
+  return common ? { kind: "scan-root", path: common } : { kind: "absolute", path: null };
+}
+
+function tryGitRoot(directory) {
+  try {
+    return execFileSync("git", ["rev-parse", "--show-toplevel"], {
+      cwd: directory,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function commonDirectory(directories) {
+  let common = path.resolve(directories[0]);
+  for (const directory of directories.slice(1)) {
+    const candidate = path.resolve(directory);
+    while (!isWithin(common, candidate)) {
+      const parent = path.dirname(common);
+      if (parent === common) return null;
+      common = parent;
+    }
+  }
+  return common;
+}
+
+function isWithin(base, candidate) {
+  const relative = path.relative(base, candidate);
+  return relative === "" || (!relative.startsWith(`..${path.sep}`) && relative !== ".." && !path.isAbsolute(relative));
+}
+
+function reportPath(file) {
+  if (pathBase.path && isWithin(pathBase.path, file)) return normalizePath(path.relative(pathBase.path, file));
+  return normalizePath(path.resolve(file));
+}
+
+function loadFindingMultiset(file) {
+  const counts = new Map();
+  if (!file) return counts;
   const data = JSON.parse(fs.readFileSync(file, "utf8"));
   const findings = Array.isArray(data) ? data : data.findings || [];
   for (const item of findings) {
-    if (typeof item === "string") set.add(item);
-    else set.add(fingerprint(item));
+    const base = fingerprintBaseFromStoredItem(item);
+    if (base) counts.set(base, (counts.get(base) || 0) + 1);
   }
-  return set;
+  return counts;
 }
 
-function fingerprint(finding) {
+function fingerprintBaseFromStoredItem(item) {
+  if (typeof item === "string") return fingerprintBaseFromString(item);
+  if (!item || typeof item !== "object") return null;
+  if (item.id && item.file !== undefined && item.snippet !== undefined) return fingerprintBase(item);
+  return typeof item.fingerprint === "string" ? fingerprintBaseFromString(item.fingerprint) : null;
+}
+
+function fingerprintBaseFromString(value) {
+  if (value.startsWith("v3|")) return value.replace(/\|occurrence=\d+$/, "");
+  if (value.startsWith("v2|")) {
+    const [, id, file, ...snippet] = value.split("|");
+    if (!id || file === undefined || !snippet.length) return null;
+    return fingerprintBase({ id, file, snippet: snippet.join("|") });
+  }
+  const legacy = parseLegacyFingerprint(value);
+  return legacy ? fingerprintBase(legacy) : null;
+}
+
+function parseLegacyFingerprint(value) {
+  const [id, file, line, ...snippet] = value.split("|");
+  if (!id || !file || !/^\d+$/.test(line || "") || !snippet.length) return null;
+  return { id, file, snippet: snippet.join("|") };
+}
+
+function fingerprintBase(finding) {
   return [
+    "v3",
     finding.id,
     normalizePath(finding.file || ""),
-    finding.line || "",
     cleanSnippet(finding.snippet || ""),
   ].join("|");
+}
+
+function consumeFinding(multiset, finding) {
+  const base = fingerprintBase(finding);
+  const remaining = multiset.get(base) || 0;
+  if (!remaining) return false;
+  if (remaining === 1) multiset.delete(base);
+  else multiset.set(base, remaining - 1);
+  return true;
 }
 
 function normalizePath(value) {
@@ -729,11 +1206,21 @@ function normalizePath(value) {
 }
 
 function lineForIndex(text, index) {
-  let line = 1;
-  for (let i = 0; i < index; i += 1) {
-    if (text.charCodeAt(i) === 10) line += 1;
+  if (text !== cachedLineSource) {
+    cachedLineSource = text;
+    cachedLineStarts = [0];
+    for (let offset = 0; offset < text.length; offset += 1) {
+      if (text.charCodeAt(offset) === 10) cachedLineStarts.push(offset + 1);
+    }
   }
-  return line;
+  let low = 0;
+  let high = cachedLineStarts.length;
+  while (low < high) {
+    const middle = (low + high) >>> 1;
+    if (cachedLineStarts[middle] <= index) low = middle + 1;
+    else high = middle;
+  }
+  return low;
 }
 
 function cleanSnippet(value) {
@@ -743,14 +1230,17 @@ function cleanSnippet(value) {
 function summarize(findings) {
   const bySeverity = {};
   const byCategory = {};
+  const byClassification = {};
   for (const finding of findings) {
     bySeverity[finding.severity] = (bySeverity[finding.severity] || 0) + 1;
     byCategory[finding.category] = (byCategory[finding.category] || 0) + 1;
+    byClassification[finding.classification] = (byClassification[finding.classification] || 0) + 1;
   }
   return {
     total: findings.length,
     bySeverity,
     byCategory,
+    byClassification,
   };
 }
 
@@ -764,7 +1254,9 @@ function renderText(payload) {
   if (!payload.findings.length) return `Scanned ${payload.files} file(s). No findings.\n`;
   const lines = [`Scanned ${payload.files} file(s). ${payload.findings.length} finding(s).`];
   for (const finding of payload.findings) {
-    lines.push(`[${finding.severity}] ${finding.id} ${finding.file}:${finding.line} - ${finding.message}`);
+    lines.push(
+      `[${finding.severity}][${finding.classification}/${finding.confidence}] ${finding.id} ${finding.file}:${finding.line} - ${finding.message}`,
+    );
     lines.push(`  ${finding.snippet}`);
   }
   return `${lines.join("\n")}\n`;
@@ -781,7 +1273,9 @@ function renderMarkdown(payload) {
   if (payload.findings.length) {
     lines.push("Findings:");
     for (const finding of payload.findings) {
-      lines.push(`- [${finding.severity}] ${finding.id} ${finding.file}:${finding.line} - ${finding.message}`);
+      lines.push(
+        `- [${finding.severity}][${finding.classification}/${finding.confidence}] ${finding.id} ${finding.file}:${finding.line} - ${finding.message}`,
+      );
     }
   } else {
     lines.push("No findings.");
@@ -792,16 +1286,19 @@ function renderMarkdown(payload) {
 function publicOptions(value) {
   return {
     format: value.format,
-    gpt: value.gpt,
-    gemini: value.gemini,
     failOn: value.failOn,
     changedOnly: value.changedOnly,
     category: value.category,
     allowlist: Boolean(value.allowlist),
     baseline: Boolean(value.baseline),
+    includeAdvisory: value.includeAdvisory,
+    strict: value.strict,
+    includeTestFixtures: value.includeTestFixtures,
   };
 }
 
-function usage() {
-  console.error("Usage: node detect-ui-antipatterns.mjs [--json|--format=text|md|json] [--fail-on=P1|P2|P3] [--out file] [--allowlist file] [--baseline file] [--changed-only] [--category name] [--gpt] [--gemini] <file-or-directory>...");
+function usage(stream = process.stderr) {
+  stream.write(
+    "Usage: node detect-ui-antipatterns.mjs [--json|--format=text|md|json] [--strict|--fail-on=P0|P1|P2|P3] [--include-advisory] [--include-test-fixtures] [--out file] [--allowlist file] [--baseline file] [--changed-only] [--category name] <file-or-directory>...\n",
+  );
 }

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Reference landing page</title>
+  <desc id="description">A restrained landing page reference with a clear headline, one primary action, product proof, and a three-column evidence section.</desc>
+  <rect width="1200" height="800" fill="#f7f8fb"/>
+  <rect x="64" y="40" width="1072" height="64" rx="16" fill="#ffffff" stroke="#d9deea"/>
+  <circle cx="96" cy="72" r="14" fill="#3157d5"/>
+  <rect x="120" y="62" width="128" height="20" rx="6" fill="#17203a"/>
+  <rect x="884" y="58" width="104" height="28" rx="8" fill="#eef1f7"/>
+  <rect x="1000" y="52" width="112" height="40" rx="10" fill="#3157d5"/>
+  <text x="64" y="214" fill="#17203a" font-family="system-ui, sans-serif" font-size="58" font-weight="700">Make the next decision obvious.</text>
+  <text x="64" y="268" fill="#59647c" font-family="system-ui, sans-serif" font-size="24">One clear promise, credible proof, and a calm path forward.</text>
+  <rect x="64" y="308" width="176" height="52" rx="12" fill="#3157d5"/>
+  <text x="101" y="341" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="650">Start now</text>
+  <rect x="64" y="414" width="1072" height="146" rx="22" fill="#17203a"/>
+  <text x="98" y="462" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="650">Proof before decoration</text>
+  <text x="98" y="506" fill="#cbd3e7" font-family="system-ui, sans-serif" font-size="18">A concrete product result occupies the first evidence section.</text>
+  <g fill="#ffffff" stroke="#d9deea">
+    <rect x="64" y="600" width="336" height="136" rx="18"/>
+    <rect x="432" y="600" width="336" height="136" rx="18"/>
+    <rect x="800" y="600" width="336" height="136" rx="18"/>
+  </g>
+  <g fill="#3157d5">
+    <circle cx="104" cy="642" r="12"/>
+    <circle cx="472" cy="642" r="12"/>
+    <circle cx="840" cy="642" r="12"/>
+  </g>
+</svg>

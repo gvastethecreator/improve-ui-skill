@@ -1,185 +1,119 @@
 ---
 name: improve-ui
-description: "Existing-interface improvement. Use for UI already present in code, screenshots, prototypes, or a running app: polish, visual bugs, audits/roasts, accessibility, motion, responsive hardening, performance, and evidence-backed fixes."
+description: "Improve, diagnose, audit, critique, roast, harden, or verify an existing web interface in source code, screenshots, or a running app. Use for targeted UI fixes, visual polish, design-system drift, accessibility checks, responsive or async-state failures, motion, frontend performance, marketing surfaces, and evidence-backed production-readiness work. Do not use for blank-canvas or greenfield design, native UI, formal WCAG certification, or specialist renderer/game/3D-system implementation; do use it for existing web HUD, overlay, and integration quality around those systems."
 ---
 
 # Improve UI
 
-Use Improve UI when an interface already exists and needs to be made materially better. This skill is a surgeon, not a concept artist: preserve the real product path, attack the visible/systemic weakness, patch the implementation when editable, and prove the result.
+Improve the interface users already have. Preserve the real product path, locate the source of the visible weakness, make the smallest systemic change authorized by the request, and limit every claim to the evidence collected.
 
-Be adversarial toward weak UI and collaborative toward the user. Challenge fake hierarchy, decorative priority, generic visuals, inaccessible states, layout debt, motion theater, and half-finished proof.
+## Contents
+
+- [Mandatory entry frame](#mandatory-entry-frame)
+- [Choose a profile](#choose-a-profile)
+- [Process](#process)
+- [Context router](#context-router)
+- [Deep review harness](#deep-review-harness)
+- [Failure conditions](#failure-conditions)
+- [Output contract](#output-contract)
+- [Reference files](#reference-files)
 
 ## Mandatory Entry Frame
 
-- For every nontrivial improvement, audit, polish, production-readiness, redesign, screenshot critique, or visible UI bug, read `relentless-mode.md` before the first recommendation.
-- For implementation-level improvement of existing UI, read `interface-surgery.md` and name the visible problem, source cause, cut order, and proof target before patching.
-- For design analysis, UI audit, screenshot critique, visual verdict, or roast, read `forensic-roast.md` before scoring or final judgment.
-- For every nontrivial run, read `core-moves.md` as the compact operating map before selecting deeper references.
-- For repeated visible/systemic problems, read `surgical-patterns.md` before choosing one-off instance fixes.
-- For any final claim of visual improvement, use `checklist.md` and an evidence ledger. Do not claim complete when required proof or state coverage is missing.
+- Treat code, screenshots, and runtime states as evidence with different limits; never infer a visual pass from source alone.
+- Scope work to existing web UI. Route blank-canvas requests to a greenfield design-and-build skill, native UI to a platform skill, and specialist renderer/game/3D-system implementation to the matching domain skill; keep existing web HUD, overlay, fallback, and integration-quality work here.
+- Describe accessibility work as an audit or improvement against named criteria, never as formal WCAG conformance or certification.
+- Preserve working IA, routes, labels, form contracts, analytics, SEO, legal copy, and accessibility wins unless the user places them in scope.
+- Separate authority before acting:
+  - For `diagnose`, `verify`, `audit`, `review`, `analyze`, `critique`, `roast`, or "does this look good?", remain read-only; do not edit product source or persistent project artifacts. Use temporary diagnostic output only when necessary; create durable reports only when requested.
+  - For `improve`, `fix`, `repair`, `polish`, `redesign`, `implement`, `harden`, or an equivalent explicit change imperative, edit only the requested path and verify it.
+  - For a mixed request, diagnose briefly, then implement the in-scope fixes.
+- Use neutral forensic analysis by default. Use professional critique when a verdict is requested. Use roast language only when the user explicitly asks for a roast.
 
-## Boundary
+## Choose A Profile
 
-- Use this skill for existing UI: code, screenshot, live app, prototype, component, route, modal, dashboard, marketing page, or implemented visual bug.
-- If `ruthless-designer` is installed, combine with it for greenfield creation, blank-canvas product screens, visual identity direction, or broad concept-to-interface work.
-- If `ruthless-designer` is unavailable, keep Improve UI scoped to existing-interface improvement and state that blank-canvas design is outside this package.
-- If the task starts from existing code but asks for a total new direction, use Improve UI to audit constraints and salvageable structure, then hand the creative direction to `ruthless-designer` when available.
+Profiles set scope and proof; they do not grant mutation authority.
+- `micro`: Isolated visual bug or tiny component defect. Reproduce the exact state. For authorized implementation, patch locally; verify the same state and viewport.
+- `focused` (default): One surface or flow with bounded consumers and states. Frame hierarchy and constraints, inspect the main path plus one relevant edge/recovery state, and fix them only when authorized.
+- `deep`: Broad audit, shared primitive/multiple-consumer redesign, three or more required state families, production readiness, or explicit comprehensive work. Cover relevant dimensions and states; leave uninspected dimensions `unknown`.
+
+Do not escalate to `deep` merely because references or scripts exist. State the profile in the working notes for nontrivial runs.
 
 ## Process
 
-1. Start in relentless mode.
-   - Read `relentless-mode.md` for any interface improvement, UI audit/review, production-ready pass, polish, redesign, screenshot critique, design verdict, or visible UI bug.
-   - Treat vague praise, detector-only output, advice-only fixes, and "looks better" without evidence as failed runs.
-   - If the repo is editable and the user asked to improve or fix UI, plan to patch the real path before finalizing unless blocked.
-   - Done when the target bar, strongest visible/systemic risk, and stop condition are explicit.
+1. Inspect the repository rules, working tree, framework, tokens, primitives, target route, and available run/test commands. Preserve unrelated changes.
+2. Frame the surface: main user task, intended hierarchy, accidental priority, register (`product`, `brand`, or `hybrid`), source cause, constraints, and proof target.
+3. Choose one primary Context Router row by the requested outcome. Combine rows only for domains actually in scope; open a listed secondary reference when the request or first inspection exposes that concern.
+4. Capture baseline evidence before editing when the claim is visual, interactive, responsive, or performance-related. For implementation without reproduction, change only a clear source-backed cause and label the result provisional; do not guess.
+5. Prioritize P0/P1 before taste: in implementation, fix them at the safest primitive, token, layout-shell, state-model, or local source; in diagnose/audit/verify, report them with evidence without editing.
+6. Verify by profile: for `micro`, rerun the exact defect state and viewport; for `focused`, verify the in-scope main path and one relevant edge/recovery state; for `deep`, execute the declared relevant state-family and viewport matrix, cover applicable dimensions, and leave uninspected dimensions `unknown`. After edits, rerun source checks and runtime proof in proportion to risk.
+7. Stop when the requested bar is evidenced, remaining risk is out of scope, or a specific blocker prevents further proof. Never turn a blocker into a pass.
 
-2. Frame the existing target before changing UI. Identify:
-
-   - Existing surface: product app, dashboard, marketing page, content/editorial, commerce/media card, game/tool, design system component, or visual bug.
-   - Task shape: polish pass, targeted redesign, audit/review, compliance pass, bug fix, motion/performance pass, or design-system hardening.
-   - Register: product, brand, or hybrid. Product serves task flow; brand persuades and differentiates; hybrid splits the surface by purpose.
-   - Current design read and dials when visual quality matters: audience, visual language, existing system/aesthetic, `DESIGN_VARIANCE`, `MOTION_INTENSITY`, and `VISUAL_DENSITY`.
-   - Constraints: existing design system, framework, installed animation library, accessibility, interaction frequency, trigger modality, reduced-motion behavior, target devices/browsers, real-data edge cases.
-   - Evidence: screenshot, running app, source component, failing visual state, detector output, runtime audit output, or explicit blocker. If frontend code changes, visually verify before calling it done.
-   - Done when the route, constraints, and proof source are explicit enough to choose references without guessing.
-
-Ask only when missing context changes the decision. Otherwise use the nearest existing pattern and keep the diff small.
-
-3. Route to the smallest useful reference set.
-   - Use the Context Router below, then open only the reference files needed for the chosen surface and task shape.
-   - Read `interface-surgery.md` when an existing UI needs implementation-level improvement rather than a new concept.
-   - Read `surgical-patterns.md` when the problem repeats across cards, panels, statuses, controls, motion, content states, media, or responsive structure.
-   - When the user asks for design analysis, UI audit/review, screenshot critique, visual quality verdict, or a roast, read `forensic-roast.md` before producing findings; cross-reference screenshot/runtime evidence with code when both exist.
-   - When visual quality, redesign, bland/generic output, or brand/marketing quality is in scope, read `distinction.md` before settling on a direction.
-   - When a supplied URL, video, screenshot, HTML export, or strong visual brief would reduce guessing, read `reference-capture.md` before implementation.
-   - Done when every opened reference can change the implementation, review finding, or proof plan.
-
-4. Change the real user path before polish.
-   - Fix the component, state, layout, token, primitive, or route that users actually touch.
-   - For audit/review, lead with P1/P2 findings from evidence, grouped by systemic cause; if the request is actionable and files are editable, convert the top findings into patches before finalizing.
-   - Fix repeated P2 patterns at the primitive/token/layout/state level when safer than patching instances.
-   - Done when the main path and one relevant edge/recovery path are handled, or when the unresolved part is explicitly blocked.
-
-5. Prove the result and name the remaining risk.
-   - Run the detector or review harness when local frontend files are available; use screenshots/browser proof for frontend code changes when a runnable UI exists.
-   - Read `proof-recipes.md` when the task involves interaction, responsive fit, async states, motion, reference-led visual work, or a nontrivial final claim.
-   - Use `templates/evidence-ledger.md` or an equivalent ledger for broad or production-readiness passes.
-   - If proof still shows P1 or repeated/systemic P2 issues in the touched path, keep iterating or state the blocker; do not call the work done.
-   - Done when the final note names files, proof, skipped checks, blockers, and remaining risks without turning missing evidence into a pass.
+For implementation, start with [interface-surgery.md](interface-surgery.md); add [surgical-patterns.md](surgical-patterns.md) only when a symptom repeats. Do not preload the other core references.
 
 ## Context Router
 
-- Product app/dashboard: density and scan speed win. Tight spacing, stable layout, clear focus, subtle motion, borders okay for tables/forms.
-- Marketing/editorial already implemented: hierarchy and rhythm win. Preserve IA, SEO, analytics, and copy voice unless the user explicitly asks for overhaul.
-- Commerce/media cards: media edge quality wins. Image outline, shadow-as-border, concentric radius, hover states, tabular prices where dynamic.
-- Design system/core component: token reuse and state coverage win. Fix root tokens/classes, preserve focus states, document only tricky exceptions.
-- Visual bug/regression: reproduce visually first, patch the visible cause, then verify the same viewport/state.
-- Existing redesign: run taste calibration, audit before replacement, preserve current IA/copy/analytics/SEO unless explicitly in scope, then modernize by highest-impact lever.
-- Reference-led improvement: extract the system from the strongest supplied or collected reference before coding. Use screenshots/crops/video beats to capture hierarchy, type, spacing, surfaces, motion, and proof gaps; do not imitate decorative style blindly.
-- Landing/pricing improvement: structure and conversion clarity win. Use offer, audience, proof, objections, plan comparison, and CTA flow before visual effects.
-- Motion/performance pass: decide if motion belongs by frequency and purpose, remove broad transitions first, reuse existing project primitives or the smallest exact CSS/Motion pattern that fits, check pointer-down/gesture/reduced-motion behavior when interaction is physical, then add targeted hints only for observed or likely stutter in important interactions.
-- Immersive canvas/WebGL/3D: only use when the effect is a real product/brand artifact or hero/system layer. Require reduced motion, static fallback, pixel-ratio/density caps, offscreen pause, cleanup/disposal, and foreground readability proof.
-- Compliance pass: check semantics, focus, forms, content resilience, images, navigation state, i18n, hydration, and touch/layout contracts before visual taste.
-- Audit/review pass: run a deep-review ledger unless the user asks for quick polish only. For design analysis, use the forensic roast contract: product intent, main task, intended hierarchy, accidental priority, screenshot/code evidence, ruthless cuts, and implementation-level fixes. Score accessibility, performance, theming/design-system, responsive/content resilience, and anti-slop fit from evidence, then fix highest-impact P1/P2 patterns before polish.
-- Hardening pass: force real data states: empty, loading, error, permission, long text, translation, slow network, rapid clicks, and large data. For apps, dashboards, forms, and async regions, these checks are required in deep review.
+Choose one primary row, then union only the domain references and proof obligations needed by the actual scope.
+
+| Task | Read the minimum set | Required proof |
+|---|---|---|
+| Tiny visual regression | [interface-surgery.md](interface-surgery.md) | Same state and viewport before/after when available |
+| Component or repeated UI defect | [interface-surgery.md](interface-surgery.md), then [surgical-patterns.md](surgical-patterns.md) if repeated | Main state plus one edge state |
+| Neutral audit or design verdict | [forensic-roast.md](forensic-roast.md), [references/evidence-and-scoring.md](references/evidence-and-scoring.md) | Source for implementation findings; rendered named viewport for visual verdict; unknown where absent |
+| Explicit roast | [forensic-roast.md](forensic-roast.md) | Same evidence bar as a neutral audit |
+| Hierarchy, taste, typography, surfaces, generic UI | [references/visual-quality.md](references/visual-quality.md) | Before/after or reference/after visual artifact |
+| Semantics, keyboard, focus, forms, contrast | [references/accessibility.md](references/accessibility.md) | Manual interaction plus automated evidence when available |
+| Responsive, content, i18n, async, real-data states | [references/responsive-hardening.md](references/responsive-hardening.md) | Executed states, assertions, and relevant viewports |
+| Motion or gesture | [references/motion.md](references/motion.md); add [references/performance.md](references/performance.md) only for runtime cost | Repeated/interrupted trigger, reduced motion, and visual/runtime evidence |
+| Frontend performance | [references/performance.md](references/performance.md), [proof-recipes.md](proof-recipes.md) | Measured interaction or explicitly limited source-only claim |
+| Landing or pricing page | [references/marketing.md](references/marketing.md); add [visual quality](references/visual-quality.md) only for art direction | First viewport, proof/decision section, and mobile |
+| Canvas/WebGL/3D already present | [references/immersive.md](references/immersive.md), [performance](references/performance.md) | Readability, fallback, offscreen pause, cleanup, and runtime |
+| Detector or harness operation | [detector-rules.md](detector-rules.md), [proof-recipes.md](proof-recipes.md) | Exact command, outputs, and exit status |
+| Broad production-readiness pass | [references/foundation.md](references/foundation.md), [accessibility](references/accessibility.md), [responsive hardening](references/responsive-hardening.md), [evidence/scoring](references/evidence-and-scoring.md) | Relevant dimensions and state manifest; untested remains unknown |
+
+Use [core-moves.md](core-moves.md) only as a compact map when the correct route is still unclear. Use [references/sources-and-provenance.md](references/sources-and-provenance.md) when a standard, browser behavior, or third-party recommendation determines a finding.
 
 ## Deep Review Harness
 
-Use this mode when the user asks to improve an interface, review UI quality, improve performance, or make a screen production-ready. Skip only for tiny visual bug fixes or when the user explicitly asks for quick polish. Deep review is red until P1 and repeated/systemic P2 issues in scope are fixed, blocked, or explicitly deferred.
+- Keep commands and manifest formats centralized in [proof-recipes.md](proof-recipes.md); do not copy stale CLI examples into other references.
+- Use strict mode only for final implementation claims with a valid target and the evidence it requires.
+- Treat objective detector rules as gateable. Keep advisory taste heuristics opt-in and visually confirm them.
+- Require every named runtime state to execute successfully and meet its assertion; listing a state is not coverage. Cross states with viewports only where the claim or risk requires it, and record the tested matrix.
+- Require structured before/after or equivalent artifacts for change proof; prose is not proof.
+- Keep `assessment`, `evidenceCoverage`, and harness expectations separate. Never raise quality because a regression expectation passed.
+- Leave an uninspected dimension `unknown`; do not compute a total score across unknown dimensions.
 
-Required ledger:
+## Failure Conditions
 
-- Context: existing surface, register, user task, target viewports, important states, existing design-system constraints.
-- Taste calibration: current design read, dials, reference/source choice, and preservation decisions when visual quality is in scope.
-- Evidence: files/lines, detector output, screenshots/viewport states, runtime/browser output, or blocker.
-- Forensic design read: product intent, main user task, intended visual hierarchy, accidental priority, screenshot/code cross-reference, and the first five cuts when the task is analysis/review/roast.
-- Findings: P1/P2 first, grouped by systemic cause rather than every repeated instance.
-- Change ambition: `local fix`, `component primitive`, `token/system`, `layout shell`, or `state model`.
-- Proof: before/after screenshot or runtime state for changed frontend behavior.
+Treat the run as incomplete when any relevant condition holds:
 
-Use `templates/surgical-read.md`, `templates/surgery-log.md`, and `templates/evidence-ledger.md` when the pass is broad enough that another reviewer should be able to reproduce the judgment.
-
-Recommended command:
-
-```powershell
-node scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --fail-on=P2
-```
-
-Strict command for final improvement claims:
-
-```powershell
-node scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --require-runtime --require-change-proof --change-proof "before/after screenshots cover the changed main path and one edge state" --fail-verdict=good
-```
-
-Use [proof-recipes.md](proof-recipes.md) to choose viewports, state runs, action JSON, before/after artifacts, and blocked-proof language. If no URL is available, run static review and state that runtime/visual proof is blocked. If no detector can run, say why. Do not call a performance pass "deep" unless at least one real interaction or viewport state was inspected.
-
-## Core Moves
-
-Read `core-moves.md` after the context router selects visual polish, audit, build, compliance, motion, performance, or hardening work. Completion criterion: chosen moves produce evidence, not taste-only commentary.
+- a read-only request edited product source without implementation authority;
+- an implementation request stopped at advice despite an editable, reachable path;
+- a missing target or zero supported source files was reported as clean;
+- frontend code changed without rendered proof or an explicit proof blocker;
+- a named state was not executed and asserted successfully;
+- prose, a pathless success message, or mismatched artifacts were used as change proof;
+- a detector heuristic was reported as objective design truth;
+- unresolved in-scope P0/P1 findings were hidden by an aggregate score;
+- unknown dimensions were initialized, scored, or presented as passing;
+- formal conformance or production-readiness language exceeded the inspected scope.
 
 ## Output Contract
 
-- Implementation: change code, then summarize files touched and visual/test proof.
-- Design analysis/roast: use `forensic-roast.md` output shape unless the user requested another artifact. Major criticism without screenshot/browser/source evidence is invalid unless the missing evidence is named as a blocker.
-- Audit/review: findings first, ordered by severity, with file/line references or viewport states. Include context/evidence ledger, score, systemic cause, and next actions when scope is broader than one bug. If the user asked to improve and the repo is editable, do not stop at next actions; implement the top in-scope fix. Use tables only when they improve scanning.
-- Polish pass: group changes by principle, but omit principles that needed no change.
-- If a tempting change is speculative, skip it and say why in one line.
-
-Required gates for deep review:
-
-- Nontrivial UI work without `core-moves.md` is incomplete.
-- P1 unresolved means the review fails unless blocked by missing access or explicit scope.
-- Relentless mode skipped without an explicit quick/scope reason means the run is incomplete.
-- Existing-interface implementation work without `interface-surgery.md` is incomplete unless the task is a tiny visual bug.
-- Design analysis without `forensic-roast.md` criteria is incomplete when the user asked for a design verdict, audit, screenshot critique, or roast.
-- Advice-only output is incomplete when the user asked to improve/fix UI and the relevant source is editable.
-- Frontend code change without visual proof is incomplete unless the blocker is stated.
-- Local frontend files require detector output or explicit skip reason.
-- Repeated/systemic P2 findings in the touched path require another pass unless blocked or explicitly out of scope.
-- Repeated/systemic P2 findings without `surgical-patterns.md` or a primitive/token/layout/state-model rationale are incomplete.
-- Open-ended visual overhaul requires taste calibration; blank-canvas work can combine with `ruthless-designer` when that separate skill is installed.
-- Async/data UI requires empty, loading, error, permission, long-content, slow-network, and rapid-click checks or scoped skip reason.
-- Motion review requires purpose, frequency, origin, duration/easing, interruptibility, reduced-motion, hover gating, and visual feel proof or blocker.
-- Gesture review requires pointer-down feedback, 1:1 tracking, pointer capture, grab-offset preservation, velocity-aware release, reduced-motion, and touch/slow-motion proof or blocker when gesture is central.
-- Repeated P2 patterns should be fixed at primitive/token/layout level when that is safer than one-off instance patches.
-- Final quality claims without `checklist.md` coverage and named proof limits are incomplete.
-
-## Checklist
-
-Read `checklist.md` before finalizing a review or implementation pass. Completion criterion: every relevant checklist item is satisfied, fixed, or explicitly waived with evidence.
+- Lead audits with findings ordered by severity, then evidence limits, preserved strengths, and concrete next actions.
+- Lead implementations with the result, then files changed, proof, skipped checks, blockers, and remaining risk.
+- Separate report usefulness from claim status: evidence may be partial while the requested completion remains blocked.
+- Cite file/line for source findings and viewport/state/artifact for visual findings.
+- Label rules as `standard`, `practice`, `heuristic`, or `preference`; never block on taste alone.
+- Match the user's language and requested tone. Attack interface decisions, never the people who made them.
+- Use [checklist.md](checklist.md) before a nontrivial final claim.
 
 ## Reference Files
 
-- [typography.md](typography.md): wrapping, smoothing, tabular numbers
-- [core-moves.md](core-moves.md): compact operating map for routing, anti-slop, contracts, motion, surfaces, proof, and scoring
-- [interface-surgery.md](interface-surgery.md): existing-interface diagnosis, cut order, preservation rules, and proof
-- [surgical-patterns.md](surgical-patterns.md): recurring existing-interface failure patterns and systemic repair moves
-- [relentless-mode.md](relentless-mode.md): required execution stance, improvement loop, failure conditions, and stop rules
-- [forensic-roast.md](forensic-roast.md): required brutal, evidence-backed screenshot/code design analysis and roast output
-- [contracts.md](contracts.md): accessibility, forms, content, navigation, i18n, hydration
-- [surfaces.md](surfaces.md): radii, optical alignment, shadows, outlines, hit areas
-- [animations.md](animations.md): transitions, shared layout, enters/exits, icons, press feedback
-- [motion-craft.md](motion-craft.md): frequency, purpose, easing, physicality, gestures, and strict motion review checks
-- [motion-vocabulary.md](motion-vocabulary.md): precise names for motion effects and review language
-- [motion-review.md](motion-review.md): non-negotiable motion review standards, blockers, remedial order, proof
-- [performance.md](performance.md): transition specificity, compositor properties, `will-change`
-- [proof-recipes.md](proof-recipes.md): task-to-evidence recipes, action JSON, screenshots, state coverage, and blocked-proof language
-- [reference-capture.md](reference-capture.md): screenshot/video/HTML/reference extraction and prompt-pack workflow
-- [marketing-pages.md](marketing-pages.md): landing/pricing page structure, proof, objections, and conversion checks
-- [visual-recipes.md](visual-recipes.md): bounded detail recipes for shadows, lines, masks, reveals, icon/logo detail, and surface craft
-- [immersive-web.md](immersive-web.md): canvas, WebGL, 3D, particles, globes, physics, embeds, and performance gates
-- [distinction.md](distinction.md): reflex audit, signature moves, and originality gates for work that must beat generic public design patterns
-- [registers.md](registers.md): product, brand, and hybrid design bars
-- [taste-calibration.md](taste-calibration.md): design read, variance/motion/density dials, redesign protocol, reference-led flow
-- [anti-slop.md](anti-slop.md): generated-UI tells and replacement moves
-- [audit-score.md](audit-score.md): scored audit dimensions, severity, and report shape
-- [hardening.md](hardening.md): real-data, async, i18n, network, and edge-state resilience
-- [detector-rules.md](detector-rules.md): bundled static detector usage and rule meanings
-- [checklist.md](checklist.md): final closeout gate for proof, state coverage, craft, motion, hardening, and unresolved findings
-- [templates/surgical-read.md](templates/surgical-read.md): reusable existing-interface diagnosis record
-- [templates/surgery-log.md](templates/surgery-log.md): compact before/action/after improvement ledger
-- [templates/evidence-ledger.md](templates/evidence-ledger.md): proof ledger for commands, screenshots, states, and claim limits
-- [templates/final-checklist.md](templates/final-checklist.md): copyable final verification checklist
-- [examples/golden-dashboard-surgery.md](examples/golden-dashboard-surgery.md): compact example of dashboard hierarchy repair
-- [examples/golden-component-polish.md](examples/golden-component-polish.md): compact example of component-level polish with proof
-- [examples/golden-landing-repair.md](examples/golden-landing-repair.md): compact example of existing marketing page repair
+- Core workflow: [relentless-mode.md](relentless-mode.md), [interface-surgery.md](interface-surgery.md), [surgical-patterns.md](surgical-patterns.md), [core-moves.md](core-moves.md)
+- Evidence tooling: [proof-recipes.md](proof-recipes.md), [detector-rules.md](detector-rules.md), [checklist.md](checklist.md)
+- Review tone: [forensic-roast.md](forensic-roast.md)
+- Domain references: [foundation](references/foundation.md), [visual quality](references/visual-quality.md), [accessibility](references/accessibility.md), [responsive hardening](references/responsive-hardening.md), [motion](references/motion.md), [performance](references/performance.md), [marketing](references/marketing.md), [immersive web](references/immersive.md), [evidence and scoring](references/evidence-and-scoring.md)
+- Authority ledger: [sources and provenance](references/sources-and-provenance.md)
+- Reusable records: [surgical read](templates/surgical-read.md), [surgery log](templates/surgery-log.md), [evidence ledger](templates/evidence-ledger.md)
+- Executable examples: [component polish](examples/golden-component-polish.md), [dashboard surgery](examples/golden-dashboard-surgery.md), [landing repair](examples/golden-landing-repair.md)

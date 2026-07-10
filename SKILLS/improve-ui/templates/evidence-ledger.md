@@ -1,36 +1,36 @@
 # Evidence Ledger
 
-Use this when the final claim depends on visual, runtime, state, or implementation evidence.
+## Reproducibility
+
+- Skill/harness/target commit:
+- Dirty state:
+- OS / Node / browser version:
+- Build mode / URL / route:
+- Theme / locale / data fixture:
 
 ## Commands
 
-```powershell
-
-```
-
-## Artifacts
-
-- Static report:
-- Runtime report:
-- Screenshots:
-- Before/after:
-- Manual inspection:
+| Command | Exit | Purpose | Output |
+|---|---:|---|---|
+|  |  |  |  |
 
 ## State Coverage
 
-| State | Viewport | Evidence | Result |
-| --- | --- | --- | --- |
-| default |  |  |  |
+| State | Viewport/device | Setup/action | Assertion | Artifact/hash | Result |
+|---|---|---|---|---|---|
+|  |  |  |  |  | `pass | fail | blocked` |
 
-## Claims Supported
+## Report Layers
 
-- 
+- Assessment (`unknown|observed`, score/null):
+- Evidence coverage:
+- Expectations:
+- Gates:
+- Change-proof manifest:
 
-## Claims Not Supported
+## Claims
 
-- 
-
-## Blockers
-
-- 
-
+- Supported:
+- Limited:
+- Unsupported:
+- Blockers/unknowns:

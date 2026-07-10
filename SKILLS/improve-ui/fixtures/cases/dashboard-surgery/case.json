@@ -1,0 +1,18 @@
+{
+  "name": "dashboard-surgery",
+  "surface": "dashboard",
+  "expectedBefore": [
+    "fixed-width-mobile-risk",
+    "interactive-div",
+    "missing-img-alt",
+    "nowrap-risk",
+    "transition-all"
+  ],
+  "expectedAfterAbsent": [
+    "fixed-width-mobile-risk",
+    "interactive-div",
+    "missing-img-alt",
+    "nowrap-risk",
+    "transition-all"
+  ]
+}

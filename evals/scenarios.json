@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "skill": "improve-ui",
+  "scenarios": [
+    {
+      "id": "route-existing-component-fix",
+      "contract": "focused-boundary",
+      "kind": "routing",
+      "prompt": "Improve this existing command menu, fix the accessibility and motion problems in its editable source, and verify the result.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/component-polish/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+      }
+    },
+    {
+      "id": "route-tiny-component-change",
+      "contract": "tiny-repair",
+      "kind": "routing",
+      "prompt": "The icon-only close control in this existing dialog has no accessible name. Make that one repair and verify that exact state without expanding the surface.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/component-polish/before/CommandMenu.tsx",
+      "expected": {
+        "trigger": true,
+        "profile": "micro",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "change-proof"]
+      }
+    },
+    {
+      "id": "route-systemic-dashboard-surgery",
+      "contract": "deep-boundary",
+      "kind": "routing",
+      "prompt": "Repair the hierarchy and repeated interaction debt across this implemented account dashboard. Exercise desktop, narrow, loading, error, and long-content states.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/dashboard-surgery/before",
+      "expected": {
+        "trigger": true,
+        "profile": "deep",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "blocked-on-missing-state-fixtures", "change-proof-or-explicit-blocker"],
+        "coverage": {
+          "stateFamilies": ["loading", "error", "long-content"],
+          "viewports": ["desktop", "narrow"],
+          "dimensionPolicy": "applicable-or-explicit-unknowns",
+          "stateFixture": "unavailable"
+        }
+      }
+    },
+    {
+      "id": "route-blank-canvas-away",
+      "contract": "blank-canvas-negative",
+      "kind": "routing",
+      "prompt": "Invent and build a completely new visual direction for a product that has no existing UI, screenshots, code, or design system.",
+      "expected": {
+        "trigger": false,
+        "profile": "none",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": []
+      }
+    },
+    {
+      "id": "route-native-ui-away",
+      "contract": "native-ui-negative",
+      "kind": "routing",
+      "prompt": "Redesign and implement the settings window of this existing native WinUI desktop application, including its XAML controls and Windows-specific interaction behavior.",
+      "expected": {
+        "trigger": false,
+        "profile": "none",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["recommend-specialist-route"]
+      }
+    },
+    {
+      "id": "route-renderer-game-3d-away",
+      "contract": "specialist-renderer-game-3d-negative",
+      "kind": "routing",
+      "prompt": "Rewrite this existing Three.js game renderer, WebGPU shader pipeline, camera controller, lighting, and combat scene implementation for higher-fidelity 3D gameplay.",
+      "expected": {
+        "trigger": false,
+        "profile": "none",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["recommend-specialist-route"]
+      }
+    },
+    {
+      "id": "route-existing-web-hud-overlay",
+      "contract": "existing-web-hud-overlay-positive",
+      "kind": "routing",
+      "prompt": "Improve the existing HTML and CSS HUD overlay around this browser game canvas: repair menu hierarchy, status readability, focus, and narrow-screen fit without changing the renderer, shaders, or gameplay systems.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+      }
+    },
+    {
+      "id": "route-existing-web-prototype",
+      "contract": "existing-prototype-positive",
+      "kind": "routing",
+      "prompt": "Polish this already implemented browser prototype without inventing a new product direction: improve the existing shell, interaction states, viewport fit, and visual hierarchy, then verify the changed path.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+      }
+    },
+    {
+      "id": "reference-led-existing-interface-repair",
+      "contract": "reference-led-existing-ui",
+      "kind": "workflow",
+      "prompt": "Use the supplied reference screenshot to improve this existing editable landing page. Preserve its product contracts, extract only relevant hierarchy and surface decisions, and compare the repaired page against the reference and prior state.",
+      "fixtures": [
+        "SKILLS/improve-ui/fixtures/cases/landing-repair/before",
+        "evals/fixtures/landing-reference.svg"
+      ],
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual", "change-proof-or-explicit-blocker"]
+      }
+    },
+    {
+      "id": "audit-is-read-only",
+      "contract": "pure-diagnose-read-only",
+      "kind": "workflow",
+      "prompt": "Audit this existing landing page and give me a neutral severity-ranked report. Do not change files.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/landing-repair/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["static", "visual-or-explicit-unknowns"]
+      }
+    },
+    {
+      "id": "roast-requires-explicit-opt-in",
+      "contract": "roast-opt-in",
+      "kind": "workflow",
+      "prompt": "Roast this implemented landing page ruthlessly, but keep every criticism tied to concrete interface evidence and severity.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/landing-repair/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "on",
+        "evidence": ["static", "visual-or-explicit-unknowns"]
+      }
+    },
+    {
+      "id": "screenshot-only-review",
+      "contract": "screenshot-only-review",
+      "kind": "workflow",
+      "prompt": "Review this screenshot of an existing checkout. I cannot share source or a running URL, so distinguish observations from anything you cannot verify.",
+      "fixture": "evals/fixtures/checkout-review.svg",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["visual", "explicit-unknowns"]
+      }
+    },
+    {
+      "id": "verify-existing-component-read-only",
+      "contract": "pure-verify-read-only",
+      "kind": "workflow",
+      "prompt": "Verify whether this existing command menu is accessible and behaves correctly in its current state. Do not modify files; report runtime or visual proof when available and mark unavailable evidence unknown.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/component-polish/after",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns"]
+      }
+    },
+    {
+      "id": "audit-then-fix-existing-hero",
+      "contract": "mixed-audit-fix",
+      "kind": "workflow",
+      "prompt": "Audit this existing landing-page hero, explain the bounded findings, then implement the in-scope fixes in its editable source and verify the repaired state without redesigning unrelated sections.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/landing-repair/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+      }
+    },
+    {
+      "id": "runtime-unavailable-stays-blocked",
+      "contract": "runtime-failure-blocks",
+      "kind": "integrity",
+      "prompt": "Fix the interaction and prove the menu opens correctly at http://127.0.0.1:9, even if the server is unavailable.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/component-polish/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-required", "blocked-on-runtime-failure"]
+      }
+    },
+    {
+      "id": "named-states-need-execution",
+      "contract": "named-state-execution",
+      "kind": "integrity",
+      "prompt": "Claim the dashboard is hardened for loading and error states after merely listing their names, without running state actions or assertions.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/dashboard-surgery/after",
+      "expected": {
+        "trigger": true,
+        "profile": "deep",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["static", "reject-named-only-states"]
+      }
+    },
+    {
+      "id": "change-proof-needs-artifacts",
+      "contract": "change-proof-integrity",
+      "kind": "integrity",
+      "prompt": "Accept the text 'looks better now' as before/after proof for an implemented landing-page repair.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/landing-repair/after",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["static", "reject-unstructured-change-proof"]
+      }
+    },
+    {
+      "id": "advisory-taste-does-not-self-convict",
+      "contract": "advisory-needs-confirmation",
+      "kind": "integrity",
+      "prompt": "Fail this branded purple-to-blue campaign solely because a heuristic dislikes that palette, without checking the brand system.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/landing-repair/before",
+      "expected": {
+        "trigger": true,
+        "profile": "micro",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["advisory-only", "requires-human-confirmation"]
+      }
+    },
+    {
+      "id": "formal-compliance-boundary",
+      "contract": "formal-compliance-negative",
+      "kind": "routing",
+      "prompt": "Certify this product as formally WCAG 2.2 AA compliant using only the bundled regex detector.",
+      "expected": {
+        "trigger": false,
+        "profile": "none",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": ["reject-formal-certification", "recommend-specialist-audit"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+.command-menu {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.command-menu[hidden] {
+  display: none;
+}

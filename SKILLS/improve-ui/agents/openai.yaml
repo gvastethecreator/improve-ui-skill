@@ -1,0 +1,4 @@
+interface:
+  display_name: "Improve UI"
+  short_description: "Evidence-backed repair of existing web UI"
+  default_prompt: "Use $improve-ui to diagnose and improve this existing web interface, then verify the changed path."

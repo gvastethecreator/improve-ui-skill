@@ -1,66 +1,59 @@
 # Interface Surgery
 
-Use this when the target UI already exists as code, screenshot, route, prototype, component, or running app.
-
-The job is not to invent a new product identity. The job is to find what the current interface is trying to do, identify what is sabotaging it, cut the highest-impact weakness, and prove the user-facing path got better.
+Use this for implementation-level improvement of an existing web route, state, component, screenshot-backed defect, or running interface. For an audit-only request, use the same diagnosis but do not edit source.
 
 ## Surgical Read
 
-Before changing anything, name:
+Record before changing code:
 
-- Existing surface: screen, route, component, modal, dashboard, landing section, flow, or visual bug.
-- Main user task: what the user must do or understand first.
-- Current hierarchy: what the UI intends to prioritize.
-- Accidental hierarchy: what the UI actually makes loud.
-- Source cause: component boundary, state model, token drift, layout shell, hardcoded value, copy duplication, inaccessible markup, or missing edge state.
-- Proof target: screenshot, URL, component state, detector run, browser state, test, or blocker.
+- target route, surface, component, viewport, and state;
+- main task and next action;
+- intended hierarchy and accidental priority;
+- visible failure and user consequence;
+- likely source cause: primitive, token, shell, state model, data contract, component boundary, or isolated style;
+- preservation rules;
+- proof target and relevant edge/recovery state.
 
-Done when the visible problem and likely source cause are both named.
+Done when the diagnosis connects a visible symptom to a source cause and a testable outcome.
 
 ## Cut Order
 
-1. Fix P1 issues before taste.
-2. Fix repeated/systemic P2 patterns at the primitive, token, layout, or state-model level when safer than instance edits.
-3. Preserve working IA, route slugs, primary nav labels, form order, SEO/legal copy, analytics hooks, and accessibility wins unless explicitly in scope.
-4. Prefer one root fix over a dozen cosmetic patches.
-5. Keep the diff small enough that the improvement can be reviewed.
+1. Fix task blockers, misleading state, semantics, focus, and recovery.
+2. Fix hierarchy and responsive structure.
+3. Remove duplicate status, warnings, CTAs, wrappers, and copy.
+4. Repair repeated causes at the shared primitive/token/layout/state source.
+5. Harden the edge state most likely to expose the same weakness.
+6. Refine type, color, surfaces, motion, and visual detail.
 
-## What To Cut
+Keep isolated defects local. Do not replace a design system or rewrite a page for a small bug.
 
-Cut or collapse:
+## Preserve
 
-- duplicate status blocks
-- repeated warnings competing for attention
-- nested cards and ornamental wrappers
-- fake metadata and decorative badges
-- inactive controls that look primary
-- motion that hides content or distracts from frequent actions
-- label/copy noise that repeats the same state
-- one-viewport layout assumptions
+Preserve working routes, IA, labels, forms, data contracts, analytics, SEO, legal copy, accessibility behavior, design-system conventions, and unrelated user changes unless explicitly in scope.
 
-Promote:
-
-- the main task
-- the current state
-- the next action
-- recovery path
-- source of truth for status or progress
-- real product/media/data evidence
+If one of these contracts causes the defect, change it deliberately and verify the affected consumers.
 
 ## Proof
 
-For nontrivial changes, prove at least:
+For a `micro` change, reproduce and verify the exact state and viewport.
 
-- main viewport/state after the patch
-- one relevant edge or recovery state
-- detector/static output when local frontend files exist
-- visual proof or explicit blocker when a runnable UI exists
+For a `focused` or `deep` implementation, prove:
 
-Do not call the work done if proof still shows the same P1 or repeated/systemic P2 pattern.
+- the changed main path;
+- one relevant edge or recovery state;
+- focused source/test/build checks;
+- visual/browser evidence when a runnable UI exists;
+- detector output when it catches an objective risk in the touched path;
+- explicit limits when runtime, state fixtures, or browsers are unavailable.
 
-## Done
+Do not claim the fix from a screenshot that differs in content, route, state, viewport, or theme. Use structured proof artifacts for final visual-change claims.
 
-- The patch touches the real user path.
-- The systemic cause is removed or downgraded.
-- The final claim is backed by source, screenshot/browser evidence, detector output, or a named blocker.
-- Remaining risks are named without turning them into a pass.
+## Finish
+
+- Ensure the patch touches the real user path.
+- Confirm the source cause is removed or reduced.
+- Rerun the evidence that originally exposed the problem.
+- Keep untested behavior `unknown`.
+- Name files changed, proof, skipped checks, blockers, and remaining risk.
+
+For repeated symptoms, continue with [surgical-patterns.md](surgical-patterns.md). For broad/systemic work, read [references/foundation.md](references/foundation.md).

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="768" viewBox="0 0 1024 768" role="img" aria-labelledby="title description">
+  <title id="title">Existing checkout screenshot fixture</title>
+  <desc id="description">A checkout with contact and payment fields on the left and an order summary with a primary pay action on the right.</desc>
+  <rect width="1024" height="768" fill="#f4f5f8"/>
+  <rect x="48" y="40" width="928" height="688" rx="20" fill="#ffffff" stroke="#d8dce5"/>
+  <text x="88" y="104" fill="#20263a" font-family="system-ui, sans-serif" font-size="32" font-weight="700">Checkout</text>
+  <text x="88" y="154" fill="#4c566f" font-family="system-ui, sans-serif" font-size="18">Contact and payment</text>
+  <g fill="#ffffff" stroke="#aeb6c8">
+    <rect x="88" y="176" width="520" height="54" rx="10"/>
+    <rect x="88" y="254" width="520" height="54" rx="10"/>
+    <rect x="88" y="332" width="250" height="54" rx="10"/>
+    <rect x="358" y="332" width="250" height="54" rx="10"/>
+  </g>
+  <g fill="#68738c" font-family="system-ui, sans-serif" font-size="15">
+    <text x="104" y="208">Email address</text>
+    <text x="104" y="286">Card number</text>
+    <text x="104" y="364">Expiry</text>
+    <text x="374" y="364">Security code</text>
+  </g>
+  <rect x="654" y="144" width="274" height="336" rx="16" fill="#f7f8fb" stroke="#d8dce5"/>
+  <text x="682" y="188" fill="#20263a" font-family="system-ui, sans-serif" font-size="20" font-weight="650">Order summary</text>
+  <text x="682" y="240" fill="#4c566f" font-family="system-ui, sans-serif" font-size="16">Plan</text>
+  <text x="870" y="240" text-anchor="end" fill="#20263a" font-family="system-ui, sans-serif" font-size="16">$48</text>
+  <line x1="682" y1="270" x2="900" y2="270" stroke="#d8dce5"/>
+  <text x="682" y="318" fill="#20263a" font-family="system-ui, sans-serif" font-size="18" font-weight="650">Total</text>
+  <text x="900" y="318" text-anchor="end" fill="#20263a" font-family="system-ui, sans-serif" font-size="18" font-weight="650">$48</text>
+  <rect x="682" y="360" width="218" height="52" rx="11" fill="#3157d5"/>
+  <text x="791" y="393" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="17" font-weight="650">Pay securely</text>
+  <text x="88" y="454" fill="#4c566f" font-family="system-ui, sans-serif" font-size="15">Your payment details are encrypted.</text>
+</svg>
