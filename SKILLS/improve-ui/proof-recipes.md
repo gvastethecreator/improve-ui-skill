@@ -12,6 +12,7 @@ Keep executable commands and JSON schemas here. Other references should link to 
 - [Action groups and assertions](#action-groups-and-assertions)
 - [Async UI contract](#async-ui-contract)
 - [Artifacts and report layers](#artifacts-and-report-layers)
+- [Design dossier](#design-dossier)
 - [Blocked proof language](#blocked-proof-language)
 - [Completion rules](#completion-rules)
 
@@ -74,13 +75,14 @@ Useful controls:
 - `--wait-until domcontentloaded|load|networkidle|commit`: choose readiness deliberately.
 - `--settle-ms N`: add a bounded post-load/action settle period; do not use it to hide missing assertions.
 - `--include-advisory`: opt advisory source/runtime signals into gates; leave it off for ordinary objective policy.
+- `--detail-capture`: capture runtime artifacts at device scale factor `2`; require it for strict visual-polish, screenshot-critique, icon, alignment, dense-layout, and scrollbar claims.
 
 ## Strict Implementation Gate
 
 Use this for a final claim that an editable interface improved:
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group main=output/improve-ui/<slug>/main.actions.json --action-group edge=output/improve-ui/<slug>/edge.actions.json --strict --p2-policy systemic --systemic-p2-count 2 --require-runtime --require-change-proof --proof-manifest output/improve-ui/<slug>/proof.json
+node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group main=output/improve-ui/<slug>/main.actions.json --action-group edge=output/improve-ui/<slug>/edge.actions.json --strict --p2-policy systemic --systemic-p2-count 2 --require-runtime --require-change-proof --proof-manifest output/improve-ui/<slug>/proof.json --detail-capture
 ```
 
 Strict mode blocks:
@@ -216,7 +218,7 @@ Each async group must have state-specific action/assertion evidence; reusing one
 
 ## Artifacts And Report Layers
 
-Each successful runtime state/viewport must produce separate viewport and full-page artifacts with path, SHA-256, state, viewport, kind, media type, and byte length. Validated change-proof artifacts additionally report pixel dimensions. Use viewport artifacts for fold/hierarchy claims; use full-page artifacts for page rhythm.
+Each successful runtime state/viewport must produce separate viewport and full-page artifacts with path, SHA-256, state, viewport, kind, device scale factor, media type, and byte length. Validated change-proof artifacts additionally report pixel dimensions. Use viewport artifacts for fold/hierarchy claims; use full-page artifacts for page rhythm; use device scale factor `2` evidence or focused crops for fine craft.
 
 The ownership marker records only reserved report names and deterministic screenshot paths with SHA-256; if the marker is invalid or any recorded artifact was modified, the harness refuses cleanup before deleting anything. Reusing the same `--out` removes only unchanged files from the validated marker, preserves unrelated user files, and rejects symlink/junction output paths; this prevents stale screenshots from masquerading as current evidence.
 
@@ -229,6 +231,16 @@ The JSON report keeps separate:
 - reproducibility metadata: skill name/version/manifest hash, harness/detector hashes, separate target/harness Git roots/commits/dirty state, Node/platform, browser, configuration, target, and evidence paths.
 
 Inspect `review.json`, generated README, screenshots, and the process exit status. A generated report is not a pass unless its required gates pass.
+
+## Design Dossier
+
+For a material critique, proposal, or redesign handoff, generate both durable views from one manifest:
+
+```powershell
+node SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
+```
+
+The command also writes `report.md` and lossless `report-assets/`. Follow [references/reporting.md](references/reporting.md) for manifest, annotation, portability, language, and report-quality rules. The harness-generated `README.md` remains a compact machine-run index; it does not replace the dossier.
 
 ## Blocked Proof Language
 

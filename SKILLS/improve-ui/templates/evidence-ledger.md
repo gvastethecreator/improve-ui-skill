@@ -7,6 +7,8 @@
 - OS / Node / browser version:
 - Build mode / URL / route:
 - Theme / locale / data fixture:
+- Archetype / user mode / primary artifact / input / spatial model:
+- Bounded regions / costly states:
 
 ## Commands
 

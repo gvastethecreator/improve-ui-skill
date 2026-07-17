@@ -93,6 +93,8 @@ For visual direction:
 
 Cream, purple gradients, glass, neon glow, or monochrome editorial styling are not inherently wrong. Treat them as heuristics only when they appear unearned, obscure content, or make unrelated products look interchangeable.
 
+For gradients, judge the rendered field: role, stops, origin/angle, interpolation, contrast across the full surface, banding, clipping, repetition, fallback, themes, and performance. Do not replace an intentional gradient with a flat color merely because a detector recognized a common hue pair.
+
 ## Surfaces And Elevation
 
 Use containment only when it communicates grouping, repetition, elevation, or interaction.
@@ -103,8 +105,9 @@ Use containment only when it communicates grouping, repetition, elevation, or in
 - Preserve real borders for inputs, tables, separators, focus, and structural regions.
 - Give media a subtle edge when it would otherwise disappear into the background.
 - Align asymmetric icons optically, not only mathematically.
+- Prefer the established product icon set or a coherent library. Require custom SVG icons to declare a grid, viewBox, stroke/fill and corner language, optical center, and target sizes; inspect them at real size and in enlarged crops before accepting them.
 - Keep pills for pill-like labels/controls; large radii on cards may be valid when the system owns them.
-- Avoid custom scrollbars unless the product benefits; preserve platform behavior, visibility, contrast, and target usability.
+- Treat every remaining scroll region as a designed component. Use a minimal theme-aware custom thumb and track with appropriate width and hover/active states; preserve platform behavior, visibility, contrast, forced colors, keyboard, wheel, touch, and zoom usability. Never hide the scrollbar merely to avoid styling it.
 - Use `scrollbar-gutter: stable` on important scroll regions when width changes would disrupt scanning.
 
 Do not fail a surface on a numeric radius, shadow width, or border opacity without rendered evidence.
@@ -166,6 +169,7 @@ Skip distinction work for tiny bug fixes, regulated workflows, or dense controls
 
 - Compare the same route, viewport, state, content, theme, and data before/after.
 - Capture viewport screenshots for fold and hierarchy; use full-page captures only for page rhythm.
+- Capture at device scale factor `2` or higher and use focused crops when judging icons, scrollbar surfaces, dense spacing, or small alignment defects.
 - Inspect narrow/mobile and a realistic small laptop when layout changes.
 - Check focus, hover, selected, disabled, long content, and one relevant edge state for component polish.
 - Separate observation from interpretation: “CTA is below the fold at 1280×720” is evidence; “feels timid” is a heuristic.

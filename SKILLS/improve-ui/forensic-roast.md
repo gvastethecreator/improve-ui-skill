@@ -12,24 +12,29 @@ Match the user's language. In every mode, criticize interface decisions and outc
 
 ## Cross-Reference Evidence
 
-Use the available layers:
+Use the available layers in this order:
 
-- rendered evidence: screenshot, viewport/state, URL, recording frame, or browser capture;
+- rendered evidence first: screenshot, viewport/state, URL, recording frame, or browser capture;
 - source evidence: route, component, markup, styles, tokens, state/data ownership, and library primitives;
 - runtime evidence: interaction, focus, console/network, responsive behavior, and measured performance.
 
-When visual and source evidence exist, connect the visible problem to its likely source cause. When one layer is missing, state the limitation. Do not invent code causes from a screenshot or visual quality from source alone.
+Run a visual-only pass before source so code cannot bias the verdict. Inspect horizontal/vertical anchors, spacing relationships, overflow/scrollbars, gradient execution, icon/vector craft, and optical centering in addition to hierarchy. Then connect visible problems to likely source causes. When one layer is missing, state the limitation. Do not invent code causes from a screenshot or visual quality from source alone.
+
+Before assigning hierarchy or taste findings, complete the context card in [references/product-contexts.md](references/product-contexts.md). Infer archetype from user behavior, state, input, and product objects—not dark styling, panels, or marketing copy. Name bounded hybrid regions and judge each against its own contract.
+
+If the capture is too small, compressed, or blurry to resolve the claimed detail, recapture at device scale factor `2` or higher and add focused crops. If that is impossible, mark the detail unknown. A thumbnail is not a forensic surface.
 
 ## Analyze
 
-1. Identify the product intent, audience, and main task.
-2. State the intended visual hierarchy.
-3. State what the rendered interface accidentally prioritizes.
+1. Identify archetype, bounded regions, user mode, primary artifact, pressure, input, spatial model, and costly states.
+2. State the product intent, audience, main task, and context-specific hierarchy.
+3. State what the rendered interface accidentally prioritizes and whether its interaction model belongs to another archetype.
 4. Inspect task clarity, layout, grouping, density, action priority, state, copy, accessibility, responsive behavior, consistency, motion, and trust as relevant.
-5. Trace major symptoms to component, token, layout, state, or data causes where source exists.
-6. Separate standards, practices, heuristics, and preferences.
-7. Preserve strengths that support the product.
-8. Order findings by user impact and severity.
+5. Complete the finish ledger from [finish-quality.md](finish-quality.md); do not silently skip applicable micro-craft dimensions.
+6. Trace major symptoms to component, token, layout, state, or data causes where source exists.
+7. Separate standards, practices, heuristics, and preferences.
+8. Preserve strengths that support the product.
+9. Order findings by user impact and severity.
 
 Avoid vague findings. Replace “reduce clutter” with the exact elements to remove, merge, collapse, relocate, or demote.
 
@@ -37,7 +42,7 @@ Avoid vague findings. Replace “reduce clutter” with the exact elements to re
 
 Use this compact shape unless the user requests another artifact:
 
-1. **Verdict**: one paragraph describing the central conflict between task and interface.
+1. **Verdict**: context card plus one paragraph describing the central conflict between product behavior and interface.
 2. **Findings**: P0/P1 first, then systemic P2; each includes evidence, impact, source cause or limitation, and exact fix.
 3. **Cross-reference**: use a table only when it clarifies several visual-to-source mappings.
 4. **First cuts**: three to five ordered removals, merges, promotions, or structural repairs.
@@ -78,6 +83,8 @@ The review fails when it:
 - provides no concrete repair;
 - edits code during an audit-only request;
 - computes a confident score across uninspected dimensions;
-- lets tone overpower accuracy.
+- lets tone overpower accuracy;
+- classifies from visual costume, offers a cross-context generic prescription, or omits the archetype's costly states;
+- relies on an unreadable capture or skips applicable finish dimensions.
 
 Use [references/evidence-and-scoring.md](references/evidence-and-scoring.md) for severity, coverage, and optional scoring.

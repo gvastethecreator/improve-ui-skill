@@ -42,6 +42,12 @@
         "mutation": "required",
         "roast": "off",
         "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "blocked-on-missing-state-fixtures", "change-proof-or-explicit-blocker"],
+        "context": {
+          "archetype": "dashboard-analytics",
+          "userMode": "decide",
+          "primaryArtifact": "decision evidence",
+          "costlyStates": ["zero-vs-missing", "stale-data", "filter-scope", "narrow-layout"]
+        },
         "coverage": {
           "stateFamilies": ["loading", "error", "long-content"],
           "viewports": ["desktop", "narrow"],
@@ -99,7 +105,13 @@
         "profile": "focused",
         "mutation": "required",
         "roast": "off",
-        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"],
+        "context": {
+          "archetype": "game-hud",
+          "userMode": "act/respond",
+          "primaryArtifact": "live gameplay",
+          "costlyStates": ["noisy-combat", "input-switch", "pause-focus", "long-localization"]
+        }
       }
     },
     {
@@ -112,7 +124,51 @@
         "profile": "focused",
         "mutation": "required",
         "roast": "off",
-        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"],
+        "context": {
+          "archetype": "interactive-prototype",
+          "userMode": "explore/create",
+          "primaryArtifact": "interactive output",
+          "costlyStates": ["nonblank-output", "extreme-parameters", "unsupported-capability", "export-failure"]
+        }
+      }
+    },
+    {
+      "id": "route-existing-creative-studio",
+      "contract": "context-aware-existing-ui",
+      "kind": "routing",
+      "prompt": "Improve this implemented browser color-grading studio. Preserve expert keyboard editing, selection, timeline, autosave, undo, conflicts, and export while repairing a shell that currently treats the preview like a small dashboard widget.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"],
+        "context": {
+          "archetype": "studio-editor",
+          "userMode": "create/edit",
+          "primaryArtifact": "current frame and timeline",
+          "costlyStates": ["selection-scope", "unsaved-conflict", "collapsed-panels", "export-failure"]
+        }
+      }
+    },
+    {
+      "id": "route-existing-command-center",
+      "contract": "context-aware-existing-ui",
+      "kind": "routing",
+      "prompt": "Improve this existing fleet command center without turning it into a passive dashboard. Repair incident hierarchy, source freshness, acknowledgement, ownership, keyboard triage, handoff, partial failure, and recovery states.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"],
+        "context": {
+          "archetype": "command-center",
+          "userMode": "monitor/respond",
+          "primaryArtifact": "active incident",
+          "costlyStates": ["alert-flood", "stale-source", "handoff", "recovery"]
+        }
       }
     },
     {
@@ -269,6 +325,20 @@
         "mutation": "forbidden",
         "roast": "off",
         "evidence": ["reject-formal-certification", "recommend-specialist-audit"]
+      }
+    },
+    {
+      "id": "finish-craft-regression",
+      "contract": "focused-boundary",
+      "kind": "workflow",
+      "prompt": "Finish this existing editor UI without changing its product direction. Correct subtle horizontal and vertical alignment drift, inconsistent repeated gaps, native scrollbars, poorly executed gradients, and cheap hand-drawn SVG icons, then prove the corrected browser state at readable detail.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/dashboard-surgery/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
       }
     }
   ]

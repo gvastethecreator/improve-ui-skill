@@ -7,13 +7,14 @@ import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { inflateSync } from "node:zlib";
+import { designReportManifestFromReview, writeDesignReport } from "./generate-design-report.mjs";
 
 const require = createRequire(import.meta.url);
 const severityRank = { P0: 0, P1: 1, P2: 2, P3: 3 };
 const assessmentVerdicts = new Set(["blocked", "incomplete"]);
 const dimensionNames = ["accessibility", "performance", "themingDesignSystem", "responsiveContent", "visualTrustFit"];
 const asyncStateNames = ["empty", "loading", "error", "permission", "long-content", "slow-network", "rapid-click"];
-const harnessVersion = "2.0.0";
+const harnessVersion = "2.2.0";
 const root = findRepoRoot();
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const detectorPath = path.join(scriptDir, "detect-ui-antipatterns.mjs");
@@ -35,6 +36,7 @@ const outDir = outputMode === "explicit"
   ? path.resolve(options.out)
   : fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), `improve-ui-review-${slug}-`)));
 const screenshotsDir = path.join(outDir, "screenshots");
+const reportAssetsDir = path.join(outDir, "report-assets");
 const ownershipMarkerPath = path.join(outDir, ".improve-ui-owned.json");
 try {
   validateOutputPreflight();
@@ -64,6 +66,7 @@ const review = {
       states: options.states.length ? options.states : options.actionGroups.map((group) => group.name),
       waitUntil: options.waitUntil,
       settleMs: options.settleMs,
+      deviceScaleFactor: options.deviceScaleFactor,
       proofManifest: options.proofManifest ? displayPath(path.resolve(options.proofManifest)) : null,
       strictPolicy: {
         enabled: options.strict,
@@ -96,6 +99,9 @@ refreshReviewDerivedState(review);
 
 const jsonPath = path.join(outDir, "review.json");
 const markdownPath = path.join(outDir, "README.md");
+const reportManifestPath = path.join(outDir, "report-manifest.json");
+const reportHtmlPath = path.join(outDir, "report.html");
+const reportMarkdownPath = path.join(outDir, "report.md");
 fs.writeFileSync(jsonPath, `${JSON.stringify(review, null, 2)}\n`);
 fs.writeFileSync(markdownPath, renderMarkdown(review, jsonPath));
 if (review.proof && !revalidateProofAtEnd(review, options.proofManifest)) {
@@ -103,8 +109,33 @@ if (review.proof && !revalidateProofAtEnd(review, options.proofManifest)) {
   fs.writeFileSync(jsonPath, `${JSON.stringify(review, null, 2)}\n`);
   fs.writeFileSync(markdownPath, renderMarkdown(review, jsonPath));
 }
+const reportManifest = designReportManifestFromReview(review, { baseDir: root });
+const dossier = writeDesignReport({
+  manifest: reportManifest,
+  outPath: reportHtmlPath,
+  markdownOutPath: reportMarkdownPath,
+  baseDir: root,
+  embedImages: true,
+  strictAssets: false,
+});
+const portableReportManifest = {
+  ...reportManifest,
+  screenshots: reportManifest.screenshots.map((item) => ({
+    ...item,
+    src: `report-assets/${item.id}.png`,
+  })),
+};
+fs.writeFileSync(reportManifestPath, `${JSON.stringify(portableReportManifest, null, 2)}\n`);
 recordOwnedOutput(jsonPath);
 recordOwnedOutput(markdownPath);
+recordOwnedOutput(reportManifestPath);
+recordOwnedOutput(reportHtmlPath);
+recordOwnedOutput(reportMarkdownPath);
+if (dossier.markdownAssetsDir && fs.existsSync(dossier.markdownAssetsDir)) {
+  for (const entry of fs.readdirSync(dossier.markdownAssetsDir, { withFileTypes: true })) {
+    if (entry.isFile()) recordOwnedOutput(path.join(dossier.markdownAssetsDir, entry.name));
+  }
+}
 writeOwnershipMarker();
 
 const summary = {
@@ -117,6 +148,13 @@ const summary = {
   gates: review.gates,
   expectations: review.expectations,
   blockers: review.ledger.blockers,
+  dossier: {
+    manifest: displayPath(reportManifestPath),
+    markdown: displayPath(reportMarkdownPath),
+    html: displayPath(reportHtmlPath),
+    assets: dossier.markdownAssets,
+    warnings: dossier.warnings,
+  },
 };
 console.log(JSON.stringify(summary, null, 2));
 
@@ -189,6 +227,7 @@ function buildMetadata() {
     actionGroupsSha256: hashText(stableStringify(options.actionGroups)),
     waitUntil: options.waitUntil,
     settleMs: options.settleMs,
+    deviceScaleFactor: options.deviceScaleFactor,
     timeout: options.timeout,
     strict: options.strict,
     p2Policy: options.p2Policy,
@@ -658,7 +697,7 @@ async function runRuntimeReview(targetReview) {
 }
 
 async function inspectViewport(browser, viewport, actionGroup) {
-  const page = await browser.newPage({ viewport });
+  const page = await browser.newPage({ viewport, deviceScaleFactor: options.deviceScaleFactor });
   const consoleErrors = [];
   const requestFailures = [];
   const badResponses = [];
@@ -860,6 +899,99 @@ async function inspectViewport(browser, viewport, actionGroup) {
         })
         .filter((img) => !img.widthAttr || !img.heightAttr || img.alt === null || img.naturalWidth === 0)
         .slice(0, 12);
+      const labelFor = (node) => {
+        const id = node.id ? `#${node.id}` : "";
+        const classes = typeof node.className === "string" ? node.className.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((name) => `.${name}`).join("") : "";
+        return `${node.tagName.toLowerCase()}${id}${classes}`.slice(0, 120);
+      };
+      const styleRules = [];
+      const collectRules = (rules) => {
+        for (const rule of rules || []) {
+          if (rule.cssRules) collectRules(rule.cssRules);
+          else if (rule.selectorText && rule.style) styleRules.push(rule);
+        }
+      };
+      for (const sheet of document.styleSheets) {
+        try { collectRules(sheet.cssRules); } catch {}
+      }
+      const matchesScrollbarRule = (node) => styleRules.some((rule) => String(rule.selectorText).split(",").some((selector) => {
+        const base = selector.split("::")[0].trim();
+        const mentionsScrollbar = /::-(?:webkit-)?scrollbar/i.test(selector) || rule.style.getPropertyValue("scrollbar-width") || rule.style.getPropertyValue("scrollbar-color");
+        if (!mentionsScrollbar) return false;
+        try { return !base || base === "*" || node.matches(base); } catch { return false; }
+      }));
+      const scrollCandidates = [...new Set([document.scrollingElement, ...document.querySelectorAll("body *")].filter(Boolean))];
+      const nativeScrollbarRisks = scrollCandidates
+        .filter((node) => {
+          const style = getComputedStyle(node);
+          const rootScrollable = node === document.scrollingElement && (document.documentElement.scrollHeight > window.innerHeight + 1 || document.documentElement.scrollWidth > window.innerWidth + 1);
+          const y = node.scrollHeight > node.clientHeight + 1 && ["auto", "scroll"].includes(style.overflowY);
+          const x = node.scrollWidth > node.clientWidth + 1 && ["auto", "scroll"].includes(style.overflowX);
+          return visible(node) && (rootScrollable || y || x);
+        })
+        .filter((node) => {
+          const style = getComputedStyle(node);
+          const standardCustom = (style.scrollbarWidth && style.scrollbarWidth !== "auto") || (style.scrollbarColor && style.scrollbarColor !== "auto");
+          return !standardCustom && !matchesScrollbarRule(node);
+        })
+        .slice(0, 12)
+        .map((node) => ({
+          node: labelFor(node),
+          scrollWidth: node.scrollWidth,
+          clientWidth: node.clientWidth,
+          scrollHeight: node.scrollHeight,
+          clientHeight: node.clientHeight,
+        }));
+      const textRect = (node) => {
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+        const rects = [];
+        while (walker.nextNode()) {
+          const textNode = walker.currentNode;
+          if (!textNode.textContent.trim() || textNode.parentElement?.closest("svg")) continue;
+          const range = document.createRange();
+          range.selectNodeContents(textNode);
+          for (const rect of range.getClientRects()) if (rect.width > 0 && rect.height > 0) rects.push(rect);
+        }
+        if (!rects.length) return null;
+        return {
+          top: Math.min(...rects.map((rect) => rect.top)),
+          bottom: Math.max(...rects.map((rect) => rect.bottom)),
+        };
+      };
+      const iconAlignmentIssues = [...document.querySelectorAll("button, a, [role='button'], [role='menuitem']")]
+        .filter(visible)
+        .map((control) => {
+          const icon = control.querySelector("svg, [data-icon], img.icon");
+          const text = textRect(control);
+          if (!icon || !text || !visible(icon)) return null;
+          const iconBox = icon.getBoundingClientRect();
+          if (iconBox.width > 64 || iconBox.height > 64) return null;
+          const delta = Math.abs((iconBox.top + iconBox.bottom) / 2 - (text.top + text.bottom) / 2);
+          return delta > 4 ? { control: labelFor(control), deltaY: Number(delta.toFixed(2)), iconSize: `${Math.round(iconBox.width)}x${Math.round(iconBox.height)}` } : null;
+        })
+        .filter(Boolean)
+        .slice(0, 12);
+      const repeatedSpacingIssues = [...document.querySelectorAll("ul, ol, [role='list'], [data-ui-list]")]
+        .filter(visible)
+        .map((container) => {
+          const items = [...container.children].filter(visible);
+          if (items.length < 3) return null;
+          const boxes = items.map((item) => item.getBoundingClientRect()).sort((a, b) => a.top - b.top);
+          if (boxes.some((box, index) => index > 0 && box.top < boxes[index - 1].bottom - 1)) return null;
+          const gaps = boxes.slice(1).map((box, index) => Number((box.top - boxes[index].bottom).toFixed(2)));
+          const spread = Math.max(...gaps) - Math.min(...gaps);
+          return spread > 3 ? { container: labelFor(container), gaps, spread: Number(spread.toFixed(2)) } : null;
+        })
+        .filter(Boolean)
+        .slice(0, 12);
+      const gradientSurfaces = [...document.querySelectorAll("body *")]
+        .filter(visible)
+        .filter((node) => {
+          const style = getComputedStyle(node);
+          return /gradient\(/i.test(style.backgroundImage) || style.backgroundClip === "text" || style.webkitBackgroundClip === "text";
+        })
+        .slice(0, 20)
+        .map((node) => labelFor(node));
       const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
       const isInViewport = (node) => {
@@ -913,6 +1045,10 @@ async function inspectViewport(browser, viewport, actionGroup) {
         clippedText,
         imageIssues,
         contrastIssues,
+        nativeScrollbarRisks,
+        iconAlignmentIssues,
+        repeatedSpacingIssues,
+        gradientSurfaces,
         animationAudit: {
           total: animations.length,
           running: runningAnimations.length,
@@ -1044,7 +1180,7 @@ function runtimeFailureResult(viewport, state, phase, error) {
 function describeRuntimeArtifact(file, kind, state, viewport) {
   const image = inspectPng(file, `runtime ${kind} artifact`);
   if (["viewport", "full-page"].includes(kind)) {
-    validateProofPixelContract(image, `${viewport.width}x${viewport.height}`, kind, 1, "runtime");
+    validateProofPixelContract(image, `${viewport.width}x${viewport.height}`, kind, options.deviceScaleFactor, "runtime");
   }
   return {
     kind,
@@ -1055,6 +1191,7 @@ function describeRuntimeArtifact(file, kind, state, viewport) {
     byteLength: image.bytes.length,
     pixelWidth: image.pixelWidth,
     pixelHeight: image.pixelHeight,
+    deviceScaleFactor: options.deviceScaleFactor,
     state,
     viewport: `${viewport.width}x${viewport.height}`,
   };
@@ -1077,6 +1214,10 @@ function runtimeFindings(viewport, state, metrics, consoleErrors, requestFailure
   }
   if (metrics.smallHitAreas.length) push("small-hit-area", "P2", "accessibility", "Visible controls are below the 24px WCAG size lead; verify spacing exceptions and product touch requirements (44px is enhanced/preference, not this gate).", JSON.stringify(metrics.smallHitAreas[0]), "advisory", "medium");
   if (metrics.clippedText.length) push("clipped-text", "P2", "resilience", "Text may be clipped or horizontally overflowing; inspect whether truncation is intentional and recoverable.", JSON.stringify(metrics.clippedText[0]), "advisory", "medium");
+  if (metrics.nativeScrollbarRisks?.length) push("native-scrollbar-runtime", "P2", "quality", "A rendered scroll region still relies on an uncustomized native scrollbar; style it minimally without hiding or breaking the affordance.", JSON.stringify(metrics.nativeScrollbarRisks[0]), "advisory", "medium");
+  if (metrics.iconAlignmentIssues?.length) push("icon-text-misalignment", "P2", "quality", "A rendered control icon is vertically misaligned with its text; confirm the detail crop and repair the shared control/icon primitive.", JSON.stringify(metrics.iconAlignmentIssues[0]), "advisory", "medium");
+  if (metrics.repeatedSpacingIssues?.length) push("inconsistent-repeated-spacing", "P2", "quality", "A repeated rendered list has materially inconsistent sibling gaps; confirm intentional grouping or repair the spacing source.", JSON.stringify(metrics.repeatedSpacingIssues[0]), "advisory", "medium");
+  if (metrics.gradientSurfaces?.length) push("gradient-finish-review", "P3", "quality", "Rendered gradients are present. Inspect their role, stops, contrast, banding, clipping, and fallback; their presence alone is not a failure.", JSON.stringify(metrics.gradientSurfaces.slice(0, 3)), "advisory", "low");
   const missingAlt = metrics.imageIssues.find((image) => image.alt === null);
   const brokenImage = metrics.imageIssues.find((image) => image.naturalWidth === 0);
   const missingDimensions = metrics.imageIssues.find((image) => !image.widthAttr || !image.heightAttr);
@@ -1218,6 +1359,7 @@ function evaluateEvidenceCoverage(targetReview) {
               byteLength: artifact.byteLength,
               pixelWidth: artifact.pixelWidth,
               pixelHeight: artifact.pixelHeight,
+              deviceScaleFactor: artifact.deviceScaleFactor,
             })),
           };
         }),
@@ -1303,11 +1445,12 @@ function runtimeResultHasRequiredEvidence(result) {
 function runtimeArtifactValid(artifact, kind, result) {
   if (!artifact || artifact.kind !== kind || artifact.state !== result.state) return false;
   if (artifact.viewport !== `${result.viewport.width}x${result.viewport.height}`) return false;
+  if (artifact.deviceScaleFactor !== options.deviceScaleFactor) return false;
   const artifactPath = resolveEvidencePath(artifact.path);
   if (!fs.existsSync(artifactPath)) return false;
   try {
     const image = inspectPng(artifactPath, `runtime ${kind} artifact`);
-    validateProofPixelContract(image, artifact.viewport, kind, 1, "runtime");
+    validateProofPixelContract(image, artifact.viewport, kind, artifact.deviceScaleFactor, "runtime");
     return hashText(image.bytes) === artifact.sha256
       && image.pixelSha256 === artifact.pixelSha256
       && image.mediaType === artifact.mediaType
@@ -1436,6 +1579,8 @@ function renderMarkdown(targetReview, jsonPath) {
     `Target path: ${targetReview.target.path || "n/a"}`,
     `Target URL: ${targetReview.target.url || "n/a"}`,
     `Review JSON: ${path.relative(root, jsonPath)}`,
+    `Design dossier Markdown: ${path.relative(root, path.join(outDir, "report.md"))}`,
+    `Design dossier HTML: ${path.relative(root, path.join(outDir, "report.html"))}`,
     "",
     `Assessment: ${dimensionSummary}`,
     `Total: ${targetReview.assessment.total === null ? "unknown" : `${targetReview.assessment.total}/20`}`,
@@ -1706,6 +1851,7 @@ function parseArgs(args) {
     timeout: 15000,
     waitUntil: "domcontentloaded",
     settleMs: 500,
+    deviceScaleFactor: 1,
     register: null,
     surface: null,
     ambition: null,
@@ -1749,6 +1895,7 @@ function parseArgs(args) {
     else if (name === "--timeout") parsed.timeout = Number(nextValue());
     else if (name === "--wait-until") parsed.waitUntil = normalizeWaitUntil(nextValue());
     else if (name === "--settle-ms") parsed.settleMs = Number(nextValue());
+    else if (arg === "--detail-capture") parsed.deviceScaleFactor = 2;
     else if (name === "--register") parsed.register = nextValue();
     else if (name === "--surface") parsed.surface = nextValue();
     else if (name === "--ambition") parsed.ambition = nextValue();
@@ -1789,6 +1936,10 @@ function parseArgs(args) {
   }
   if (!Number.isFinite(parsed.settleMs) || parsed.settleMs < 0) {
     console.error("Invalid --settle-ms; expected non-negative milliseconds");
+    process.exit(2);
+  }
+  if (!Number.isFinite(parsed.deviceScaleFactor) || parsed.deviceScaleFactor < 1 || parsed.deviceScaleFactor > 4) {
+    console.error("Invalid device scale factor; expected a number from 1 to 4");
     process.exit(2);
   }
   if (!Number.isInteger(parsed.systemicP2Count) || parsed.systemicP2Count < 2) {
@@ -2022,6 +2173,7 @@ function prepareOwnedOutput(directory, markerPath, marker) {
 function validateOutputPreflight() {
   assertSafeOutputPath(outDir, "directory");
   assertSafeOutputPath(screenshotsDir, "directory");
+  assertSafeOutputPath(reportAssetsDir, "directory");
   assertSafeOutputPath(ownershipMarkerPath, "file");
   for (const file of plannedOwnedOutputPaths()) assertSafeOutputPath(file, "file");
 }
@@ -2030,16 +2182,28 @@ function plannedOwnedOutputPaths() {
   const files = [
     path.join(outDir, "review.json"),
     path.join(outDir, "README.md"),
+    path.join(outDir, "report-manifest.json"),
+    path.join(outDir, "report.html"),
+    path.join(outDir, "report.md"),
     path.join(outDir, "static-findings.json"),
     path.join(outDir, "runtime-findings.json"),
   ];
+  if (options.proofManifest) {
+    files.push(
+      path.join(reportAssetsDir, "proof-before.png"),
+      path.join(reportAssetsDir, "proof-after.png"),
+    );
+  }
+  let runtimeIndex = 0;
   for (const group of options.actionGroups) {
     for (const viewport of options.viewports) {
+      runtimeIndex += 1;
       const suffix = `${safeFilePart(group.name)}-${viewport.width}x${viewport.height}`;
       files.push(
         path.join(screenshotsDir, `${suffix}-viewport.png`),
         path.join(screenshotsDir, `${suffix}-full-page.png`),
         path.join(screenshotsDir, `${suffix}-error.png`),
+        path.join(reportAssetsDir, `runtime-${runtimeIndex}.png`),
       );
     }
   }
@@ -2123,7 +2287,8 @@ function recordOwnedOutput(file) {
 }
 
 function isHarnessOwnedRelativePath(relativeFile) {
-  if (["review.json", "README.md", "static-findings.json", "runtime-findings.json"].includes(relativeFile)) return true;
+  if (["review.json", "README.md", "report-manifest.json", "report.html", "report.md", "static-findings.json", "runtime-findings.json"].includes(relativeFile)) return true;
+  if (/^report-assets\/(?:proof-(?:before|after)|runtime-[1-9]\d*)\.(?:png|jpg|gif|webp|avif)$/.test(relativeFile)) return true;
   return /^screenshots\/[a-zA-Z0-9._-]{1,80}-[1-9]\d*x[1-9]\d*-(?:viewport|full-page|error)\.png$/.test(relativeFile);
 }
 
@@ -2180,6 +2345,6 @@ function slugify(value) {
 }
 
 function usage(stream = process.stderr) {
-  stream.write("Usage: node run-interface-review.mjs --path <file-or-dir> [--url <local-url>] [--out <dir>] [--actions actions.json] [--action-group name=actions.json] [--viewport 1280x800] [--strict] [--p2-policy systemic|all|none] [--systemic-p2-count 2] [--include-advisory] [--fail-on=P0|P1|P2|P3] [--expect-finding id] [--expect-verdict blocked|incomplete] [--require-runtime] [--require-change-proof --proof-manifest proof.json] [--async-ui] [--wait-until domcontentloaded|load|networkidle|commit] [--settle-ms 500] [--fail]\n");
+  stream.write("Usage: node run-interface-review.mjs --path <file-or-dir> [--url <local-url>] [--out <dir>] [--actions actions.json] [--action-group name=actions.json] [--viewport 1280x800] [--detail-capture] [--strict] [--p2-policy systemic|all|none] [--systemic-p2-count 2] [--include-advisory] [--fail-on=P0|P1|P2|P3] [--expect-finding id] [--expect-verdict blocked|incomplete] [--require-runtime] [--require-change-proof --proof-manifest proof.json] [--async-ui] [--wait-until domcontentloaded|load|networkidle|commit] [--settle-ms 500] [--fail]\n");
   stream.write("Omit --out for a unique operating-system temporary directory; explicit --out selects durable report output.\n");
 }

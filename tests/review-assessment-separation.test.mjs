@@ -10,6 +10,7 @@ function cleanStaticHarness() {
   fs.mkdirSync(scripts, { recursive: true });
   const harness = path.join(scripts, "run-interface-review.mjs");
   fs.copyFileSync(reviewScript, harness);
+  fs.copyFileSync(path.join(path.dirname(reviewScript), "generate-design-report.mjs"), path.join(scripts, "generate-design-report.mjs"));
   fs.writeFileSync(path.join(scripts, "detect-ui-antipatterns.mjs"), [
     'import fs from "node:fs";',
     'const args = process.argv.slice(2);',

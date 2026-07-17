@@ -10,6 +10,7 @@ function runtimeHarness(metrics, { emitDiagnostics = false } = {}) {
   fs.mkdirSync(scripts, { recursive: true });
   const harness = path.join(scripts, "run-interface-review.mjs");
   fs.copyFileSync(reviewScript, harness);
+  fs.copyFileSync(path.join(path.dirname(reviewScript), "generate-design-report.mjs"), path.join(scripts, "generate-design-report.mjs"));
   fs.writeFileSync(path.join(scripts, "detect-ui-antipatterns.mjs"), [
     'import fs from "node:fs";',
     'const args = process.argv.slice(2);',
@@ -52,6 +53,7 @@ function baseMetrics(overrides = {}) {
     title: "Fixture", width: 320, height: 240, scrollWidth: 320, scrollHeight: 240,
     horizontalOverflow: false, smallHitAreas: [], unnamedButtons: 0, clippedText: [],
     imageIssues: [], contrastIssues: [], animationAudit: { total: 0, running: 0, offscreenRunningCount: 0, offscreenRunning: [] },
+    nativeScrollbarRisks: [], iconAlignmentIssues: [], repeatedSpacingIssues: [], gradientSurfaces: [],
     canvasDetails: [], longTasks: [], layoutShifts: [], cls: 0,
     frameStats: { samples: 120, p95: 16, max: 16 },
     ...overrides,
@@ -109,6 +111,24 @@ test("generic runtime probes remain advisory and cannot fail strict by repetitio
   assert.ok(review.findings.every((finding) => ["low", "medium"].includes(finding.confidence)));
   assert.equal(review.gates.find((gate) => gate.gate === "p0-p1-unresolved").status, "pass");
   assert.equal(review.gates.find((gate) => gate.gate === "systemic-p2-unresolved").status, "pass");
+});
+
+test("finish-craft runtime probes remain explicit advisory leads", () => {
+  const fixture = runtimeHarness(baseMetrics({
+    nativeScrollbarRisks: [{ node: "div.panel", scrollHeight: 900, clientHeight: 300 }],
+    iconAlignmentIssues: [{ control: "button.save", deltaY: 6, iconSize: "20x20" }],
+    repeatedSpacingIssues: [{ container: "ul.items", gaps: [8, 15], spread: 7 }],
+    gradientSurfaces: ["section.hero"],
+  }));
+
+  const { result, review } = runFixture(fixture);
+
+  assert.equal(result.status, 0, result.stdout || result.stderr);
+  for (const id of ["native-scrollbar-runtime", "icon-text-misalignment", "inconsistent-repeated-spacing", "gradient-finish-review"]) {
+    const finding = review.findings.find((candidate) => candidate.id === id);
+    assert.ok(finding, `expected ${id}`);
+    assert.equal(finding.classification, "advisory");
+  }
 });
 
 test("a visible image missing alt is an exact objective runtime defect", () => {

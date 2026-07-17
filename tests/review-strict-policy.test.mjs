@@ -10,6 +10,7 @@ function isolatedHarness(findings) {
   fs.mkdirSync(scriptDir, { recursive: true });
   const harness = path.join(scriptDir, "run-interface-review.mjs");
   fs.copyFileSync(reviewScript, harness);
+  fs.copyFileSync(path.join(path.dirname(reviewScript), "generate-design-report.mjs"), path.join(scriptDir, "generate-design-report.mjs"));
   const detector = path.join(scriptDir, "detect-ui-antipatterns.mjs");
   fs.writeFileSync(detector, [
     'import fs from "node:fs";',

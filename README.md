@@ -5,7 +5,7 @@
 > Evidence-gated Codex skill for diagnosing, repairing, auditing, and verifying an existing web interface.
 
 [![License: MIT](https://shieldcn.dev/badge/license-MIT-yellow.svg?variant=secondary&size=xs)](./LICENSE)
-[![Version](https://shieldcn.dev/badge/version-0.2.0-blue.svg?variant=secondary&size=xs)](./SKILLS/improve-ui/skill-manifest.json)
+[![Version](https://shieldcn.dev/badge/version-0.3.0-blue.svg?variant=secondary&size=xs)](./SKILLS/improve-ui/skill-manifest.json)
 
 Improve UI starts from a real product surface: editable source, a screenshot, a route, a component, or a running app. It preserves working product contracts, fixes the smallest systemic cause authorized by the request, and limits every completion claim to evidence that actually ran.
 
@@ -68,6 +68,14 @@ node ./SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path>
 
 The exact action, assertion, async-state, proof-manifest, P2-policy, and report schemas live in [proof-recipes.md](./SKILLS/improve-ui/proof-recipes.md). `--change-proof` is a path-only alias for `--proof-manifest`; free-form prose is not proof.
 
+Generate a durable visual dossier for a material critique, proposal, or redesign. One manifest produces ingestion-first Markdown, standalone HTML, and lossless local evidence assets:
+
+```text
+node ./SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
+```
+
+The screenshot markers, legends, evidence zooms, and Markdown geometry share exact identities; invalid stage, subject, asset, or coordinate mappings fail closed. See [reporting.md](./SKILLS/improve-ui/references/reporting.md).
+
 ## Executable Calibration Cases
 
 The golden examples are backed by source fixtures rather than fictional result claims:
@@ -116,13 +124,13 @@ The tool compares every file, reports a deterministic SHA-256 tree hash, removes
 ## Package Map
 
 - [SKILL.md](./SKILLS/improve-ui/SKILL.md): compact trigger, authority, profile, routing, and output contract.
-- [`references/`](./SKILLS/improve-ui/references): progressive domain guidance and the source/provenance ledger.
+- [`references/`](./SKILLS/improve-ui/references): progressive domain guidance for context, geometry, authorship, motion, and synchronized reporting.
 - [detector-rules.md](./SKILLS/improve-ui/detector-rules.md): detector taxonomy, confidence, suppression, and baseline behavior.
 - [proof-recipes.md](./SKILLS/improve-ui/proof-recipes.md): executable CLI and evidence schemas.
 - [`templates/`](./SKILLS/improve-ui/templates): surgical read, surgery log, and evidence ledger records.
 - [checklist.md](./SKILLS/improve-ui/checklist.md): one canonical final quality gate.
 - [`examples/`](./SKILLS/improve-ui/examples): worked routes linked to executable fixtures.
-- [`scripts/`](./SKILLS/improve-ui/scripts): dependency-free static detector and optional-Playwright review harness.
+- [`scripts/`](./SKILLS/improve-ui/scripts): dependency-free detector/report generator and optional-Playwright review harness.
 
 ## Limits
 

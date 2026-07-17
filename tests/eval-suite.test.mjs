@@ -463,3 +463,34 @@ test("mixed audit and fix requires implementation authority", () => {
   assert.equal(result.status, 1);
   assert.match(result.stderr, /mixed-audit-fix.*mutation.*required/i);
 });
+
+test("context-aware routes declare archetype, primary artifact, and costly states", () => {
+  const directory = tempDir("improve-ui-evals-context-shape-");
+  const payload = JSON.parse(fs.readFileSync(suite, "utf8"));
+  const scenario = payload.scenarios.find(({ contract }) => contract === "context-aware-existing-ui");
+  scenario.expected.context = {
+    archetype: "generic-app",
+    userMode: "",
+    primaryArtifact: "",
+    costlyStates: ["loading"],
+  };
+  const invalid = writeFile(directory, "scenarios.json", `${JSON.stringify(payload, null, 2)}\n`);
+
+  const result = runNode(validator, [invalid], { cwd: repoRoot });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /context\.archetype.*product-context vocabulary/i);
+  assert.match(result.stderr, /context\.userMode.*non-empty/i);
+  assert.match(result.stderr, /context\.primaryArtifact.*non-empty/i);
+  assert.match(result.stderr, /context\.costlyStates.*at least 3/i);
+});
+
+test("the eval suite covers materially different product contexts", () => {
+  const directory = tempDir("improve-ui-evals-context-coverage-");
+  const payload = JSON.parse(fs.readFileSync(suite, "utf8"));
+  payload.scenarios = payload.scenarios.filter(({ expected }) => expected?.context?.archetype !== "command-center");
+  const invalid = writeFile(directory, "scenarios.json", `${JSON.stringify(payload, null, 2)}\n`);
+
+  const result = runNode(validator, [invalid], { cwd: repoRoot });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /product-context coverage for command-center/i);
+});

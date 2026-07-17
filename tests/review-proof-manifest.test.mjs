@@ -200,7 +200,7 @@ test("reproducibility metadata is deterministic for the same review inputs", () 
   assert.deepEqual(metadataA.reproducibility.harnessGit, metadataB.reproducibility.harnessGit);
   assert.deepEqual(metadataA.skill, metadataB.skill);
   assert.equal(metadataA.skill.name, "improve-ui");
-  assert.equal(metadataA.skill.version, "0.2.0");
+  assert.equal(metadataA.skill.version, "0.3.0");
   assert.match(metadataA.skill.manifestSha256, /^[a-f0-9]{64}$/);
 });
 

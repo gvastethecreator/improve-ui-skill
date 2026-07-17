@@ -215,6 +215,35 @@ test("advisory taste findings do not fail a scan unless explicitly included", (t
   assert.equal(advisoryGate.status, 1);
 });
 
+test("scroll regions and hand-drawn interactive SVGs produce contextual finish leads", (t) => {
+  const target = fs.mkdtempSync(path.join(os.tmpdir(), "detector-finish-craft-"));
+  t.after(() => fs.rmSync(target, { force: true, recursive: true }));
+  const unfinished = path.join(target, "unfinished.tsx");
+  const treated = path.join(target, "treated.css");
+  const gutterOnly = path.join(target, "gutter-only.css");
+  fs.writeFileSync(
+    unfinished,
+    'export const Panel = () => <div className="overflow-y-auto"><button aria-label="Close"><svg viewBox="0 0 24 24"><path d="M4 4l16 16" /></svg></button></div>;\n',
+  );
+  fs.writeFileSync(
+    treated,
+    '.panel { overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--thumb) transparent; }\n.panel::-webkit-scrollbar { width: 8px; }\n',
+  );
+  fs.writeFileSync(gutterOnly, ".panel { overflow-y: auto; scrollbar-gutter: stable; }\n");
+
+  const unfinishedResult = runDetector(["--json", unfinished]);
+  const treatedResult = runDetector(["--json", treated]);
+  const gutterOnlyResult = runDetector(["--json", gutterOnly]);
+  assert.equal(unfinishedResult.status, 0, unfinishedResult.stderr);
+  assert.equal(treatedResult.status, 0, treatedResult.stderr);
+  assert.equal(gutterOnlyResult.status, 0, gutterOnlyResult.stderr);
+  const unfinishedFindings = JSON.parse(unfinishedResult.stdout).findings;
+  assert.ok(unfinishedFindings.some((finding) => finding.id === "native-scrollbar-risk"));
+  assert.ok(unfinishedFindings.some((finding) => finding.id === "improvised-inline-svg-icon"));
+  assert.equal(JSON.parse(treatedResult.stdout).findings.some((finding) => finding.id === "native-scrollbar-risk"), false);
+  assert.equal(JSON.parse(gutterOnlyResult.stdout).findings.some((finding) => finding.id === "native-scrollbar-risk"), true);
+});
+
 test("strict fails high-confidence objective P1 findings but not contextual motion advice", (t) => {
   const target = fs.mkdtempSync(path.join(os.tmpdir(), "detector-strict-"));
   t.after(() => fs.rmSync(target, { force: true, recursive: true }));

@@ -137,7 +137,7 @@ function rules() {
       id: "gradient-text",
       category: "slop",
       severity: "P2",
-      message: "Gradient text is usually decorative; use solid text color unless the brand system requires it.",
+      message: "Gradient text is not automatically wrong, but it needs a deliberate brand/material role, readable stops, and a solid fallback verified in the rendered state.",
       patterns: [
         /\bbg-clip-text\b[\s\S]{0,180}\bbg-gradient-to-/gi,
         /background-clip\s*:\s*text[\s\S]{0,180}(?:linear|radial)-gradient/gi,
@@ -157,7 +157,7 @@ function rules() {
       id: "purple-blue-gradient",
       category: "slop",
       severity: "P2",
-      message: "Purple/blue/cyan gradients are a common generated palette reflex. Pick a palette from the brand or scene.",
+      message: "Purple/blue/cyan is a common reflex, not an automatic failure. Verify the rendered gradient's role, stop placement, contrast, banding, and connection to the brand or scene.",
       patterns: [
         /\bfrom-(?:purple|violet|indigo)-\d+\b[\s\S]{0,160}\bto-(?:blue|cyan|sky|pink|fuchsia|purple|violet|indigo)-\d+\b/gi,
         /linear-gradient\([^;\n]*(?:purple|violet|indigo)[^;\n]*(?:blue|cyan|pink|fuchsia)/gi,
@@ -193,6 +193,14 @@ function rules() {
       ],
     },
     {
+      id: "improvised-inline-svg-icon",
+      category: "design-system",
+      severity: "P2",
+      confidence: "low",
+      message: "Inline SVG path geometry inside an interactive control needs icon-family and target-size proof. Prefer the project icon system unless the custom vector is product-specific and deliberately constructed.",
+      patterns: [/<(?:button|a)\b[\s\S]{0,360}<svg\b[\s\S]{0,520}<(?:path|polyline|polygon)\b/gi],
+    },
+    {
       id: "oversized-radius",
       category: "slop",
       severity: "P2",
@@ -216,7 +224,7 @@ function rules() {
       id: "repeating-stripes",
       category: "slop",
       severity: "P3",
-      message: "Repeating stripe gradients are usually decorative filler. Use a real texture or simplify.",
+      message: "Repeating stripe gradients need a deliberate texture or information role. Inspect scale, banding, contrast, and repetition in the rendered surface before keeping or removing them.",
       patterns: [/repeating-linear-gradient\(/gi],
     },
     {
@@ -684,6 +692,27 @@ function runFileRules(file, text) {
         text,
         Math.max(0, source.search(/\bonPointer(?:Down|Move|Up|Cancel)\b|addEventListener\(\s*["']pointer(?:down|move|up|cancel)["']|PointerEvent/i)),
         "pointer gesture without setPointerCapture",
+      ),
+    );
+  }
+
+  const scrollRegionIndex = source.search(/overflow(?:-[xy])?\s*:\s*(?:auto|scroll)|\boverflow-(?:auto|scroll|x-auto|x-scroll|y-auto|y-scroll)\b/i);
+  const hasScrollbarTreatment = /scrollbar-(?:width|color)\s*:|::-(?:webkit-)?scrollbar|\bscrollbar-(?:thin|none)\b/i.test(source);
+  if (scrollRegionIndex >= 0 && !hasScrollbarTreatment) {
+    out.push(
+      toFinding(
+        {
+          id: "native-scrollbar-risk",
+          category: "quality",
+          severity: "P2",
+          classification: "advisory",
+          confidence: "medium",
+          message: "A declared scroll region has no scrollbar treatment in the same source. Confirm the shared/global system or add a minimal theme-aware custom scrollbar without hiding the affordance.",
+        },
+        file,
+        text,
+        scrollRegionIndex,
+        "scroll region without local scrollbar treatment",
       ),
     );
   }

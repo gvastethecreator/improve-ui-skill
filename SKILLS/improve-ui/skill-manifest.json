@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "improve-ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "source": {
     "repository": "https://github.com/gvastethecreator/improve-ui-skill"
   },
@@ -11,6 +11,7 @@
   },
   "entrypoints": [
     "scripts/detect-ui-antipatterns.mjs",
-    "scripts/run-interface-review.mjs"
+    "scripts/run-interface-review.mjs",
+    "scripts/generate-design-report.mjs"
   ]
 }

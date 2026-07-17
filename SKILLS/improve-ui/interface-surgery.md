@@ -7,6 +7,7 @@ Use this for implementation-level improvement of an existing web route, state, c
 Record before changing code:
 
 - target route, surface, component, viewport, and state;
+- primary archetype, bounded secondary regions, user mode, primary artifact, pressure, input, spatial model, and costly states from [product contexts](references/product-contexts.md);
 - main task and next action;
 - intended hierarchy and accidental priority;
 - visible failure and user consequence;
@@ -14,7 +15,7 @@ Record before changing code:
 - preservation rules;
 - proof target and relevant edge/recovery state.
 
-Done when the diagnosis connects a visible symptom to a source cause and a testable outcome.
+Done when the diagnosis connects a visible symptom and context delta to a source cause and archetype-specific testable outcome.
 
 ## Cut Order
 
@@ -24,6 +25,8 @@ Done when the diagnosis connects a visible symptom to a source cause and a testa
 4. Repair repeated causes at the shared primitive/token/layout/state source.
 5. Harden the edge state most likely to expose the same weakness.
 6. Refine type, color, surfaces, motion, and visual detail.
+
+If the current layout, scrolling, density, navigation, or motion model belongs to another archetype, repair that mismatch before finish polish. Do not turn a studio into a dashboard, a command center into sci-fi analytics, or a game HUD into floating admin cards.
 
 Keep isolated defects local. Do not replace a design system or rewrite a page for a small bug.
 
@@ -41,8 +44,10 @@ For a `focused` or `deep` implementation, prove:
 
 - the changed main path;
 - one relevant edge or recovery state;
+- the context-specific costly moment and any bounded hybrid-region boundary;
 - focused source/test/build checks;
 - visual/browser evidence when a runnable UI exists;
+- a completed [finish-quality.md](finish-quality.md) ledger when alignment, spacing, overflow/scrollbars, gradients, icons, or visual polish are in scope;
 - detector output when it catches an objective risk in the touched path;
 - explicit limits when runtime, state fixtures, or browsers are unavailable.
 
@@ -53,6 +58,7 @@ Do not claim the fix from a screenshot that differs in content, route, state, vi
 - Ensure the patch touches the real user path.
 - Confirm the source cause is removed or reduced.
 - Rerun the evidence that originally exposed the problem.
+- Reinspect the rendered result at readable detail after the last correction; do not assume a local nudge removed the visible defect.
 - Keep untested behavior `unknown`.
 - Name files changed, proof, skipped checks, blockers, and remaining risk.
 

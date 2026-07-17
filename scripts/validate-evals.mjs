@@ -8,6 +8,7 @@ const contractVocabulary = new Set([
   "advisory-needs-confirmation",
   "blank-canvas-negative",
   "change-proof-integrity",
+  "context-aware-existing-ui",
   "deep-boundary",
   "existing-prototype-positive",
   "existing-web-hud-overlay-positive",
@@ -52,10 +53,18 @@ const requiredProfileByContract = new Map([
   ["deep-boundary", "deep"],
 ]);
 const existingUiImplementationContracts = new Set([
+  "context-aware-existing-ui",
   "focused-boundary",
   "mixed-audit-fix",
   "existing-web-hud-overlay-positive",
   "existing-prototype-positive",
+]);
+const contextArchetypes = new Set([
+  "command-center",
+  "dashboard-analytics",
+  "game-hud",
+  "interactive-prototype",
+  "studio-editor",
 ]);
 
 if (!fs.existsSync(suitePath)) fail(`Evaluation suite does not exist: ${suitePath}`);
@@ -131,6 +140,12 @@ for (const [index, scenario] of scenarios.entries()) {
   }
   if (scenario?.contract === "tiny-repair" && !hasAnyEvidence(expected, ["change-proof"])) {
     errors.push(`${label}: tiny-repair requires change-proof evidence.`);
+  }
+  if (
+    scenario?.contract === "context-aware-existing-ui" &&
+    (expected?.trigger !== true || !["focused", "deep"].includes(expected?.profile) || expected?.mutation !== "required")
+  ) {
+    errors.push(`${label}: context-aware-existing-ui requires trigger true, profile focused or deep, and mutation required.`);
   }
   if (scenario?.contract === "deep-boundary" && (expected?.trigger !== true || expected?.mutation !== "required")) {
     errors.push(`${label}: deep-boundary requires trigger true, profile deep, and mutation required.`);
@@ -256,6 +271,39 @@ for (const [index, scenario] of scenarios.entries()) {
   if (scenario?.contract === "reference-led-existing-ui" && !hasAnyEvidence(expected, ["visual"])) {
     errors.push(`${label}: reference-led-existing-ui requires visual evidence.`);
   }
+
+  if (expected?.context !== undefined) {
+    const context = expected.context;
+    const allowedContextKeys = new Set(["archetype", "userMode", "primaryArtifact", "costlyStates"]);
+    if (!context || typeof context !== "object" || Array.isArray(context)) {
+      errors.push(`${label}: expected.context must be an object.`);
+    } else {
+      for (const key of Object.keys(context)) {
+        if (!allowedContextKeys.has(key)) errors.push(`${label}: expected.context contains unknown key ${JSON.stringify(key)}.`);
+      }
+      if (!contextArchetypes.has(context.archetype)) {
+        errors.push(`${label}: expected.context.archetype must use the product-context vocabulary.`);
+      }
+      if (typeof context.userMode !== "string" || !context.userMode.trim()) {
+        errors.push(`${label}: expected.context.userMode must be a non-empty string.`);
+      }
+      if (typeof context.primaryArtifact !== "string" || !context.primaryArtifact.trim()) {
+        errors.push(`${label}: expected.context.primaryArtifact must be a non-empty string.`);
+      }
+      if (!isUniqueStringSet(context.costlyStates, 3)) {
+        errors.push(`${label}: expected.context.costlyStates must contain at least 3 unique states.`);
+      }
+    }
+  } else if (["context-aware-existing-ui", "existing-web-hud-overlay-positive", "existing-prototype-positive"].includes(scenario?.contract)) {
+    errors.push(`${label}: ${scenario.contract} requires an explicit product context.`);
+  }
+
+  if (scenario?.contract === "existing-web-hud-overlay-positive" && expected?.context?.archetype !== "game-hud") {
+    errors.push(`${label}: existing-web-hud-overlay-positive must classify as game-hud.`);
+  }
+  if (scenario?.contract === "existing-prototype-positive" && expected?.context?.archetype !== "interactive-prototype") {
+    errors.push(`${label}: existing-prototype-positive must classify as interactive-prototype.`);
+  }
   if (
     scenario?.contract === "reference-led-existing-ui" &&
     !hasAnyEvidence(expected, ["runtime", "runtime-required", "runtime-or-explicit-unknowns", "explicit-unknowns"])
@@ -325,6 +373,12 @@ requireCoverage(
   scenarios.some(({ contract }) => contract === "reference-led-existing-ui"),
   "The suite needs a reference-led existing UI contract.",
 );
+for (const archetype of contextArchetypes) {
+  requireCoverage(
+    scenarios.some(({ expected }) => expected?.context?.archetype === archetype),
+    `The suite needs explicit product-context coverage for ${archetype}.`,
+  );
+}
 requireCoverage(
   scenarios.some(({ contract }) => contract === "focused-boundary"),
   "The suite needs an explicit focused boundary contract.",

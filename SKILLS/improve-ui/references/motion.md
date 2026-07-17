@@ -5,6 +5,7 @@ Use this reference to decide whether motion belongs, implement it coherently, an
 ## Contents
 
 - [Decide whether to animate](#decide-whether-to-animate)
+- [Classify and map the event](#classify-and-map-the-event)
 - [Choose the mechanism](#choose-the-mechanism)
 - [Timing and easing](#timing-and-easing)
 - [Origins and continuity](#origins-and-continuity)
@@ -34,6 +35,33 @@ Delete motion that has no job. Start from interaction frequency:
 - Rare onboarding, completion, editorial, or brand moments: allow more expression without blocking reading or interaction.
 
 Match the existing project's motion tokens and primitives before introducing a library or new vocabulary.
+
+## Classify And Map The Event
+
+Assign one primary class before implementation:
+
+- `feedback`: acknowledge input, success, failure, or progress;
+- `state`: expose mode, selection, validation, loading, or availability;
+- `spatial`: preserve origin, destination, containment, or object identity;
+- `attention`: direct the eye to a rare consequential change;
+- `ambient`: communicate ongoing life or material without demanding action.
+
+Do not use ambient motion to counterfeit product activity or attention motion on every update. For a nontrivial sequence, persist `motion-plan.json` plus the same-facts [motion plan](../templates/motion-plan.md):
+
+```text
+event and trigger:
+class + purpose + frequency:
+origin -> destination:
+affected elements and causal order:
+duration + easing family:
+interrupt / reverse / retarget / cancel:
+reduced-motion alternative:
+focus and input contract:
+performance risk:
+proof state + capture:
+```
+
+Tie state commits to `transitionend`/`animationend`, a framework completion callback, a timeline label/promise, or another observable rendered milestone. Never synchronize product state with a copied duration timeout: interruption, reduced mode, background tabs, and future token changes will desynchronize it. Load [motion-implementation.md](motion-implementation.md) while editing for transform ownership, static-first enhancement, focus continuity, and cleanup traps.
 
 ## Choose The Mechanism
 

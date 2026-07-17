@@ -10,6 +10,7 @@ function fakeRuntimeHarness({ screenshotSource, logFile = null }) {
   fs.mkdirSync(scripts, { recursive: true });
   const harness = path.join(scripts, "run-interface-review.mjs");
   fs.copyFileSync(reviewScript, harness);
+  fs.copyFileSync(path.join(path.dirname(reviewScript), "generate-design-report.mjs"), path.join(scripts, "generate-design-report.mjs"));
   fs.writeFileSync(path.join(scripts, "detect-ui-antipatterns.mjs"), [
     'import fs from "node:fs";',
     'const args = process.argv.slice(2);',
@@ -37,13 +38,13 @@ const page = {
   mouse: { async wheel(x, y) { log({ wheel: [x, y] }); } },
   async click() {}, async hover() {}, async fill() {}, async press() {}, url() { return "https://example.test"; }
 };
-module.exports = { chromium: { launch: async () => ({ version: () => "test-browser", newPage: async () => page, close: async () => {} }) } };
+module.exports = { chromium: { launch: async () => ({ version: () => "test-browser", newPage: async (options) => { log({ newPage: options }); return page; }, close: async () => {} }) } };
 `);
   const target = writeFixture(workspace, "target.tsx", "export const Target = () => <main />;");
   return { workspace, harness, adapter, target };
 }
 
-function runFixture(fixture, actions) {
+function runFixture(fixture, actions, extraArgs = []) {
   const actionFile = writeFixture(fixture.workspace, "actions.json", JSON.stringify(actions));
   const outDir = path.join(fixture.workspace, "report");
   const result = runReviewScript(fixture.harness, [
@@ -54,6 +55,7 @@ function runFixture(fixture, actions) {
     "--settle-ms", "0",
     "--out", outDir,
     "--strict",
+    ...extraArgs,
   ], { env: { PLAYWRIGHT_PATH: fixture.adapter } });
   return { result, review: readReview(outDir) };
 }
@@ -89,4 +91,26 @@ test("zero-valued scroll and wait inputs are preserved instead of replaced by de
   const calls = fs.readFileSync(logFile, "utf8").trim().split(/\r?\n/).map((line) => JSON.parse(line));
   assert.ok(calls.some((entry) => entry.wheel?.[0] === 0 && entry.wheel?.[1] === 0));
   assert.ok(calls.some((entry) => entry.wait === 0));
+});
+
+test("detail capture produces and records DPR 2 runtime artifacts", () => {
+  const workspace = makeWorkspace("improve-ui-detail-capture-log-");
+  const logFile = path.join(workspace, "calls.jsonl");
+  const fixture = fakeRuntimeHarness({
+    screenshotSource: `fs.writeFileSync(options.path, Buffer.from("${pngBuffer(640, 480).toString("base64")}", "base64"));`,
+    logFile,
+  });
+  const { result, review } = runFixture(fixture, {
+    name: "detail",
+    actions: [],
+    assertions: [{ type: "visible", selector: "main" }],
+  }, ["--detail-capture"]);
+
+  assert.equal(result.status, 0, result.stdout || result.stderr);
+  const calls = fs.readFileSync(logFile, "utf8").trim().split(/\r?\n/).map((line) => JSON.parse(line));
+  assert.ok(calls.some((entry) => entry.newPage?.deviceScaleFactor === 2));
+  assert.equal(review.ledger.context.deviceScaleFactor, 2);
+  assert.equal(review.runtime.results[0].artifacts.viewport.deviceScaleFactor, 2);
+  assert.equal(review.runtime.results[0].artifacts.viewport.pixelWidth, 640);
+  assert.equal(review.runtime.results[0].artifacts.viewport.pixelHeight, 480);
 });

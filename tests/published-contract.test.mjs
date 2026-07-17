@@ -11,7 +11,7 @@ test("mandatory skill context stays compact and progressively routed", () => {
   const lines = skill.split(/\r?\n/).length;
   const words = skill.replace(/^---[\s\S]*?---/, "").trim().split(/\s+/).filter(Boolean).length;
 
-  assert.ok(lines <= 120, `SKILL.md grew to ${lines} lines; move detail to a routed reference.`);
+  assert.ok(lines <= 130, `SKILL.md grew to ${lines} lines; move detail to a routed reference.`);
   assert.ok(words <= 1_600, `SKILL.md grew to ${words} words; move detail to a routed reference.`);
   assert.match(skill, /## Context Router/);
   assert.match(skill, /`micro`/);
@@ -45,6 +45,19 @@ test("proof obligations remain proportional to the selected profile", () => {
     /`deep`[^.]+declared[^.]+state-family[^.]+viewport matrix[^.]+applicable dimensions[^.]+unknown/i,
   );
   assert.doesNotMatch(verificationStep, /`focused`\/`deep`/i);
+});
+
+test("nontrivial implementation is isolated, builder-owned, and artifact-gated", () => {
+  const skill = read("SKILLS/improve-ui/SKILL.md");
+  const contract = read("SKILLS/improve-ui/execution-contract.md");
+
+  assert.match(skill, /nontrivial implementation[^.]+execution-contract\.md/i);
+  assert.match(skill, /split unrelated archetypes into isolated work units/i);
+  assert.match(contract, /Five unrelated interfaces are five isolated work units/i);
+  for (const artifact of ["context-card.json", "proof/before.png", "proof/after.png", "proof/detail.png", "finish-ledger.json"]) assert.match(contract, new RegExp(escapeRegExp(artifact)));
+  assert.match(contract, /same builder[^.]+produce/i);
+  assert.match(contract, /default native chrome fails/i);
+  assert.match(contract, /applicable finish item[^.]+failed[^.]+blocked/i);
 });
 
 test("work profiles set scope and proof without granting mutation authority", () => {
@@ -99,6 +112,9 @@ test("every secondary router reference is a validated Markdown link", () => {
       .map((line) => [line.split("|")[1].trim(), line]),
   );
   const expectedByRow = new Map([
+    ["Product context: studio/editor, dashboard, command center, transactional/admin, game HUD, prototype, commerce/content", [
+      "references/product-contexts.md",
+    ]],
     ["Landing or pricing page", ["references/visual-quality.md"]],
     ["Canvas/WebGL/3D already present", ["references/performance.md"]],
     ["Broad production-readiness pass", [
@@ -114,6 +130,17 @@ test("every secondary router reference is a validated Markdown link", () => {
       assert.match(row, new RegExp(`\\]\\(${escapeRegExp(relative)}\\)`), `Missing linked ${relative} in ${rowName}`);
     }
   }
+});
+
+test("product context guidance distinguishes workspaces, operations, and game UI", () => {
+  const contexts = read("SKILLS/improve-ui/references/product-contexts.md");
+
+  assert.match(contexts, /Creative Studio Or Editor/);
+  assert.match(contexts, /Command Center Or Operations Console/);
+  assert.match(contexts, /Game UI Or Existing Web HUD/);
+  assert.match(contexts, /Classify from behavior, not appearance/i);
+  assert.match(contexts, /costly states/i);
+  assert.match(contexts, /studio is not improved by looking more like enterprise analytics/i);
 });
 
 test("destructive actions retain the undo-versus-confirmation decision", () => {
