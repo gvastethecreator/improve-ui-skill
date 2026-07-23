@@ -47,11 +47,14 @@ Advisory rules can surface candidates such as:
 - generic gradients, cream palettes, glass, glow, stripes, or oversized radii;
 - nested-card structures and repeated icon-tile sections;
 - generic SaaS copy, fake metadata, or placeholder proof;
+- canned writing patterns such as binary contrasts, filler openings, vague attribution, importance claims, synonym cycling, and dramatic fragments;
 - bounce, long timing, center-origin, or other motion that may be contextually wrong;
 - literal color drift when a token system may exist elsewhere;
 - blur/effect density that needs runtime and visual inspection.
 
 Treat provider-branded style rules as legacy candidates. Prefer behavior- or pattern-based names backed by fixtures; do not claim a visual tell belongs to a particular model without a calibrated corpus.
+
+Writing-pattern signals remain advisory. Confirm the full copy set, product voice, facts, and user state before proposing a change; allow them into a gate only through an explicit project copy policy.
 
 ## Confirm Findings
 

@@ -340,6 +340,20 @@
         "roast": "off",
         "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
       }
+    },
+    {
+      "id": "copy-state-repair-preserves-voice-and-facts",
+      "contract": "focused-boundary",
+      "kind": "workflow",
+      "prompt": "Improve the existing command menu's empty-result and load-error copy. Preserve its product terms, sourced facts, translation tokens, accessible names, and current voice; render both changed states and provide matched before/after proof.",
+      "fixture": "SKILLS/improve-ui/fixtures/cases/component-polish/before",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "required",
+        "roast": "off",
+        "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
+      }
     }
   ]
 }

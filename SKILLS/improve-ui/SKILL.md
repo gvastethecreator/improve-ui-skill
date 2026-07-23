@@ -5,7 +5,7 @@ description: "Improve, diagnose, audit, critique, roast, harden, or verify an ex
 
 # Improve UI
 
-Improve the interface users already have. Preserve the real product path, locate the source of the visible weakness, make the smallest systemic change authorized by the request, and limit every claim to the evidence collected.
+Improve the existing interface. Preserve its path, trace weakness to source, make the smallest authorized systemic change, and limit claims to evidence.
 
 ## Contents
 
@@ -20,8 +20,8 @@ Improve the interface users already have. Preserve the real product path, locate
 
 ## Mandatory Entry Frame
 
-- Treat code, screenshots, and runtime states as evidence with different limits; never infer a visual pass from source alone. For nontrivial implementation, follow [execution-contract.md](execution-contract.md); classify with [references/product-contexts.md](references/product-contexts.md), read [finish-quality.md](finish-quality.md), and inspect context fit, alignment, spacing, overflow/scrollbars, gradients, icons, and capture legibility.
-- Scope work to existing web UI. Route blank-canvas requests to a greenfield design-and-build skill, native UI to a platform skill, and specialist renderer/game/3D-system implementation to the matching domain skill; keep existing web HUD, overlay, fallback, and integration-quality work here.
+- Code, screenshots, and runtime prove different claims; source cannot prove visual quality. For nontrivial implementation, use [execution-contract.md](execution-contract.md), [product contexts](references/product-contexts.md), and [finish quality](finish-quality.md).
+- Scope existing web UI. Route blank-canvas work to a greenfield skill, native UI to a platform skill, and specialist renderer/game/3D work to its domain skill; keep web HUD, overlay, fallback, and integration quality here.
 - Describe accessibility work as an audit or improvement against named criteria, never as formal WCAG conformance or certification.
 - Preserve working IA, routes, labels, form contracts, analytics, SEO, legal copy, and accessibility wins unless the user places them in scope.
 - Separate authority before acting:
@@ -65,6 +65,7 @@ Choose one primary row, then union only the domain references and proof obligati
 | Explicit roast | [forensic-roast.md](forensic-roast.md), [finish-quality.md](finish-quality.md) | Same evidence bar as a neutral audit |
 | Geometry, rhythm, dense layouts, HUD safe areas | [references/geometry-and-rhythm.md](references/geometry-and-rhythm.md), [finish-quality.md](finish-quality.md) | Alignment map, measured repetition, and detail crops |
 | Hierarchy, taste, typography, surfaces, generic or cheap-looking UI | [references/visual-quality.md](references/visual-quality.md), [references/authorship-and-specificity.md](references/authorship-and-specificity.md), [finish-quality.md](finish-quality.md) | Before/after or reference/after visual artifact, product-causality test, and finish ledger |
+| Product copy, labels, state messages, or report prose | [references/copy-and-writing.md](references/copy-and-writing.md) plus the matching product route | Same-state before/after, preserved facts/tokens, rendered fit, and accessible names/status |
 | Semantics, keyboard, focus, forms, contrast | [references/accessibility.md](references/accessibility.md) | Manual interaction plus automated evidence when available |
 | Responsive, content, i18n, async, real-data states | [references/responsive-hardening.md](references/responsive-hardening.md) | Executed states, assertions, and relevant viewports |
 | Motion or gesture | [references/motion.md](references/motion.md); add [motion implementation traps](references/motion-implementation.md) while editing and [performance](references/performance.md) only for runtime cost | Repeated/interrupted trigger, reduced motion, and visual/runtime evidence |
@@ -111,7 +112,7 @@ Treat the run as incomplete when any relevant condition holds:
 - Separate report usefulness from claim status: evidence may be partial while the requested completion remains blocked.
 - Cite file/line for source findings and viewport/state/artifact for visual findings; include the finish ledger for nontrivial visual work.
 - Label rules as `standard`, `practice`, `heuristic`, or `preference`; never block on taste alone.
-- Match the user's language and requested tone. Attack interface decisions, never the people who made them.
+- Match the user's language and tone. For UI copy or report prose, apply [copy and writing quality](references/copy-and-writing.md), preserve voice and facts, and critique decisions and user effects.
 - Material reviews/proposals use one-manifest `report.md` + `report.html`; ids, annotation geometry, decisions, proof states, and limitations must match.
 - Use [checklist.md](checklist.md) before a nontrivial final claim.
 

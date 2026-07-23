@@ -1,6 +1,6 @@
 # Sources And Provenance
 
-Last verified: **2026-07-09**.
+Last verified: **2026-07-22**.
 
 Use this ledger when a finding depends on a standard, browser feature, library behavior, or inherited material. Link to the exact criterion or documentation near the claim; do not cite this index as a substitute.
 
@@ -75,6 +75,7 @@ Library documentation is not a universal rule. Apply it only when that library/v
 
 - The skill package and its local documentation are maintained under the repository's MIT license.
 - This refactor rewrites and consolidates the repository's previous skill material; it does not preserve long external quotations or third-party code examples.
+- [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, commit `61c21c351da4dcb40946a11fead978f2078a2c65`, MIT: [copy and writing quality](copy-and-writing.md) adapts its editing principles and named pattern checks for UI copy and design reports. The prose and workflow were rewritten for this skill; no upstream scripts or agent metadata were imported. Last checked 2026-07-22. Preserve the full license in [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
 - The prior `motion-craft.md` mentioned “Apple-style fluid interface guidance” without an exact title, URL, revision, or license. The consolidated motion reference retains only independently stated, broadly documented interaction principles and does not attribute or reproduce source-specific prose.
 - W3C, MDN, Playwright, Google, and Motion materials are linked as conceptual/technical authorities. They are not bundled or relicensed by this skill.
 - Executable fixtures and templates in this package are local test assets. Their expected results must be derived from executable checks, not narrative claims.

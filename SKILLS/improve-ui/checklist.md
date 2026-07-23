@@ -26,6 +26,8 @@ Apply only items relevant to the chosen profile and claim. Mark an item `n/a`, `
 - [ ] Applicable forms, validation, pending, failure, and recovery states work.
 - [ ] Responsive layout survives relevant boundaries, zoom/reflow, and real content.
 - [ ] Applicable loading, empty, error, permission, stale, long-content, locale, and repeated-action states were executed or marked unknown/blocked.
+- [ ] Changed UI copy preserves facts, product voice, stable terms, legal text, variables, translation tokens, visible/accessibility name alignment, and the user's action or consequence.
+- [ ] Loading, empty, no-result, permission, error, success, and recovery copy was checked in each changed state and relevant viewport.
 - [ ] Motion has a purpose, interruption behavior, reduced-motion path, and appropriate input gating.
 - [ ] Performance claims use measured evidence; source-only cleanup is labeled as risk reduction.
 
@@ -36,6 +38,7 @@ Apply only items relevant to the chosen profile and claim. Mark an item `n/a`, `
 - [ ] Every actual scroll region has correct ownership and a minimal theme-aware custom scrollbar; affordance, forced colors, keyboard, wheel, touch, and zoom remain usable.
 - [ ] Gradients were judged by role, stops, contrast, banding, clipping, fallback, themes, and performance—not banned or approved by hue alone.
 - [ ] Icons use a coherent source/family; custom vectors passed real-size and enlarged-crop inspection for geometry and optical centering.
+- [ ] Material report prose passed the copy/writing final read; named patterns remain advisory unless project policy makes them a gate.
 - [ ] The finish ledger contains no applicable `failed`; each `blocked` limits the claim.
 
 ## Evidence

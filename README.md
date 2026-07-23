@@ -5,11 +5,11 @@
 > Evidence-gated Codex skill for diagnosing, repairing, auditing, and verifying an existing web interface.
 
 [![License: MIT](https://shieldcn.dev/badge/license-MIT-yellow.svg?variant=secondary&size=xs)](./LICENSE)
-[![Version](https://shieldcn.dev/badge/version-0.3.0-blue.svg?variant=secondary&size=xs)](./SKILLS/improve-ui/skill-manifest.json)
+[![Version](https://shieldcn.dev/badge/version-0.3.1-blue.svg?variant=secondary&size=xs)](./SKILLS/improve-ui/skill-manifest.json)
 
 Improve UI starts from a real product surface: editable source, a screenshot, a route, a component, or a running app. It preserves working product contracts, fixes the smallest systemic cause authorized by the request, and limits every completion claim to evidence that actually ran.
 
-It is not a blank-canvas design skill, a native UI specialist, a formal accessibility-certification tool, or a specialist renderer/game/3D-system implementation skill. Existing web HUD, overlay, fallback, and integration-quality work remains in scope.
+Scope covers existing web HUD, overlay, fallback, and integration quality, plus other existing web interfaces. Blank-canvas design, native UI, formal accessibility certification, and specialist renderer/game/3D-system implementation require their matching skills.
 
 ## Operating Contract
 
@@ -19,6 +19,7 @@ It is not a blank-canvas design skill, a native UI specialist, a formal accessib
 - Objective technical defects can gate. Taste heuristics remain advisory until a human confirms them in context.
 - Missing targets, failed runtime states, invalid proof, and uninspected dimensions never become a pass.
 - Static analysis, evidence coverage, quality assessment, and regression expectations stay separate.
+- UI copy and report prose preserve product voice and sourced facts; named writing patterns remain advisory unless project policy makes them a gate.
 
 The skill selects one proportional profile:
 
@@ -124,7 +125,7 @@ The tool compares every file, reports a deterministic SHA-256 tree hash, removes
 ## Package Map
 
 - [SKILL.md](./SKILLS/improve-ui/SKILL.md): compact trigger, authority, profile, routing, and output contract.
-- [`references/`](./SKILLS/improve-ui/references): progressive domain guidance for context, geometry, authorship, motion, and synchronized reporting.
+- [`references/`](./SKILLS/improve-ui/references): progressive domain guidance for context, geometry, authorship, copy, motion, and synchronized reporting.
 - [detector-rules.md](./SKILLS/improve-ui/detector-rules.md): detector taxonomy, confidence, suppression, and baseline behavior.
 - [proof-recipes.md](./SKILLS/improve-ui/proof-recipes.md): executable CLI and evidence schemas.
 - [`templates/`](./SKILLS/improve-ui/templates): surgical read, surgery log, and evidence ledger records.

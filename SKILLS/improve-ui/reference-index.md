@@ -23,6 +23,7 @@ Open this index only after `SKILL.md` selects the relevant concern. Do not prelo
 - [Visual quality](references/visual-quality.md)
 - [Geometry and rhythm](references/geometry-and-rhythm.md)
 - [Authorship and specificity](references/authorship-and-specificity.md)
+- [Copy and writing quality](references/copy-and-writing.md)
 - [Accessibility](references/accessibility.md)
 - [Responsive hardening](references/responsive-hardening.md)
 - [Motion](references/motion.md)

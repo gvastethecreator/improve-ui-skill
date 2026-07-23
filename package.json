@@ -1,6 +1,6 @@
 {
   "name": "improve-ui-skill",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Evidence-gated Codex skill for improving existing web interfaces.",
   "type": "module",

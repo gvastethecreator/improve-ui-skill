@@ -5,7 +5,7 @@ Use this for every rendered polish, visual repair, redesign, screenshot review, 
 ## Separate Structure From Finish
 
 1. Run a `structure` pass for task hierarchy, composition, content, state, responsive fit, and interaction.
-2. Run a `finish` pass for alignment, spacing rhythm, overflow/scrollbars, gradients, icons/vector craft, and capture legibility.
+2. Run a `finish` pass for alignment, spacing rhythm, overflow/scrollbars, gradients, icons/vector craft, copy/prose, and capture legibility.
 
 Do not pass finish from source, tokens, a detector, or a full-page thumbnail. Compare the same route, viewport, state, theme, content, and auth context after each correction.
 
@@ -38,6 +38,13 @@ Gradients are valid design material. Judge their execution, not their existence.
 - Inspect every real rendered size and an enlarged crop, commonly `16`, `20`, and `24` CSS px plus a `4x` detail view. Verify supported themes, button alignment, silhouette, stroke weight, and family consistency.
 - Replace weak geometry instead of repeatedly nudging a shapeless path.
 
+## Copy And Prose
+
+- Open [copy and writing quality](references/copy-and-writing.md) when the task changes user-facing text or creates a material review, proposal, or report.
+- Inspect copy in its rendered state. Check the user task, voice, facts, action, consequence, recovery, accessible name, and translation tokens.
+- Treat named writing patterns as `practice` or `heuristic` unless project policy promotes them. A word list does not override product meaning, legal text, or an approved brand voice.
+- Verify changed text at narrow and wide widths, zoom, long content, and relevant locales. Exercise each changed loading, empty, permission, error, success, and recovery state.
+
 ## Readable Visual Evidence
 
 - Use viewport captures for hierarchy, full-page captures for rhythm, and focused crops for dense rows, controls, scrollbars, gradients, and icons.
@@ -54,6 +61,7 @@ spacing rhythm: passed | failed | n/a | blocked — evidence
 overflow and scrollbars: passed | failed | n/a | blocked — evidence
 gradients: passed | failed | n/a | blocked — evidence
 icons and vector craft: passed | failed | n/a | blocked — evidence
+copy and prose: passed | failed | n/a | blocked — evidence
 capture legibility: passed | failed | blocked — evidence
 ```
 
@@ -61,4 +69,4 @@ Any applicable `failed` continues the loop. Any `blocked` limits the claim. If a
 
 ## Resolution Standard
 
-Do not solve weak craft only by deleting it. Supply the better move: a stronger anchor, a clearer spacing relationship, a fitted scrollbar treatment, a more deliberate gradient field, or a coherent icon source. If the first fix is merely competent and generic, generate two materially different bounded alternatives, choose one against the task and product system, and prove it.
+Do not solve weak craft only by deleting it. Supply the better move: a stronger anchor, a clearer spacing relationship, a fitted scrollbar treatment, a deliberate gradient field, a coherent icon source, or direct product-specific copy. If the first fix is merely competent and generic, generate two materially different bounded alternatives, choose one against the task and product system, and prove it.
