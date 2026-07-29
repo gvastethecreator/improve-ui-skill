@@ -94,7 +94,7 @@ Node 20.11 or newer is required for repository verification. The installed stati
 ```powershell
 npm ci
 npx playwright install chromium
-npm run check
+npm run check:full
 ```
 
 Useful focused commands:
@@ -102,25 +102,25 @@ Useful focused commands:
 ```powershell
 npm run validate
 npm run validate:evals
-npm run test:unit
+npm run test:core
 npm run test:browser
+npm run test:full
+npm run check:core
+npm run check:full
 git diff --check
 ```
+
+`test:core` and `check:core` cover every non-browser contract without requiring Playwright. `test:browser` and `check:full` preflight both the Playwright package and Chromium; when either is absent they stop with install instructions instead of presenting a partial suite as a product regression or a complete gate. `test:unit` remains an alias for `test:core`.
 
 The contract scenario suite in [evals/scenarios.json](./evals/scenarios.json) covers positive and negative routing, read-only authority, all three profiles, explicit roast, unavailable runtime, named-only states, invalid proof, advisory taste, and formal-compliance boundaries. Its structural validator does not pretend to grade an agent; [evals/README.md](./evals/README.md) describes leakage-free forward testing.
 
 CI runs validation and the full test suite on Windows and Ubuntu with Node 20 and 22.
 
-## Canonical Payload And Active Mirror
+## Canonical Source And Local Junctions
 
-`SKILLS/improve-ui` is the canonical payload. Use the scoped mirror tool to detect or apply drift without touching unrelated files in the destination repository:
+`SKILLS/improve-ui` is the only editable skill directory. On a maintainer machine, `agents-matrix`, `.agents`, and `.codex` must be direct junctions to that directory. Never edit or synchronize a second physical copy: copies drift and a mirror conflicts with the active junction topology.
 
-```text
-node ./scripts/sync-skill-mirror.mjs --source ./SKILLS/improve-ui --target <agents-matrix-path>/skills/improve-ui --check --json
-node ./scripts/sync-skill-mirror.mjs --source ./SKILLS/improve-ui --target <agents-matrix-path>/skills/improve-ui --write --json
-```
-
-The tool compares every file, reports a deterministic SHA-256 tree hash, removes only stale files inside the explicitly named `improve-ui` target, and verifies convergence after writing.
+Consumer copy installs remain separate release artifacts; do not use them as a maintainer update path.
 
 ## Package Map
 
