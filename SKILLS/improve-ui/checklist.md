@@ -15,6 +15,7 @@ Apply only items relevant to the chosen profile and claim. Mark an item `n/a`, `
 - [ ] Main task, visible symptom, user impact, and source cause are connected.
 - [ ] The context delta explains what this archetype requires, what the evidence shows, and why the mismatch harms its real user loop.
 - [ ] P0/P1 issues were handled before taste.
+- [ ] For `focused`/`deep` work, the improvement inventory exists, and every in-scope row is closed or `blocked` with a reason.
 - [ ] Repeated defects were repaired systemically when safer than local patches.
 - [ ] Main path plus one relevant edge/recovery path were addressed for nontrivial work.
 - [ ] Archetype-specific costly states were executed or marked `unknown`/`blocked`; generic breakpoint proof did not replace them.

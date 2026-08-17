@@ -44,6 +44,7 @@ Change a preserved contract only when explicitly in scope or when it causes the 
 - Systemic UI diagnosis: [references/foundation.md](references/foundation.md)
 - Hierarchy/taste/type/surfaces: [references/visual-quality.md](references/visual-quality.md)
 - Accessibility: [references/accessibility.md](references/accessibility.md)
+- Modality, permissions, onboarding, progress, search, undo, large text, inclusion: [references/human-interface-craft.md](references/human-interface-craft.md)
 - Responsive/async/content: [references/responsive-hardening.md](references/responsive-hardening.md)
 - Motion: [references/motion.md](references/motion.md)
 - Performance: [references/performance.md](references/performance.md)

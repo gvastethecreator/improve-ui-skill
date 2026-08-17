@@ -56,7 +56,8 @@ Prefer these moves before decorative polish:
 - limit each region to one visually primary action;
 - flatten cards-inside-cards into spacing, sections, or one justified surface layer;
 - place comparable values in stable columns and use density where comparison benefits;
-- reveal advanced or destructive actions progressively without hiding essential recovery.
+- reveal advanced or destructive actions progressively without hiding essential recovery;
+- keep navigation and persistent controls as a quieter functional layer; put brand and expression in the content they serve.
 
 Do not say “improve spacing.” Name which group becomes tighter, which boundary becomes larger, and why.
 
@@ -89,7 +90,9 @@ For visual direction:
 - keep inactive states quieter than primary and selected states;
 - tune text for colored backgrounds instead of reusing neutral gray blindly;
 - use one coherent accent strategy unless the product already owns a broader palette;
-- verify light/dark, selected, disabled, error, and high-contrast states where supported.
+- verify light/dark, selected, disabled, error, and high-contrast states where supported;
+- use translucent chrome only when the same spatial object stays visible behind it and text stays legible, with a solid fallback under reduced transparency;
+- do not choose a blur or material by the tint it happens to produce.
 
 Cream, purple gradients, glass, neon glow, or monochrome editorial styling are not inherently wrong. Treat them as heuristics only when they appear unearned, obscure content, or make unrelated products look interchangeable.
 
@@ -141,6 +144,7 @@ Use these as advisory heuristics requiring visual and product context:
 - generic SaaS copy that avoids naming the product action and consequence;
 - identical reveal animation on every section;
 - decorative glass, stripes, grids, or gradients with no structural role;
+- iOS Settings chrome, system-glass costume, or SF-like chrome on a web product that did not ask for Apple-feel;
 - replacing one fashionable default with another equally predictable anti-default.
 
 Confirm intent. An established system, real product data, or brand asset can make the same pattern appropriate.
@@ -175,4 +179,4 @@ Skip distinction work for tiny bug fixes, regulated workflows, or dense controls
 - Separate observation from interpretation: “CTA is below the fold at 1280×720” is evidence; “feels timid” is a heuristic.
 - Keep a visual claim `blocked` or `limited` when no rendered artifact exists.
 
-See [sources-and-provenance.md](sources-and-provenance.md) for the non-standard font-smoothing note and the authority model used by this reference.
+See [sources-and-provenance.md](sources-and-provenance.md) for the non-standard font-smoothing note and the authority model used by this reference. For chrome-versus-content, large-text reflow, and anti-iOS-costume tests, use [human-interface-craft.md](human-interface-craft.md).

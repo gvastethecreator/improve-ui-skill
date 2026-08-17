@@ -99,6 +99,8 @@ Evaluate the actual rendered colors and applicable WCAG criterion:
 - Preserve user text spacing overrides: line height, paragraph spacing, letter spacing, and word spacing must not cause loss of content or functionality.
 - Do not disable browser zoom through viewport metadata, event handlers, or gesture suppression.
 - Verify text at 200% zoom and reflow at the WCAG 1.4.10 equivalent of 320 CSS px/400% where applicable.
+- Treat user-controlled text size as a layout problem: stack icon-plus-label rows, drop optional columns, and stop truncating essential names, errors, and primary actions at the largest supported size. Default type scale is not coverage.
+- Do not override user contrast, transparency, motion, or forced-colors settings to preserve a mock. Custom palettes that claim those modes need matching variants, including a higher-contrast pair.
 
 Treat browser/runtime contrast sampling as a lead. Confirm complex backgrounds manually.
 
@@ -139,6 +141,7 @@ For menus, listboxes, tabs, trees, grids, toolbars, and comboboxes, follow the e
 - Keep flashing/blinking within applicable safety limits.
 - Treat `prefers-reduced-transparency` as progressive enhancement; also consider `prefers-contrast` and `forced-colors` where translucent material carries text or structure.
 - Avoid blanket rules that disable every transition and remove essential feedback.
+- For modality, permission prompts, large-text reflow, and inclusion language beyond named WCAG criteria, use [human-interface-craft.md](human-interface-craft.md).
 
 Read `motion.md` for implementation patterns.
 

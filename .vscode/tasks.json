@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "🧪 Check", "type": "shell", "command": "pnpm run check:core", "problemMatcher": [] },
+    { "label": "🌐 Browser", "type": "shell", "command": "pnpm run test:browser", "problemMatcher": [] },
+    { "label": "✅ Validate", "type": "shell", "command": "pnpm run validate", "problemMatcher": [] },
+    { "label": "🧹 Diff", "type": "shell", "command": "git diff --check", "problemMatcher": [] }
+  ]
+}

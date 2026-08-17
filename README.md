@@ -1,11 +1,22 @@
-# Improve UI
-
-![Improve UI banner](./assets/readme-banner.png)
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/header/document.svg?title=Improve+UI&subtitle=Keep+the+product.+Remove+the+friction.&logo=wand2&theme=blue&align=center&mode=dark" />
+    <img alt="Improve UI — keep the product, remove the friction" src="https://shieldcn.dev/header/document.svg?title=Improve+UI&subtitle=Keep+the+product.+Remove+the+friction.&logo=wand2&theme=blue&align=center&mode=light" />
+  </picture>
+</p>
 
 > Evidence-gated Codex skill for diagnosing, repairing, auditing, and verifying an existing web interface.
 
-[![License: MIT](https://shieldcn.dev/badge/license-MIT-yellow.svg?variant=secondary&size=xs)](./LICENSE)
-[![Version](https://shieldcn.dev/badge/version-0.3.1-blue.svg?variant=secondary&size=xs)](./SKILLS/improve-ui/skill-manifest.json)
+<p align="center">
+  <a href="https://github.com/gvastethecreator/improve-ui-skill/actions/workflows/ci.yml"><img alt="CI status" src="https://shieldcn.dev/github/ci/gvastethecreator/improve-ui-skill.svg?workflow=ci&branch=main&variant=secondary&size=xs" /></a>
+  <a href="https://gvastethecreator.github.io/improve-ui-skill/"><img alt="Project site" src="https://shieldcn.dev/badge/site-pages-1857c9.svg?logo=githubpages&variant=branded&size=xs" /></a>
+  <a href="./SKILLS/improve-ui/skill-manifest.json"><img alt="Version 0.3.1" src="https://shieldcn.dev/badge/version-0.3.1-blue.svg?variant=secondary&size=xs" /></a>
+  <a href="https://agentskills.io/"><img alt="Agent Skills compatible" src="https://shieldcn.dev/badge/Agent+Skills-compatible-111111.svg?variant=secondary&size=xs" /></a>
+  <a href="https://github.com/gvastethecreator/improve-ui-skill/stargazers"><img alt="GitHub stars" src="https://shieldcn.dev/github/stars/gvastethecreator/improve-ui-skill.svg?variant=secondary&size=xs" /></a>
+  <a href="LICENSE"><img alt="MIT license" src="https://shieldcn.dev/github/license/gvastethecreator/improve-ui-skill.svg?variant=secondary&size=xs" /></a>
+</p>
+
+[Project site](https://gvastethecreator.github.io/improve-ui-skill/) · [Install](#install) · [Operating contract](#operating-contract) · [Contributing](CONTRIBUTING.md)
 
 Improve UI starts from a real product surface: editable source, a screenshot, a route, a component, or a running app. It preserves working product contracts, fixes the smallest systemic cause authorized by the request, and limits every completion claim to evidence that actually ran.
 
@@ -92,21 +103,21 @@ Each case contains `before/`, `after/`, and the exact detector findings expected
 Node 20.11 or newer is required for repository verification. The installed static detector itself has no third-party runtime dependency; browser proof loads Playwright explicitly when available.
 
 ```powershell
-npm ci
+pnpm install --frozen-lockfile
 npx playwright install chromium
-npm run check:full
+pnpm run check:full
 ```
 
 Useful focused commands:
 
 ```powershell
-npm run validate
-npm run validate:evals
-npm run test:core
-npm run test:browser
-npm run test:full
-npm run check:core
-npm run check:full
+pnpm run validate
+pnpm run validate:evals
+pnpm run test:core
+pnpm run test:browser
+pnpm run test:full
+pnpm run check:core
+pnpm run check:full
 git diff --check
 ```
 
@@ -114,7 +125,7 @@ git diff --check
 
 The contract scenario suite in [evals/scenarios.json](./evals/scenarios.json) covers positive and negative routing, read-only authority, all three profiles, explicit roast, unavailable runtime, named-only states, invalid proof, advisory taste, and formal-compliance boundaries. Its structural validator does not pretend to grade an agent; [evals/README.md](./evals/README.md) describes leakage-free forward testing.
 
-CI runs validation and the full test suite on Windows and Ubuntu with Node 20 and 22.
+CI runs validation and the full test suite on Windows and Ubuntu with Node 20 and 24.
 
 ## Canonical Source And Local Junctions
 
@@ -143,3 +154,7 @@ Consumer copy installs remain separate release artifacts; do not use them as a m
 ## License
 
 MIT. See [LICENSE](./LICENSE).
+
+## Support
+
+If Improve UI saves you review time, you can support continued maintenance through [GitHub Sponsors](https://github.com/sponsors/gvastethecreator) or [Ko-fi](https://ko-fi.com/gvaste).
