@@ -1,0 +1,272 @@
+{
+  "generated_at": "2026-08-15T05:22:00Z",
+  "generated_from_commit": "6a33f6bd823e9a7c72bf7fc63031e3930960f048",
+  "scope": [
+    "."
+  ],
+  "nodes": [
+    {
+      "id": "repository",
+      "path": "README.md",
+      "role": "Owns the tracked files for the repository module.",
+      "type": "module",
+      "boundary": "Repository",
+      "entrypoints": [
+        "README.md:Operating Contract"
+      ],
+      "tests": [],
+      "constraints": [
+        "This baseline uses tracked source and explicit dependency references only."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "README.md",
+            "symbol": "Operating Contract"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scripts",
+      "path": "scripts",
+      "role": "Owns the tracked files for the scripts module.",
+      "type": "service",
+      "boundary": "Scripts",
+      "entrypoints": [
+        "scripts/run-tests.mjs:collectTests"
+      ],
+      "tests": [],
+      "constraints": [
+        "This baseline uses tracked source and explicit dependency references only."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "scripts/run-tests.mjs",
+            "symbol": "collectTests"
+          }
+        ]
+      }
+    },
+    {
+      "id": "skills",
+      "path": "SKILLS",
+      "role": "Owns the tracked files for the SKILLS module.",
+      "type": "module",
+      "boundary": "Skills",
+      "entrypoints": [
+        "SKILLS/improve-ui/SKILL.md:Improve UI"
+      ],
+      "tests": [],
+      "constraints": [
+        "This baseline uses tracked source and explicit dependency references only."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "SKILLS/improve-ui/SKILL.md",
+            "symbol": "Improve UI"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project-site",
+      "path": "docs",
+      "role": "Presents the public English project overview and installation route deployed through GitHub Pages.",
+      "type": "interface",
+      "boundary": "Documentation",
+      "entrypoints": [
+        "docs/index.html:Improve UI"
+      ],
+      "tests": [],
+      "constraints": [
+        "The site is static, English-only, and must remain readable without JavaScript."
+      ],
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "docs/index.html",
+            "symbol": "Improve UI"
+          },
+          {
+            "path": ".github/workflows/pages.yml",
+            "symbol": "Deploy Pages"
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "repository",
+      "to": "scripts",
+      "type": "calls",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "package.json",
+            "symbol": "scripts/run-tests.mjs"
+          },
+          {
+            "path": "package.json",
+            "symbol": "scripts/validate-skill.mjs"
+          },
+          {
+            "path": "package.json",
+            "symbol": "scripts/validate-evals.mjs"
+          }
+        ]
+      }
+    },
+    {
+      "from": "repository",
+      "to": "skills",
+      "type": "calls",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "package.json",
+            "symbol": "SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs"
+          },
+          {
+            "path": "package.json",
+            "symbol": "SKILLS/improve-ui/scripts/run-interface-review.mjs"
+          },
+          {
+            "path": "package.json",
+            "symbol": "SKILLS/improve-ui/scripts/generate-design-report.mjs"
+          }
+        ]
+      }
+    },
+    {
+      "from": "repository",
+      "to": "skills",
+      "type": "reads",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/proof-recipes.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/references/reporting.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/fixtures/cases/component-polish/case.json"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/fixtures/cases/dashboard-surgery/case.json"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/fixtures/cases/landing-repair/case.json"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/SKILL.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/detector-rules.md"
+          },
+          {
+            "path": "README.md",
+            "symbol": "./SKILLS/improve-ui/checklist.md"
+          }
+        ]
+      }
+    },
+    {
+      "from": "skills",
+      "to": "repository",
+      "type": "reads",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": "SKILLS/improve-ui/proof-recipes.md",
+            "symbol": "README.md"
+          },
+          {
+            "path": "SKILLS/improve-ui/references/reporting.md",
+            "symbol": "README.md"
+          }
+        ]
+      }
+    },
+    {
+      "from": "repository",
+      "to": "project-site",
+      "type": "calls",
+      "evidence": {
+        "status": "verified",
+        "locations": [
+          {
+            "path": ".github/workflows/pages.yml",
+            "symbol": "path: docs"
+          },
+          {
+            "path": "README.md",
+            "symbol": "Project site"
+          }
+        ]
+      }
+    }
+  ],
+  "flows": [
+    {
+      "trigger": "Tracked reference SKILLS/improve-ui/proof-recipes.md:README.md",
+      "steps": [
+        "skills",
+        "repository",
+        "scripts"
+      ],
+      "outcome": "The verified dependency path reaches scripts through 2 step(s)."
+    },
+    {
+      "trigger": "Tracked reference package.json:scripts/run-tests.mjs",
+      "steps": [
+        "repository",
+        "scripts"
+      ],
+      "outcome": "The verified dependency path reaches scripts through 1 step(s)."
+    },
+    {
+      "trigger": "Tracked reference package.json:SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs",
+      "steps": [
+        "repository",
+        "skills"
+      ],
+      "outcome": "The verified dependency path reaches skills through 1 step(s)."
+    },
+    {
+      "trigger": "Tracked reference SKILLS/improve-ui/proof-recipes.md:README.md to repository",
+      "steps": [
+        "skills",
+        "repository"
+      ],
+      "outcome": "The verified dependency path reaches repository through 1 step(s)."
+    },
+    {
+      "trigger": "Push to main changes docs or the Pages workflow",
+      "steps": [
+        "repository",
+        "project-site"
+      ],
+      "outcome": "GitHub Pages publishes the static English project site from docs."
+    }
+  ]
+}

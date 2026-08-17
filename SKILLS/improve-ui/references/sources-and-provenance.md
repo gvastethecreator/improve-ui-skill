@@ -1,6 +1,6 @@
 # Sources And Provenance
 
-Last verified: **2026-07-22**.
+Last verified: **2026-08-12**.
 
 Use this ledger when a finding depends on a standard, browser feature, library behavior, or inherited material. Link to the exact criterion or documentation near the claim; do not cite this index as a substitute.
 
@@ -8,6 +8,7 @@ Use this ledger when a finding depends on a standard, browser feature, library b
 
 - [Authority model](#authority-model)
 - [Standards and accessibility](#standards-and-accessibility)
+- [Human interface practice](#human-interface-practice)
 - [Browser and CSS behavior](#browser-and-css-behavior)
 - [Testing and measurement](#testing-and-measurement)
 - [Library-specific guidance](#library-specific-guidance)
@@ -39,6 +40,20 @@ Standards may contain exceptions and applicability conditions. Record them. Docu
 | [Modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) | `practice`; focus, keyboard, naming, return behavior | Prefer native/proven project primitives where possible |
 
 Relevant WCAG 2.2 coverage in this skill also includes reflow, text spacing, non-text contrast, use of color, focus not obscured, pointer cancellation, accessible authentication, and keyboard/focus criteria. Open the current criterion before making a formal claim.
+
+## Human Interface Practice
+
+Apple's Human Interface Guidelines are copyrighted. This skill links them as conceptual `practice` and restates transferable tests in original prose. It does not copy HIG text, SF type metrics, system color values, or material specifications. They are not a web standard and must not gate CI.
+
+| Source | Authority and use | Notes |
+|---|---|---|
+| [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) | `practice`; human-behavior craft for web UI | Use [human-interface-craft.md](human-interface-craft.md). Do not clone iOS/macOS chrome. |
+| [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/) | `practice`; purpose, agency, responsibility, familiarity, flexibility, simplicity, craft, delight | Tests, not slogans. Delight is a result, not confetti. |
+| [Inclusion](https://developer.apple.com/design/human-interface-guidelines/inclusion) | `practice`; language and imagery | Transformed into copy tests; no HIG quotations. |
+| [Privacy](https://developer.apple.com/design/human-interface-guidelines/privacy) | `practice`; permission timing and purpose copy | Ask in context; keep denied states usable. |
+| [Onboarding](https://developer.apple.com/design/human-interface-guidelines/onboarding), [Searching](https://developer.apple.com/design/human-interface-guidelines/searching), [Progress indicators](https://developer.apple.com/design/human-interface-guidelines/progress-indicators), [Materials](https://developer.apple.com/design/human-interface-guidelines/materials) | `practice`; first-run, findability, progress, chrome-versus-content | Translucency only when the same spatial object remains behind chrome; solid fallback for reduced transparency. |
+
+Last technically verified for this section: **2026-08-12**. Concepts adapted; text transformed; no code or tables copied. Apple materials are not bundled or relicensed.
 
 ## Browser And CSS Behavior
 
@@ -77,7 +92,8 @@ Library documentation is not a universal rule. Apply it only when that library/v
 - This refactor rewrites and consolidates the repository's previous skill material; it does not preserve long external quotations or third-party code examples.
 - [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, commit `61c21c351da4dcb40946a11fead978f2078a2c65`, MIT: [copy and writing quality](copy-and-writing.md) adapts its editing principles and named pattern checks for UI copy and design reports. The prose and workflow were rewritten for this skill; no upstream scripts or agent metadata were imported. Last checked 2026-07-22. Preserve the full license in [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
 - The prior `motion-craft.md` mentioned “Apple-style fluid interface guidance” without an exact title, URL, revision, or license. The consolidated motion reference retains only independently stated, broadly documented interaction principles and does not attribute or reproduce source-specific prose.
-- W3C, MDN, Playwright, Google, and Motion materials are linked as conceptual/technical authorities. They are not bundled or relicensed by this skill.
+- [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) and [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/) by Apple: [human-interface-craft.md](human-interface-craft.md) adapts transferable interaction, permission, onboarding, progress, search, inclusion, and display-setting tests for existing web UI. Prose is original. No HIG quotations, SF metrics, system colors, or Liquid Glass specifications were copied. Last checked 2026-08-12. Apple materials remain Apple's; this skill only links them.
+- W3C, MDN, Playwright, Google, Motion, and Apple HIG/WWDC materials are linked as conceptual/technical authorities. They are not bundled or relicensed by this skill.
 - Executable fixtures and templates in this package are local test assets. Their expected results must be derived from executable checks, not narrative claims.
 - Optional runtimes such as Playwright, axe, Motion, and `web-vitals` remain external dependencies. Follow their own licenses and versioned APIs; do not vendor them without recording license and source.
 

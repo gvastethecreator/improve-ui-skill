@@ -15,7 +15,7 @@ Use this route when a task changes text users see in an existing interface. It a
 2. Identify the audience, user task, needed action or result, and three to five voice signals such as vocabulary, pace, bluntness, humor, uncertainty, or formality.
 3. Make the minimum useful edit. Preserve meaning, product terms, strong lines, useful structure, and the traits that make the voice distinct. Record why a report or interface flow was reordered.
 4. Front-load the point when it improves clarity. Keep setup that adds needed context, trust, or character, and vary structure with the content.
-5. Prefer concrete nouns, direct verbs, active voice, stable terms, and exact facts. Repeat the correct product term instead of rotating synonyms. Split tangled sentences while keeping clear changes in pace and useful fragments.
+5. Prefer concrete nouns, direct verbs, active voice, stable terms, and exact facts. Repeat the correct product term instead of rotating synonyms. Split tangled sentences while keeping clear changes in pace and useful fragments. Address the reader as `you` when the product voice allows it, not as “the user.” Omit unneeded gender, use people-first language about disability, and prefer plain wording over culture-bound idioms.
 6. Keep every claim within the evidence. Name the source for metrics, quotes, awards, customer proof, or research. Remove, flag, or label unsupported and synthetic material.
 7. Preserve variables, ICU tokens, markup, keyboard hints, accessible names, and translation keys. Keep visible labels aligned with accessible names.
 
@@ -51,7 +51,7 @@ Common filler candidates include `utilize`, `facilitate`, `robust`, `transformat
 | Loading or pending | Name the work under way when known. Do not invent progress, duration, or certainty. |
 | Empty | Distinguish first use, cleared content, unavailable data, and missing setup; offer the relevant next action. |
 | No results | Name the active filter or query and provide a clear reset or edit path. |
-| Permission | Name the missing access, affected action, and available request or recovery path. |
+| Permission | Name the missing access, affected action, and available request or recovery path. A purpose string is one active sentence that says what is collected and why; reject “for a better experience.” |
 | Error | Name the failed scope, retained work, safe retry, and support or reference path when available. |
 | Success | Confirm the completed action and object once; expose the next useful action only when needed. |
 | Destructive choice | Name the object, consequence, reversibility, and clear cancel path. |
@@ -78,4 +78,4 @@ Keep status text compatible with live-region behavior. Avoid repeated announceme
 - [ ] A screen-reader or accessibility-tree check confirms changed names and status messages when applicable.
 - [ ] Before/after proof uses the same route, state, data, locale, theme, and viewport.
 
-Record source and license details in [Sources And Provenance](sources-and-provenance.md).
+Record source and license details in [Sources And Provenance](sources-and-provenance.md). For permission timing, modality, and inclusion beyond named writing patterns, use [human-interface-craft.md](human-interface-craft.md).
