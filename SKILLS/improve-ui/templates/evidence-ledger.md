@@ -1,4 +1,4 @@
-# Evidence Ledger
+# Evidence ledger
 
 ## Reproducibility
 
@@ -16,13 +16,13 @@
 |---|---:|---|---|
 |  |  |  |  |
 
-## State Coverage
+## State coverage
 
 | State | Viewport/device | Setup/action | Assertion | Artifact/hash | Result |
 |---|---|---|---|---|---|
 |  |  |  |  |  | `pass | fail | blocked` |
 
-## Report Layers
+## Report layers
 
 - Assessment (`unknown|observed`, score/null):
 - Evidence coverage:

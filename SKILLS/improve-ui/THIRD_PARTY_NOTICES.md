@@ -2,7 +2,7 @@
 
 ## No AI Slop
 
-`references/copy-and-writing.md` adapts writing principles and named pattern checks from [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang at commit `61c21c351da4dcb40946a11fead978f2078a2c65`. The source uses the MIT License.
+`references/copy-and-writing.md` adapts writing principles and named pattern checks from [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang at commit `61c21c351da4dcb40946a11fead978f2078a2c65`. MIT License.
 
 Copyright (c) 2026 Peter Yang
 

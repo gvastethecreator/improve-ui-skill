@@ -1,34 +1,20 @@
 # Proof Recipes And CLI Contract
 
-Keep executable commands and JSON schemas here. Other references should link to this file instead of copying CLI examples.
-
-## Contents
-
-- [Choose the smallest proof](#choose-the-smallest-proof)
-- [Static detector](#static-detector)
-- [Review harness](#review-harness)
-- [Strict implementation gate](#strict-implementation-gate)
-- [Proof manifest](#proof-manifest)
-- [Action groups and assertions](#action-groups-and-assertions)
-- [Async UI contract](#async-ui-contract)
-- [Artifacts and report layers](#artifacts-and-report-layers)
-- [Design dossier](#design-dossier)
-- [Blocked proof language](#blocked-proof-language)
-- [Completion rules](#completion-rules)
+Keep executable commands and JSON schemas here. Other references link here; do not copy CLI examples.
 
 ## Choose The Smallest Proof
 
-- Static audit: detector plus source inspection; state that runtime and visual quality remain unverified.
-- Visual regression: same route, state, viewport, content, theme, and data before/after.
+- Static audit: detector plus source inspection. State runtime and visual quality remain unverified.
+- Visual regression: same route, state, viewport, content, theme, data before/after.
 - Component polish: default plus the most relevant focus/hover/disabled/long-content/narrow state.
 - Product/dashboard: main desktop or container state plus narrow/mobile and one async or high-density edge.
-- Marketing/pricing: first viewport, first real proof section, decision/price region, and mobile.
-- Interaction/motion: trigger, repeated/interrupted trigger, focus/keyboard, reduced motion, and runtime visual evidence.
-- Gesture: slow drag, flick, reversal, release outside bounds, cancellation, non-drag alternative, and reduced motion.
-- Responsive/content: breakpoint boundaries, 320 CSS px/reflow where applicable, long/unbroken content, and relevant locale/direction.
-- Async/data: the seven required async groups for a deep async review; use a smaller explicitly scoped set for focused work.
-- Performance: measured affected interaction and environment; source-only work supports a risk-reduction claim.
-- Immersive: visible render, fallback, mobile/narrow, reduced motion, offscreen pause, cleanup, and runtime behavior.
+- Marketing/pricing: first viewport, first real proof section, decision/price region, mobile.
+- Interaction/motion: trigger, repeated/interrupted trigger, focus/keyboard, reduced motion, runtime visual evidence.
+- Gesture: slow drag, flick, reversal, release outside bounds, cancellation, non-drag alternative, reduced motion.
+- Responsive/content: breakpoint boundaries, 320 CSS px/reflow where applicable, long/unbroken content, relevant locale/direction.
+- Async/data: seven required async groups for a deep async review. Smaller explicitly scoped set for focused work.
+- Performance: measured affected interaction and environment. Source-only work supports a risk-reduction claim.
+- Immersive: visible render, fallback, mobile/narrow, reduced motion, offscreen pause, cleanup, runtime behavior.
 
 ## Static Detector
 
@@ -44,42 +30,39 @@ Objective P0/P1 strict gate:
 node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --strict --out output/improve-ui/<slug>/static-findings.json <frontend-path>
 ```
 
-The report always labels advisory signals for contextual review. Add `--include-advisory` only to opt them into the selected failure threshold during calibration or an explicitly chosen local policy; ordinary `--fail-on` applies to objective rules only and is mutually exclusive with detector `--strict`. Use `--include-test-fixtures` only to calibrate normally suppressed test/spec/story/snapshot surfaces. A missing/unreadable target or zero supported UI files is blocked, not a clean result.
+Report always labels advisory signals for contextual review. `--include-advisory` opts them into the selected failure threshold only during calibration or explicit local policy. Ordinary `--fail-on` applies to objective rules only; mutually exclusive with detector `--strict`. `--include-test-fixtures` only calibrates normally suppressed test/spec/story/snapshot surfaces. Missing/unreadable target, or zero supported UI files, is blocked — not a clean result.
 
 ## Review Harness
 
-Runtime review with a named state and explicit viewports:
+Runtime review: named state, explicit viewports:
 
 ```powershell
 node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group default=output/improve-ui/<slug>/default.actions.json --viewport 1280x800 --viewport 390x844
 ```
 
-Static-only review when no runnable URL exists:
+Static-only when no runnable URL exists:
 
 ```powershell
 node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path>
 ```
 
-Static-only output cannot support visual, interaction, responsive-runtime, or measured-performance claims.
+Static-only output cannot support visual, interaction, responsive-runtime, measured-performance claims.
 
-Omit `--out` for diagnose/verify/audit work unless the user requested a report artifact. The harness then uses a unique operating-system temporary directory, returns its absolute path with `outputMode: "temporary"`, and leaves the project untouched. Explicit `--out` with a destination opts into durable output and reports `outputMode: "explicit"`; use it for authorized reports and implementation evidence.
+Omit `--out` for diagnose/verify/audit unless the user requested a report artifact. Harness then uses a unique OS temp directory and returns the absolute path with `outputMode: "temporary"`; project stays untouched. Explicit `--out` opts into durable output (`outputMode: "explicit"`) for authorized reports/implementation evidence.
 
 Useful controls:
 
-- Browser proof requires Playwright plus an installed Chromium binary. The harness looks in the target repository's `node_modules`, then `PLAYWRIGHT_PATH` (path to the Playwright package directory) or `PLAYWRIGHT_NODE_MODULES` (path to a `node_modules` directory). If unavailable, runtime coverage is blocked rather than skipped.
-- `--actions file`: load one group; fallback name is `default`, overridden by JSON `name`.
-- `--action-group name=file`: set a CLI fallback name.
-- `--action-group file`: use the filename stem as fallback.
-- JSON `name` takes precedence over either fallback.
-- `--viewport WIDTHxHEIGHT`: repeat for distinct viewports; passing one replaces defaults and duplicate dimensions are rejected.
+- Browser proof requires Playwright plus installed Chromium. Harness looks in the target repo `node_modules`, then `PLAYWRIGHT_PATH` (Playwright package directory) or `PLAYWRIGHT_NODE_MODULES` (`node_modules` directory). If unavailable, runtime coverage is blocked, not skipped.
+- `--actions file`: load one group. Fallback name `default`, overridden by JSON `name`. `--action-group name=file`: CLI fallback name. `--action-group file`: filename stem as fallback. JSON `name` takes precedence over either fallback.
+- `--viewport WIDTHxHEIGHT`: repeat for distinct viewports. One replaces defaults. Duplicate dimensions are rejected.
 - `--wait-until domcontentloaded|load|networkidle|commit`: choose readiness deliberately.
-- `--settle-ms N`: add a bounded post-load/action settle period; do not use it to hide missing assertions.
-- `--include-advisory`: opt advisory source/runtime signals into gates; leave it off for ordinary objective policy.
-- `--detail-capture`: capture runtime artifacts at device scale factor `2`; require it for strict visual-polish, screenshot-critique, icon, alignment, dense-layout, and scrollbar claims.
+- `--settle-ms N`: bounded post-load/action settle. Do not use it to hide missing assertions.
+- `--include-advisory`: opt advisory source/runtime signals into gates. Leave off for ordinary objective policy.
+- `--detail-capture`: runtime artifacts at device scale factor `2`. Required for strict visual-polish, screenshot-critique, icon, alignment, dense-layout, scrollbar claims.
 
 ## Strict Implementation Gate
 
-Use this for a final claim that an editable interface improved:
+Final claim an editable interface improved:
 
 ```powershell
 node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group main=output/improve-ui/<slug>/main.actions.json --action-group edge=output/improve-ui/<slug>/edge.actions.json --strict --p2-policy systemic --systemic-p2-count 2 --require-runtime --require-change-proof --proof-manifest output/improve-ui/<slug>/proof.json --detail-capture
@@ -87,21 +70,21 @@ node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> -
 
 Strict mode blocks:
 
-- objective P0/P1 findings;
-- objective P2 findings according to `--p2-policy`;
-- invalid target or required runtime/state evidence;
-- invalid structured change proof when required;
-- failed actions, assertions, or required artifacts;
-- other explicit blockers in the report.
+- objective P0/P1 findings
+- objective P2 findings according to `--p2-policy`
+- invalid target or required runtime/state evidence
+- invalid structured change proof when required
+- failed actions, assertions, or required artifacts
+- other explicit blockers in the report
 
 Harness P2 policies:
 
-- `systemic` (default): block an objective P2 rule when its rule ID repeats at least the configured count;
-- `all`: block every objective P2;
-- `none`: do not block objective P2;
-- `--systemic-p2-count N`: set the repeat threshold; use `N >= 2`.
+- `systemic` (default): block an objective P2 rule when its rule ID repeats at least the configured count
+- `all`: block every objective P2
+- `none`: do not block objective P2
+- `--systemic-p2-count N`: set the repeat threshold. Use `N >= 2`.
 
-`--change-proof <path>` is a strict alias for `--proof-manifest <path>`. It accepts only a JSON file path, never free-form prose.
+`--change-proof <path>` is a strict alias for `--proof-manifest <path>`. Accepts only a JSON file path, never free-form prose.
 
 ## Proof Manifest
 
@@ -132,28 +115,20 @@ Use this schema:
 
 Rules:
 
-- Require `version` to equal `1`.
-- Require a non-empty `claim` string.
-- Resolve artifact paths relative to the manifest.
-- Require both files to exist.
-- Reject artifacts that overlap or alias planned/current harness output by path, canonical target, or physical file identity; a run cannot use its own capture as independent change proof.
-- Require each artifact to contain a structurally validated, non-interlaced 8-bit RGB/RGBA PNG with at least `32×32` pixels. Validate chunks, CRCs, compressed image data, media type, and dimensions from bytes rather than the extension.
-- Verify SHA-256 against file content.
-- Require different before/after hashes; byte-identical artifacts do not evidence a change.
-- Require non-empty state.
-- Normalize viewport from `WIDTHxHEIGHT` or `{width,height}`.
-- Require `kind` to be `viewport`, `full-page`, or `element`; use the default `deviceScaleFactor: 1` or record the actual value up to `8`.
-- For `viewport`, require pixels to equal viewport × device scale. For `full-page`, require at least the scaled viewport width and height so real overflow remains inspectable. An `element` artifact remains scoped to that element.
-- Require identical before/after state, declared viewport, kind, and device scale. Viewport captures therefore share exact pixel dimensions; full-page or element captures may differ in height/size when the change itself affects layout.
-- Keep the claim specific to what the artifacts show.
+- `version` must equal `1`; non-empty `claim` string. Resolve artifact paths relative to the manifest; both files must exist.
+- Reject artifacts that overlap or alias planned/current harness output by path, canonical target, or physical file identity — a run cannot use its own capture as independent change proof.
+- Each artifact: structurally verified, non-interlaced 8-bit RGB/RGBA PNG, at least `32×32`. Check chunks, CRCs, compressed image data, media type, dimensions from bytes, not the extension. Check SHA-256 against file content. Before/after hashes must differ; byte-identical artifacts do not evidence a change.
+- Non-empty state. Normalize viewport from `WIDTHxHEIGHT` or `{width,height}`. `kind`: `viewport`, `full-page`, or `element`. Default `deviceScaleFactor: 1`, or record the actual value up to `8`.
+- `viewport`: pixels = viewport × device scale. `full-page`: at least scaled viewport width and height so overflow remains inspectable. `element`: scoped to that element.
+- Identical before/after state, declared viewport, kind, device scale. Viewport captures share exact pixel dimensions. Full-page or element captures can differ in height/size when the change itself affects layout. Claim specific to what the artifacts show.
 
-A valid pair proves comparable artifacts exist; it does not by itself prove the after state is better. Tie the quality judgment to rendered inspection and other relevant evidence.
+A valid pair proves comparable artifacts exist, not that after is better. Tie quality to rendered inspection and other relevant evidence.
 
 Use separate manifests for different states or viewports when one pair cannot represent the claim honestly.
 
 ## Action Groups And Assertions
 
-Use an object, not a bare action array, for strict runtime evidence:
+Object, not a bare action array, for strict runtime evidence:
 
 ```json
 {
@@ -173,30 +148,27 @@ Use an object, not a bare action array, for strict runtime evidence:
 
 Actions:
 
-- `click`: `selector`;
-- `hover`: `selector`;
-- `type`: `selector`, `value`;
-- `press`: optional `selector` (defaults to body), `key`;
-- `scroll`: optional `x`, `y`;
-- `wait`: `ms`.
+- `click`: `selector`
+- `hover`: `selector`
+- `type`: `selector`, `value`
+- `press`: optional `selector` (defaults to body), `key`
+- `scroll`: optional `x`, `y`
+- `wait`: `ms`
 
 Assertions:
 
-- `visible` / `hidden`: `selector`;
-- `text`: `selector` plus at least one of `equals`, `contains`, `matches` (optional regex `flags`);
-- `url`: `equals`, `contains`, or `matches`;
-- `attribute`: `selector`, attribute `name`, and value matcher;
-- `focused`: `selector`;
-- `count`: `selector`, integer `equals`.
+- `visible` / `hidden`: `selector`
+- `text`: `selector` plus at least one of `equals`, `contains`, `matches` (optional regex `flags`)
+- `url`: `equals`, `contains`, or `matches`
+- `attribute`: `selector`, attribute `name`, and value matcher
+- `focused`: `selector`
+- `count`: `selector`, integer `equals`
 
-Every strict state must contain at least one meaningful assertion and finish successfully. Assert the state users care about, not a generic wrapper that is always present.
-
-Effective action-group names and their normalized artifact filename stems must be unique. The report stores each source file/hash and redacts typed values while retaining their length and SHA-256 for reproducibility.
-Optional action/assertion `timeout` values are integer milliseconds from `1` to `60000`; `wait.ms` may be `0`. Invalid objects, unsupported types, duplicate viewports, and malformed regular expressions are CLI errors rather than runtime evidence.
+Every strict state needs ≥1 meaningful assertion and must finish successfully. Assert user-facing state, not a generic always-present wrapper. Action-group names and normalized artifact filename stems must be unique. Report stores each source file/hash; redacts typed values; keeps length+SHA-256 for reproducibility. Optional action/assertion `timeout`: integer ms `1`–`60000`. `wait.ms` can be `0`. Invalid objects, unsupported types, duplicate viewports, malformed regexes are CLI errors, not runtime evidence.
 
 ## Async UI Contract
 
-`--async-ui` requires seven successfully executed and asserted groups:
+`--async-ui` requires seven groups that ran successfully and passed assertions:
 
 - `empty`
 - `loading`
@@ -212,35 +184,33 @@ Example invocation pattern:
 node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --async-ui --action-group empty=<empty.json> --action-group loading=<loading.json> --action-group error=<error.json> --action-group permission=<permission.json> --action-group long-content=<long-content.json> --action-group slow-network=<slow-network.json> --action-group rapid-click=<rapid-click.json> --strict --require-runtime
 ```
 
-Use fixtures, mock routes, request interception, or product state controls to reach each state. Naming groups or passing `--states` does not count as coverage.
-
-Each async group must have state-specific action/assertion evidence; reusing one identical combined action-and-assertion signature under seven different names is blocked.
+Fixtures, mock routes, request interception, or product state controls reach each state. Naming groups or passing `--states` is not coverage. Each async group needs state-specific action/assertion evidence. Reusing one identical combined action-and-assertion signature under seven names is blocked.
 
 ## Artifacts And Report Layers
 
-Each successful runtime state/viewport must produce separate viewport and full-page artifacts with path, SHA-256, state, viewport, kind, device scale factor, media type, and byte length. Validated change-proof artifacts additionally report pixel dimensions. Use viewport artifacts for fold/hierarchy claims; use full-page artifacts for page rhythm; use device scale factor `2` evidence or focused crops for fine craft.
+Each successful runtime state/viewport produces separate viewport and full-page artifacts: path, SHA-256, state, viewport, kind, device scale factor, media type, byte length. Verified change-proof artifacts also report pixel dimensions. Viewport artifacts for fold/hierarchy; full-page for page rhythm; device scale factor `2` or focused crops for fine craft.
 
-The ownership marker records only reserved report names and deterministic screenshot paths with SHA-256; if the marker is invalid or any recorded artifact was modified, the harness refuses cleanup before deleting anything. Reusing the same `--out` removes only unchanged files from the validated marker, preserves unrelated user files, and rejects symlink/junction output paths; this prevents stale screenshots from masquerading as current evidence.
+Ownership marker records only reserved report names and deterministic screenshot paths with SHA-256. Invalid marker or modified recorded artifact: harness refuses cleanup before deleting. Reusing `--out` removes only unchanged files from the verified marker, preserves unrelated user files, rejects symlink/junction output paths — so stale screenshots cannot masquerade as current evidence.
 
-The JSON report keeps separate:
+JSON report keeps separate:
 
-- `assessment`: each dimension `unknown|observed`, score `null|0..4`;
-- `evidenceCoverage`: static, runtime state/assertion, proof, artifacts, and blockers;
-- `expectations`: fixture/regression checks;
-- `gates`: objective policy and required-evidence outcomes;
-- reproducibility metadata: skill name/version/manifest hash, harness/detector hashes, separate target/harness Git roots/commits/dirty state, Node/platform, browser, configuration, target, and evidence paths.
+- `assessment`: each dimension `unknown|observed`, score `null|0..4`
+- `evidenceCoverage`: static, runtime state/assertion, proof, artifacts, and blockers
+- `expectations`: fixture/regression checks
+- `gates`: objective policy and required-evidence outcomes
+- reproducibility metadata: skill name/version/manifest hash, harness/detector hashes, separate target/harness Git roots/commits/dirty state, Node/platform, browser, configuration, target, evidence paths
 
-Inspect `review.json`, generated README, screenshots, and the process exit status. A generated report is not a pass unless its required gates pass.
+Inspect `review.json`, generated README, screenshots, process exit status. A generated report is not a pass unless its required gates pass.
 
 ## Design Dossier
 
-For a material critique, proposal, or redesign handoff, generate both durable views from one manifest:
+Material critique, proposal, or redesign handoff: generate both durable views from one manifest:
 
 ```powershell
 node SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
 ```
 
-The command also writes `report.md` and lossless `report-assets/`. Follow [references/reporting.md](references/reporting.md) for manifest, annotation, portability, language, and report-quality rules. The harness-generated `README.md` remains a compact machine-run index; it does not replace the dossier.
+Also writes `report.md` and lossless `report-assets/`. Follow [references/reporting.md](references/reporting.md) for manifest, annotation, portability, language, report-quality rules. Harness-generated `README.md` is a compact machine-run index, not a dossier replacement.
 
 ## Blocked Proof Language
 
@@ -259,8 +229,8 @@ Do not upgrade blocked work to verified, complete, production-ready, excellent, 
 
 - Match the recipe to the claim.
 - Prove the main path and one relevant edge/recovery path for nontrivial implementation.
-- Require executed assertions for named runtime states.
+- Named runtime states must run and pass assertions.
 - Use structured, hash-verified artifacts for strict change proof.
 - Keep advisory heuristics out of objective gates.
 - Keep uninspected dimensions unknown.
-- Record exact commands, exits, artifacts, environment, blockers, and claim limits.
+- Record exact commands, exits, artifacts, environment, blockers, claim limits.

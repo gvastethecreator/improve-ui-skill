@@ -1,6 +1,6 @@
-# Executable Example: Landing Repair
+# Executable example: landing repair
 
-This example is backed by a detector fixture, not a narrative claim.
+Backed by a detector fixture. Not a narrative claim.
 
 ## Fixture
 
@@ -9,7 +9,7 @@ This example is backed by a detector fixture, not a narrative claim.
 - After: [Hero.tsx](../fixtures/cases/landing-repair/after/Hero.tsx)
 - Executable assertion: repository test `tests/golden-fixtures.test.mjs`
 
-The case contract names objective and advisory findings that must appear before and be absent after. The repository test runs the detector and evaluates that contract; this document does not substitute prose for the result.
+The case contract names objective and advisory findings that must appear before and be absent after. The repository test runs the detector and evaluates that contract. This document does not substitute prose for the result.
 
 ## Reproduce
 
@@ -20,6 +20,6 @@ node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --include-advis
 
 Compare finding IDs with `expectedBefore` and `expectedAfterAbsent` in `case.json`, or run the repository test suite.
 
-## Claim Limit
+## Claim limit
 
 This fixture proves detector behavior against authored source examples. It does not prove offer clarity, conversion, first-viewport fit, mobile layout, authenticity of proof, or visual improvement. For a real landing repair, collect first-viewport and proof-section artifacts on relevant viewports with [proof-recipes.md](../proof-recipes.md).

@@ -1,111 +1,61 @@
 # Motion Implementation Traps
 
-Load this route only while implementing motion. It is not required for a static critique or for deciding whether motion belongs.
-
-## Contents
-
-- [Tooltips and repeated disclosure](#tooltips-and-repeated-disclosure)
-- [Geometry and identity](#geometry-and-identity)
-- [Measure the shipped path](#measure-the-shipped-path)
-- [Synchronize to rendered milestones](#synchronize-to-rendered-milestones)
-- [Static first, enhancement second](#static-first-enhancement-second)
-- [Choose the primitive](#choose-the-primitive)
-- [Preserve composable transforms](#preserve-composable-transforms)
-- [Stable state and focus](#stable-state-and-focus)
-- [Production diagnostics](#production-diagnostics)
+Load only while implementing motion. Skip for a static critique or deciding whether motion belongs.
 
 ## Tooltips And Repeated Disclosure
 
-Delay the first tooltip enough to avoid accidental hover noise, then skip or sharply reduce that delay while the pointer moves between neighboring tooltip triggers. Reset the grace period after leaving the group. Keep keyboard focus immediate, make content dismissible, and never force users to replay a fade while scanning a toolbar.
+Delay the first tooltip enough to avoid accidental hover; skip or cut that delay while the pointer moves between neighboring tooltip triggers. Reset the grace period after leaving the group. Keyboard focus stays immediate. Content is dismissible. Never force a fade replay while scanning a toolbar.
 
 ## Geometry And Identity
 
-For SVG transforms, wrap the moving shape in a `<g>` when transform origins or mixed primitives fight the browser. Set and verify `transform-box: fill-box` plus the intended `transform-origin`; inspect the actual bounding box instead of guessing from the `viewBox`.
+For SVG transforms, if transform origins or mixed primitives fight the browser, wrap the moving shape in a `<g>`. Set and check `transform-box: fill-box` plus intended `transform-origin`. Inspect the bounding box — do not guess from the `viewBox`.
 
-Give every shared-layout transition a unique, stable identity within its rendered scope. Duplicate layout IDs make unrelated objects teleport. Coordinate exit and entry order with `AnimatePresence` or the framework equivalent, and keep both endpoints mounted only when the transition contract expects it.
+Every shared-layout transition needs unique, stable identity in its rendered scope — duplicate layout IDs make unrelated objects teleport. Coordinate exit and entry with `AnimatePresence` or the framework equivalent. Mount both endpoints only when the transition contract expects it.
 
-Animate between genuinely interpolable values. Resolve classes, CSS variables, `auto`, percentages, filters, and compound transforms to compatible start/end representations before blaming the library. Do not hide a discrete layout jump behind an easing curve.
+Animate between interpolable values. Resolve classes, CSS variables, `auto`, percentages, filters, and compound transforms to compatible start/end values before blaming the library. Do not hide a discrete layout jump behind an easing curve.
 
-Use `initial={false}` when the mounted state already represents the user's saved or interactive reality and an entrance animation would falsely replay a change. Keep true first-run entrances explicit rather than disabling them globally.
+If the mounted state already represents saved or interactive reality, use `initial={false}` — an entrance animation falsely replays a change. Keep true first-run entrances explicit; do not disable them globally.
 
 ## Measure The Shipped Path
 
-For complex, continuous, gesture-driven, canvas/WebGL, or suspected performance-sensitive motion, profile before and after in a production build on representative lower-end hardware and a normal target. Record only the metrics that could falsify the claim: frame time, long tasks, layout/paint cost, memory, or input latency. For a bounded microtransition, inspect interruption, repetition, and reduced motion in the shipped build; escalate to profiling when evidence suggests cost. Development-mode stutter and a flagship laptop's smoothness are both unreliable witnesses. Preserve the route, device, state, relevant capture or metrics, and reduced-motion result with the verdict.
+For complex, continuous, gesture-driven, canvas/WebGL, or performance-sensitive motion, profile before and after on a production build, lower-end hardware, and a normal target. Record only falsifying metrics: frame time, long tasks, layout/paint cost, memory, or input latency. Bounded microtransition: inspect interruption, repetition, and reduced motion in the shipped build; profile if evidence suggests cost. Dev-mode stutter and flagship-laptop smoothness are unreliable. Preserve route, device, state, capture or metrics, and reduced-motion result with the verdict.
 
 ## Synchronize To Rendered Milestones
 
-Do not coordinate a state change with a timeout copied from the nominal CSS duration. Delays, reduced mode, background tabs, interrupted transitions, and future token changes make it drift.
+Do not coordinate a state change with a timeout copied from the CSS duration — delays, reduced mode, background tabs, interrupted transitions, and future token changes make it drift.
 
-Prefer:
+Prefer: transitionend or animationend filtered to the intended element and property; a framework completion callback; a timeline label or finished promise; an observable cover or layout milestone; an immediate reduced-motion branch.
 
-- transitionend or animationend filtered to the intended element and property;
-- a framework completion callback;
-- a timeline label or finished promise;
-- an observable cover or layout milestone;
-- an immediate reduced-motion branch.
-
-Always include cancellation and cleanup. Ignore stale completion from a superseded transition. If interaction is intentionally locked during a rare scene cover, expose the state and guarantee unlock on completion, cancellation, error, route change, and reduced motion.
+Include cancellation and cleanup. Ignore stale completion from a superseded transition. If interaction is locked during a rare scene cover, expose it. Unlock on completion, cancellation, error, route change, and reduced motion.
 
 ## Static First, Enhancement Second
 
-Render primary content in its readable destination state by default. Add an enhancement class or data attribute only after motion is ready. A failed script, hydration mismatch, blocked module, or unsupported API must leave the interface usable.
+Render primary content in its readable destination by default. Add an enhancement class or data attribute only after motion is ready. Failed script, hydration mismatch, blocked module, or unsupported API must leave the interface usable.
 
-For first-run entrances:
-
-- keep critical heading, action, and navigation visible;
-- use a no-JavaScript fallback when the initial CSS is hidden;
-- avoid a long chain whose later items never reveal after one error;
-- do not replay after hydration, tab restoration, saved state, or routine navigation unless the event genuinely happened again.
+First-run entrances: keep critical heading, action, and navigation visible; no-JavaScript fallback when the initial CSS is hidden; avoid a long chain whose later items never reveal after one error; replay after hydration, tab restoration, saved state, or navigation only if the event happened again.
 
 ## Choose The Primitive
 
-- CSS transitions: reversible hover, focus, pressed, disclosure, and bounded state changes.
-- CSS keyframes: finite authored sequences with known phases.
-- Web Animations API: imperative cancellation, retargeting, playback inspection, or several coordinated native effects.
-- FLIP/shared layout: the same object changes geometry.
-- View transitions: route or document continuity when identity and browser support justify it.
-- Animation library/timeline: gestures, springs, orchestration, or existing project grammar that CSS cannot express cleanly.
-- Canvas/WebGL: the visual system is genuinely spatial, simulated, or too numerous for DOM—not because a gradient needed a shader.
+CSS transitions: reversible hover, focus, pressed, disclosure, bounded state changes. CSS keyframes: finite authored sequences with known phases. Web Animations API: imperative cancellation, retargeting, playback inspection, coordinated native effects. FLIP/shared layout: same object changes geometry. View transitions: route or document continuity when identity and browser support justify it. Animation library/timeline: gestures, springs, orchestration, or project grammar CSS cannot express cleanly. Canvas/WebGL: visual system is spatial, simulated, or too numerous for DOM — do not use it because a gradient needed a shader.
 
-Use the smallest primitive that expresses cancellation, reduced mode, and proof. Do not add a dependency for one fade. Do not force complex direct manipulation through CSS classes because dependencies are unfashionable.
+Smallest primitive that expresses cancellation, reduced mode, and proof. Do not add a dependency for one fade, or force complex direct manipulation through CSS classes.
 
 ## Preserve Composable Transforms
 
-Several systems writing one transform property will overwrite one another. Put independent responsibilities on nested elements or compose them in one owner:
+Several systems writing one transform overwrite one another. Independent responsibilities on nested elements, or one owner: outer = layout or shared-position motion; middle = gesture translation/scale; inner = hover, press, or authored deformation; SVG group = shape-local pivot.
 
-- outer element: layout or shared-position motion;
-- middle element: gesture translation/scale;
-- inner element: hover, press, or authored deformation;
-- SVG group: shape-local pivot.
+Transform order is explicit: translate-then-rotate differs from rotate-then-translate. Inspect the real pivot and bounding box at final size.
 
-Keep transform order explicit. Translate-then-rotate differs from rotate-then-translate. Inspect the real pivot and bounding box at final size.
-
-Register and animate CSS custom properties only when their syntax is declared and the interpolated values are compatible. Otherwise they may change discretely while the code appears animated.
+Register and animate CSS custom properties only when syntax is declared and interpolated values are compatible. Otherwise they can change discretely while the code appears animated.
 
 ## Stable State And Focus
 
-Do not restart animation by changing a component key unless remounting is the intended product state. Remounting can erase focus, selection, scroll position, media playback, local edits, and assistive-technology context.
+If remounting is not the intended state, do not restart animation by changing a component key — remounting can erase focus, selection, scroll position, media playback, local edits, and assistive-technology context.
 
-During overlays and route transitions:
-
-- move focus only after the destination is ready;
-- keep escape and back behavior deterministic;
-- return focus to a surviving logical origin;
-- prevent invisible outgoing layers from intercepting pointer events;
-- remove inert, aria-hidden, and temporary stacking state after completion;
-- preserve scroll intentionally or reset it explicitly.
+Overlays and route transitions: move focus only after the destination is ready; escape and back stay deterministic; return focus to a surviving origin; prevent invisible outgoing layers from intercepting pointer events; remove inert, aria-hidden, and temporary stacking state after completion; preserve or reset scroll explicitly.
 
 ## Production Diagnostics
 
-When a transition feels wrong, record separate causes:
-
-- response latency before the first visible frame;
-- wrong origin or object identity;
-- phase timing and overlap;
-- main-thread or compositor pressure;
-- layout shift or unstable destination;
-- queued/stale completion;
-- focus or pointer interception;
-- reduced-mode mismatch.
+When a transition feels wrong, separate: response latency before the first visible frame; wrong origin or object identity; phase timing and overlap; main-thread or compositor pressure; layout shift or unstable destination; queued/stale completion; focus or pointer interception; reduced-mode mismatch.
 
 Do not solve response latency by shortening a visually correct settle. Do not solve a wrong origin with a spring. Do not solve layout shift with a longer fade.
