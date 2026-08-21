@@ -1,6 +1,6 @@
-# Geometry Ledger
+# Geometry ledger
 
-Keep `geometry-ledger.json` and this Markdown companion synchronized.
+Sync `geometry-ledger.json` and this Markdown companion.
 
 - frame and safe area:
 - primary alignment anchors:

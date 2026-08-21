@@ -1,8 +1,8 @@
-# Context Card
+# Context card
 
 Keep `context-card.json` and this Markdown companion synchronized.
 
-## Work Unit
+## Work unit
 
 - id:
 - profile: `micro | focused | deep`
@@ -11,7 +11,7 @@ Keep `context-card.json` and this Markdown companion synchronized.
 - primary archetype:
 - bounded secondary regions:
 
-## Product Contract
+## Product contract
 
 - user mode:
 - primary artifact:
@@ -31,7 +31,7 @@ Keep `context-card.json` and this Markdown companion synchronized.
 - obvious category default killed:
 - second reflex killed:
 
-## Proof Matrix
+## Proof matrix
 
 | State | Viewport | Interaction | Detail crop | Expected evidence |
 |---|---|---|---|---|

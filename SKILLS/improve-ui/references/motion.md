@@ -1,6 +1,6 @@
 # Motion
 
-Use this reference to decide whether motion belongs, implement it coherently, and review its behavior. Timing and style guidance are practices unless a standard or project token says otherwise.
+Decide whether motion belongs; implement it coherently; review behavior. Timing and style are practices. If a standard or project token says otherwise, follow that token.
 
 ## Contents
 
@@ -19,34 +19,17 @@ Use this reference to decide whether motion belongs, implement it coherently, an
 
 ## Decide Whether To Animate
 
-Name one job before adding motion:
+Name one job: spatial continuity; state change; explain a relationship; acknowledge input or completion; soften a confusing layout/content change. Delete motion with no job.
 
-- show spatial continuity;
-- communicate state change;
-- explain a relationship;
-- acknowledge input or completion;
-- soften an otherwise confusing layout/content change.
+Frequency: keyboard shortcuts, command palettes, repeated list nav, high-frequency tools: instant, avoid travel; hover and repeated controls: color, opacity, or a tiny transform only when it clarifies feedback; occasional modals, drawers, popovers, toasts, panels: restrained spatial motion when it explains origin; rare onboarding, completion, editorial, or brand: more expression; do not block reading or interaction.
 
-Delete motion that has no job. Start from interaction frequency:
-
-- Keyboard shortcuts, command palettes, repeated list navigation, and high-frequency tools: keep state instant or nearly instant; avoid travel.
-- Hover and repeated controls: prefer color, opacity, or a tiny transform only when it clarifies feedback.
-- Occasional modals, drawers, popovers, toasts, and panels: use restrained spatial motion when it explains origin.
-- Rare onboarding, completion, editorial, or brand moments: allow more expression without blocking reading or interaction.
-
-Match the existing project's motion tokens and primitives before introducing a library or new vocabulary.
+Match existing motion tokens and primitives before a new library or vocabulary.
 
 ## Classify And Map The Event
 
-Assign one primary class before implementation:
+One primary class: `feedback` (input, success, failure, progress); `state` (mode, selection, validation, loading, availability); `spatial` (origin, destination, containment, object identity); `attention` (rare consequential change); `ambient` (ongoing life or material without demanding action).
 
-- `feedback`: acknowledge input, success, failure, or progress;
-- `state`: expose mode, selection, validation, loading, or availability;
-- `spatial`: preserve origin, destination, containment, or object identity;
-- `attention`: direct the eye to a rare consequential change;
-- `ambient`: communicate ongoing life or material without demanding action.
-
-Do not use ambient motion to counterfeit product activity or attention motion on every update. For a nontrivial sequence, persist `motion-plan.json` plus the same-facts [motion plan](../templates/motion-plan.md):
+Do not use ambient motion to counterfeit product activity, or attention motion on every update. For a nontrivial sequence, persist `motion-plan.json` plus the same-facts [motion plan](../templates/motion-plan.md):
 
 ```text
 event and trigger:
@@ -61,58 +44,35 @@ performance risk:
 proof state + capture:
 ```
 
-Tie state commits to `transitionend`/`animationend`, a framework completion callback, a timeline label/promise, or another observable rendered milestone. Never synchronize product state with a copied duration timeout: interruption, reduced mode, background tabs, and future token changes will desynchronize it. Load [motion-implementation.md](motion-implementation.md) while editing for transform ownership, static-first enhancement, focus continuity, and cleanup traps.
+Tie state commits to `transitionend`/`animationend`, a framework completion callback, a timeline label/promise, or another observable rendered milestone. Never sync product state to a copied duration timeout — interruption, reduced mode, background tabs, and future token changes desynchronize it. Load [motion-implementation.md](motion-implementation.md) for transform ownership, static-first enhancement, focus continuity, and cleanup traps.
 
 ## Choose The Mechanism
 
-- Use CSS transitions for interruptible toggles and state changes.
-- Use keyframes for one-shot or looping sequences that do not need retargeting.
-- Use the Web Animations API when programmatic control helps and a library would be excessive.
-- Use the installed motion library for shared layout, springs, presence, and gestures it already owns.
-- Use direct transforms or springs for pointer-driven interaction.
-- Use browser View Transitions only when support, navigation architecture, and fallback fit the product.
+CSS transitions for interruptible toggles and state changes. Keyframes for one-shot or looping sequences that do not need retargeting. Web Animations API when programmatic control helps and a library is excessive. Installed motion library for shared layout, springs, presence, and gestures it already owns. Direct transforms or springs for pointer-driven interaction. Browser View Transitions only when support, navigation architecture, and fallback fit.
 
 Do not add Motion, GSAP, or another runtime for a small opacity/transform transition the existing stack can express.
 
 ## Timing And Easing
 
-Use these as tuning ranges, then verify in context:
+Tuning ranges: press `100–160ms`; tooltip or small popover `125–200ms`; dropdown/select `150–250ms`; most UI state changes under `300ms`; large spatial surfaces `200–500ms` only when distance and context justify it.
 
-- press feedback: `100–160ms`;
-- tooltip or small popover: `125–200ms`;
-- dropdown/select: `150–250ms`;
-- most UI state changes: under `300ms`;
-- large spatial surfaces: `200–500ms` only when distance and context justify it.
+Easing by job: open/close/enter/exit → responsive ease-out; movement between visible positions or morphs → ease-in-out or a suitable spring; hover/color → subtle existing token; constant loop → linear.
 
-Choose easing by job:
-
-- open, close, enter, exit: responsive ease-out;
-- movement between visible positions or morphs: ease-in-out or a suitable spring;
-- hover/color: subtle existing token;
-- constant loop: linear.
-
-Avoid `ease-in` for UI opening/entry because it delays visible response. Treat durations over `300ms`, bounce, or overshoot as review prompts, not automatic failures; frequency, distance, register, and proof decide.
+Avoid `ease-in` for UI opening/entry — it delays visible response. Durations over `300ms`, bounce, or overshoot are review prompts, not automatic failures. Frequency, distance, register, and proof decide.
 
 Keep exit quieter or faster than enter unless spatial continuity requires otherwise.
 
 ## Origins And Continuity
 
-- Scale and rotate from a believable origin.
-- Anchor menus, popovers, and tooltips to the trigger side or library-provided origin.
-- Keep centered modals centered.
-- Avoid entry from `scale(0)`; use a small visible scale range only when scale communicates the surface.
-- Move drawers/sheets from their edge.
-- Use percentage translation when travel is defined by the element's own size.
-- Apply shared-element/layout transitions only when one logical object persists between states.
-- Keep shared IDs unique and verify interruption, scroll, and route behavior.
+Scale and rotate from a believable origin. Anchor menus, popovers, tooltips to the trigger side or library-provided origin. Centered modals stay centered. Avoid entry from `scale(0)`; small visible scale range only when scale communicates the surface. Drawers/sheets from their edge. Percentage translation when travel is defined by the element's own size. Shared-element/layout transitions only when one logical object persists between states. Shared IDs unique. Check interruption, scroll, and route behavior.
 
-For SVG transforms, set the transform box/origin on the actual graphic group when viewport geometry would otherwise create a false center.
+For SVG transforms, if viewport geometry creates a false center, set the transform box/origin on the actual graphic group.
 
-## Enter Exit And Sequence
+## Enter, Exit, And Sequence
 
-Keep content usable without JavaScript-driven reveal. Do not put essential content in a permanently hidden base style waiting for hydration or an observer.
+Keep content usable without JS-driven reveal. Do not hide essential content in a permanently hidden base style waiting for hydration or an observer.
 
-For progressive CSS entry, keep the normal state visible and use `@starting-style` where supported:
+For progressive CSS entry, keep the normal state visible; use `@starting-style` where supported:
 
 ```css
 .popover:popover-open {
@@ -132,78 +92,52 @@ For progressive CSS entry, keep the normal state visible and use `@starting-styl
 }
 ```
 
-Older browsers render the final visible state. Verify support if entry motion is important; never make comprehension depend on it.
+Older browsers render the final visible state. If entry motion matters, check support; never make comprehension depend on it.
 
-Use stagger only when staged attention helps. Keep gaps around `30–80ms`; avoid stagger in dense lists, tables, logs, and repeated workflows. Do not use `100ms` gaps as the default for routine UI.
+Stagger only when staged attention helps; gaps around `30–80ms`. Avoid stagger in dense lists, tables, logs, repeated workflows. Do not default to `100ms` gaps for routine UI.
 
-Skip exit animation when disappearance must feel immediate or updates happen frequently.
+If disappearance must feel immediate or updates happen frequently, skip exit animation.
 
-## Press Hover And Tooltips
+## Press, Hover, And Tooltips
 
-- Respond on pointer-down/`:active`, before async work completes.
-- Use a small press scale, often `0.95–0.98`, only when it does not fight drag, selection, or dense toolbar ergonomics.
-- Gate hover-only movement behind `(hover: hover) and (pointer: fine)`.
-- Preserve a visible focus state independent of hover.
-- Delay the first accidental tooltip hover; while moving through one tooltip group, switch adjacent targets with little or no repeated entrance delay.
-- Ensure tooltip content is reachable from keyboard focus and remains dismissible/hoverable according to the interaction contract.
+Respond on pointer-down/`:active`, before async work completes. Small press scale, often `0.95–0.98`, only when it does not fight drag, selection, or dense toolbar ergonomics. Gate hover-only movement behind `(hover: hover) and (pointer: fine)`. Visible focus independent of hover. Delay the first accidental tooltip hover; inside one tooltip group, switch adjacent targets with little or no repeated entrance delay. Tooltip content must be reachable from keyboard focus and remain dismissible/hoverable according to the interaction contract.
 
 ## Gestures
 
-Make direct manipulation feel attached to input:
+Direct manipulation must feel attached to input: acknowledge pointer-down immediately; preserve the grab offset so the object does not jump; track the pointer 1:1 within the interaction model; establish pointer capture after drag intent; continue through pointer leaving the original bounds; allow reversal/interruption from the current visual value; decide dismissal/snap from distance and velocity where appropriate; hand release velocity into the settle animation when supported; resistance beyond natural boundaries instead of a hard stop when the metaphor calls for it.
 
-- acknowledge pointer-down immediately;
-- preserve the grab offset so the object does not jump;
-- track the pointer 1:1 within the interaction model;
-- establish pointer capture after drag intent;
-- continue through pointer leaving the original bounds;
-- allow reversal/interruption from the current visual value;
-- decide dismissal/snap from distance and velocity where appropriate;
-- hand release velocity into the settle animation when supported;
-- use resistance beyond natural boundaries instead of a hard stop when the metaphor calls for it.
-
-Also provide the keyboard and single-pointer non-drag alternative required by the interaction. Physical polish does not replace accessibility.
+Also provide the keyboard and single-pointer non-drag alternative the interaction requires. Physical polish does not replace accessibility.
 
 Test slow drag, short flick, long flick, reversal, release outside bounds, cancellation, second pointer, and reduced motion.
 
 ## Reduced Motion And Material
 
-Honor `prefers-reduced-motion` by removing or replacing non-essential travel, scale, parallax, blur, and ambient loops while preserving state clarity. Do not globally disable all transitions if doing so removes essential feedback.
+Apply `prefers-reduced-motion`. Remove or replace non-essential travel, scale, parallax, blur, and ambient loops. Preserve state clarity. If disabling all transitions removes essential feedback, do not disable them globally.
 
-For translucent functional chrome:
-
-- provide a solid readable baseline;
-- use `prefers-reduced-transparency` as progressive enhancement where supported;
-- consider `prefers-contrast` and `forced-colors` for the actual platform/user base;
-- verify text, focus, and control boundaries over plain and busy content.
+Translucent functional chrome: solid readable baseline; `prefers-reduced-transparency` as progressive enhancement where supported; account for `prefers-contrast` and `forced-colors` for the actual platform/user base; check text, focus, and control boundaries over plain and busy content.
 
 Reduced transparency is not universally available. Never make the fallback depend on the media query firing.
 
 ## Performance
 
-- Name exact transitioned properties; avoid `transition: all`.
-- Prefer transform and opacity for frequent motion, but measure paint/composite behavior instead of assuming every filter, clip, or transform is cheap.
-- Avoid layout-property motion in frequent interactions; allow bounded low-frequency size changes when the size change is the actual object and proof is smooth.
-- Treat full `transform` strings in Motion as a targeted optimization when profiling shows individual transform shorthand is blocked by main-thread work; do not rewrite all shorthand speculatively.
-- Avoid high-frequency inherited CSS-variable updates across large subtrees.
-- Add `will-change` only after observed performance evidence; follow `performance.md`.
-- Pause ambient/canvas loops offscreen and in hidden tabs.
+Name exact transitioned properties. Avoid `transition: all`. Prefer transform and opacity for frequent motion; measure paint/composite; do not assume every filter, clip, or transform is cheap. Avoid layout-property motion in frequent interactions. Bounded low-frequency size changes OK when the size change is the actual object and proof is smooth. If profiling shows individual transform shorthand blocked by main-thread work, treat full `transform` strings in Motion as a targeted optimization — do not rewrite all shorthand speculatively. Avoid high-frequency inherited CSS-variable updates across large subtrees. Add `will-change` only after observed performance evidence. Follow `performance.md`. Pause ambient/canvas loops offscreen and in hidden tabs.
 
 ## Review Protocol
 
 Review the exact interaction, not isolated declarations:
 
 1. Record purpose, frequency, input modality, origin, and project primitive.
-2. Trigger rapidly: open/close/open, toggle repeatedly, interrupt midway, and navigate during motion.
+2. Trigger rapidly: open/close/open, toggle repeatedly, interrupt midway, navigate during motion.
 3. Inspect reduced motion and relevant pointer modes.
-4. Slow playback `2×–5×` or use DevTools when coordination is hard to judge.
-5. Inspect frame/runtime evidence when performance is part of the claim.
+4. If coordination is hard to judge, slow playback `2×–5×` or use DevTools.
+5. If performance is part of the claim, inspect frame/runtime evidence.
 6. Capture the state or video segment and name remaining limitations.
 
-Block completion when motion hides core content, makes a high-frequency action materially slower, breaks reduced-motion access, loses user input, or visibly janks on the supported target. Treat stylistic mismatch as a heuristic unless the design system defines it.
+Block completion when motion hides core content; makes a high-frequency action materially slower; breaks reduced-motion access; loses user input; or visibly janks on the supported target.
+
+Stylistic mismatch is a heuristic. If the design system defines it, do not treat it as a heuristic.
 
 ## Vocabulary
-
-Use precise terms to route fixes:
 
 - `crossfade`: one state replaces another in place;
 - `origin-aware animation`: anchored surface moves/scales from its trigger;

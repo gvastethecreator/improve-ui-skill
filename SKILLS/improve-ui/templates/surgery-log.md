@@ -1,10 +1,10 @@
-# Surgery Log
+# Surgery log
 
-| Severity | Symptom and impact | Source cause | Repair | File/area | Evidence ID |
+| Severity | Symptom/impact | Cause | Repair | File/area | Evidence ID |
 |---|---|---|---|---|---|
 |  |  |  |  |  |  |
 
-## Preservation Check
+## Preservation check
 
 - Routes/IA/forms/data:
 - Analytics/SEO/legal:
@@ -13,7 +13,7 @@
 
 ## Iterations
 
-| Pass | Main state result | Edge state result | Objective gate | Decision |
+| Pass | Main result | Edge result | Objective gate | Decision |
 |---|---|---|---|---|
 | 1 |  |  |  | `continue | stop | blocked` |
 

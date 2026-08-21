@@ -1,6 +1,6 @@
 # Improve UI Package Map
 
-Open this index only after `SKILL.md` selects the relevant concern. Do not preload every document.
+Open after `SKILL.md` selects a concern. Do not preload every document.
 
 ## Workflow And Evidence
 

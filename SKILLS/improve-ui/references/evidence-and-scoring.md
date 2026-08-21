@@ -1,56 +1,43 @@
-# Evidence And Scoring
+# Evidence and scoring
 
-Use this reference for audits, deep reviews, production-readiness passes, and any structured verdict. Findings lead. Scores are optional summaries and may never manufacture certainty from missing evidence.
+Audits, deep reviews, production-readiness, structured verdicts. Findings lead; scores are optional summaries — never manufacture certainty from missing evidence.
 
-## Contents
+## Separate report layers
 
-- [Separate report layers](#separate-report-layers)
-- [Build evidence coverage](#build-evidence-coverage)
-- [Assess dimensions](#assess-dimensions)
-- [Score only observed dimensions](#score-only-observed-dimensions)
-- [Use severity independently](#use-severity-independently)
-- [Set the verdict](#set-the-verdict)
-- [Report shape](#report-shape)
-- [Reproducibility](#reproducibility)
+- `assessment`: Quality observations by dimension. Each is `unknown` or `observed`. Score is `null` or `0..4`.
+- `evidenceCoverage`: Source, runtime states, assertions, viewports, artifacts, browsers, blockers actually inspected.
+- `expectations`: Fixture/regression expectations behaved as expected. Validates the harness, not the interface.
+- `gates`: Objective policy outcomes, proof validity, runtime/state success, blockers.
 
-## Separate Report Layers
+Expectation pass ≠ quality score. Gate failure blocks the claimed reason; it does not describe visual quality.
 
-Keep four independent layers:
+## Build evidence coverage
 
-- `assessment`: Quality observations by dimension. Each dimension is `unknown` or `observed`; score is `null` or `0..4`.
-- `evidenceCoverage`: What source, runtime states, assertions, viewports, artifacts, browsers, and blockers were actually inspected.
-- `expectations`: Whether fixture/regression expectations behaved as expected. This validates the harness, not the interface.
-- `gates`: Objective policy outcomes, proof validity, runtime/state success, and blockers.
+Record evidence IDs; attach them to findings:
 
-Passing an expectation does not raise a quality score. A gate failure does not automatically describe visual quality; it blocks the requested claim for the stated reason.
+- source: file, line, commit/diff, component, token, or state owner
+- visual: artifact path/hash, route, state, viewport, theme, and content fixture
+- runtime: browser/version, action group, assertion result, console/network, metric implementation
+- test: command, environment, exit status, and relevant output
+- manual: keyboard, focus, screen reader, touch/device, zoom, or slowed-motion observation
+- blocker: missing URL, route, fixture, auth, browser, device, dependency, or access
 
-## Build Evidence Coverage
-
-Record evidence IDs and attach them to findings/observations:
-
-- source: file, line, commit/diff, component, token, or state owner;
-- visual: artifact path/hash, route, state, viewport, theme, and content fixture;
-- runtime: browser/version, action group, assertion result, console/network, metric implementation;
-- test: command, environment, exit status, and relevant output;
-- manual: keyboard, focus, screen reader, touch/device, zoom, or slowed-motion observation;
-- blocker: missing URL, route, fixture, auth, browser, device, dependency, or access.
-
-Evidence can support only matching claims:
+Evidence supports only matching claims:
 
 - Source proves implementation properties, not rendered appearance.
-- Screenshot proves one visual state, not keyboard behavior, motion feel, or cleanup.
+- Screenshot proves one visual state, not keyboard, motion feel, or cleanup.
 - Automated accessibility output proves only enabled detectable rules in reached states.
 - Emulation proves deterministic emulated conditions, not physical-device behavior.
 - Local runtime samples do not prove field percentiles.
 - A detector clean scan proves only that enabled rules did not match supported scanned files.
 
-## Assess Dimensions
+## Assess dimensions
 
-Select dimensions relevant to the requested scope. In a deep full-interface review, consider all five.
+Select dimensions relevant to requested scope. Deep full-interface review: all five.
 
 ### Accessibility
 
-Minimum evidence for `observed`: relevant source/semantics plus rendered/manual checks of the core interaction; name automated and untested areas.
+`observed`: source/semantics plus rendered/manual checks of the core interaction. Name automated and untested areas.
 
 - `0`: core path inaccessible or task-blocking failures dominate.
 - `1`: major keyboard, focus, name, contrast, form, or status failures.
@@ -62,7 +49,7 @@ Never describe a `4` as WCAG certification.
 
 ### Performance
 
-Minimum evidence for `observed`: runtime measurement of the named interaction/environment plus source context. Source-only cleanup remains `unknown` for measured quality.
+`observed`: runtime measurement of the named interaction/environment plus source context. Source-only cleanup stays `unknown` for measured quality.
 
 - `0`: core interaction is blocked, crashes, or severely unstable.
 - `1`: demonstrated major jank, latency, shift, resource, or asset failures.
@@ -70,29 +57,29 @@ Minimum evidence for `observed`: runtime measurement of the named interaction/en
 - `3`: inspected interactions meet declared budgets with minor risk.
 - `4`: strong measured behavior across the important inspected load/device states.
 
-### Theming And Design System
+### Theming and design system
 
-Minimum evidence for `observed`: representative source primitives/tokens plus rendered states/themes applicable to the path.
+`observed`: representative source primitives/tokens plus rendered states/themes applicable to the path.
 
-- `0`: no coherent roles; core themes/states break.
+- `0`: no coherent roles. Core themes/states break.
 - `1`: extensive literals, drift, or inconsistent state vocabulary.
 - `2`: partial system with repeated gaps or exceptions.
 - `3`: coherent reuse with minor drift.
 - `4`: strong semantic tokens/primitives and complete inspected states/themes.
 
-### Responsive And Content Resilience
+### Responsive and content resilience
 
-Minimum evidence for `observed`: relevant viewport/container boundaries and at least one real-content or edge state; deep review requires the applicable state matrix.
+`observed`: relevant viewport/container boundaries and at least one real-content or edge state. Deep review requires the applicable state matrix.
 
 - `0`: core flow unusable outside one default layout/content state.
 - `1`: major overflow, reflow, touch, content, or recovery failures.
 - `2`: usable but several important states/boundaries remain brittle.
-- `3`: robust inspected viewports/content with minor gaps.
+- `3`: inspected viewports and content hold up, with minor gaps.
 - `4`: strong inspected coverage across viewport, zoom/reflow, content, locale, and async states relevant to scope.
 
-### Visual Trust And Fit
+### Visual trust and fit
 
-Minimum evidence for `observed`: rendered interface plus product/register context; reference evidence when fidelity is claimed.
+`observed`: rendered interface plus product/register context. Use reference evidence when fidelity is claimed.
 
 - `0`: hierarchy or visual treatment materially prevents comprehension/trust.
 - `1`: major hierarchy, readability, credibility, or register mismatch.
@@ -102,46 +89,42 @@ Minimum evidence for `observed`: rendered interface plus product/register contex
 
 Advisory anti-slop heuristics never determine this score alone.
 
-## Score Only Observed Dimensions
+## Score only observed dimensions
 
-- Set an uninspected or insufficiently evidenced dimension to `{ status: "unknown", score: null }`.
-- Do not initialize dimensions at `4`.
-- Do not infer a positive score from zero findings.
-- Compute an overall total only when every dimension selected for the declared review scope is observed.
-- Keep the total `null` if any required dimension is unknown.
-- For focused work, report only the relevant dimension scores; do not normalize a partial set to `/20`.
-- Cite evidence IDs for every score and note conflicting evidence.
+- Uninspected or insufficiently evidenced dimension: `{ status: "unknown", score: null }`. Never init at `4`. Never infer a positive score from zero findings.
+- Overall total only when every dimension selected for the declared review scope is observed; else `null`. Focused work: relevant dimension scores only — do not normalize a partial set to `/20`.
+- Cite evidence IDs for every score; note conflicting evidence.
 
-When all five dimensions are observed, an optional `/20` summary can use:
+If all five dimensions are observed, an optional `/20` summary:
 
-- `18–20`: excellent within inspected scope;
-- `14–17`: good, with named weaknesses;
-- `10–13`: acceptable but significant work remains;
-- `6–9`: poor;
-- `0–5`: critical.
+- `18–20`: excellent within inspected scope
+- `14–17`: good, with named weaknesses
+- `10–13`: acceptable but significant work remains
+- `6–9`: poor
+- `0–5`: critical
 
-Bands summarize evidence; they do not override severity or gates.
+Bands summarize evidence. They do not override severity or gates.
 
-## Use Severity Independently
+## Use severity independently
 
 - `P0`: core task impossible, data loss, severe safety/security issue, or no recovery.
 - `P1`: broken core flow, misleading state, demonstrated accessibility failure, or severe responsive/performance failure.
 - `P2`: material comprehension, resilience, consistency, trust, or repeated-use problem.
 - `P3`: low-impact polish or optional refinement.
 
-One unresolved in-scope P0/P1 blocks an implementation-quality completion even if the aggregate score is high. Do not elevate taste to P1 without demonstrated user impact or a project requirement.
+One unresolved in-scope P0/P1 blocks implementation-quality completion. A high aggregate score does not override this. If user impact is not demonstrated and no project requirement exists, do not elevate taste to P1.
 
-## Set The Verdict
+## Set the verdict
 
 Use:
 
-- `blocked` when required target, runtime, state, proof, or gate evidence could not run or validate;
-- `critical`, `poor`, `acceptable`, `good`, or `excellent` only when the selected scope has sufficient observed evidence;
-- `partial` or plain-language dimension findings for focused audits where an aggregate verdict would mislead.
+- `blocked` when required target, runtime, state, proof, or gate evidence cannot run or cannot be validated
+- `critical`, `poor`, `acceptable`, `good`, or `excellent` only when the selected scope has sufficient observed evidence
+- `partial` or plain-language dimension findings for focused audits where an aggregate verdict misleads
 
-Strict implementation claims require valid structured change proof, successful required runtime states/assertions, and passing objective gates. Missing proof cannot become `good` because the visible finding count is low.
+Strict implementation claims need valid structured change proof, successful required runtime states/assertions, and passing objective gates. Missing proof cannot become `good` from a low visible finding count.
 
-## Report Shape
+## Report shape
 
 Lead with concrete findings when defects exist:
 
@@ -154,10 +137,10 @@ Lead with concrete findings when defects exist:
 7. Implemented changes or next actions, according to authority.
 8. Claim limits and remaining risk.
 
-Use a table when it materially improves comparison across dimensions or evidence, not by default.
+Table only if it improves comparison; not by default.
 
 ## Reproducibility
 
-Record skill/harness version or commit, target commit, dirty state, OS, browser/version, viewport/device, URL/route, theme/locale, build mode, action groups, proof manifest/hash, commands, and exit statuses.
+Record skill/harness version or commit, target commit, dirty state, OS, browser/version, viewport/device, URL/route, theme/locale, build mode, action groups, proof manifest/hash, commands, exit statuses.
 
 Use [../proof-recipes.md](../proof-recipes.md) for the executable contract and [sources-and-provenance.md](sources-and-provenance.md) for authority and metric sources.

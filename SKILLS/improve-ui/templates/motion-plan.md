@@ -1,6 +1,6 @@
-# Motion Plan
+# Motion plan
 
-Keep `motion-plan.json` and this Markdown companion synchronized.
+Sync `motion-plan.json` and this Markdown companion.
 
 | Event | Trigger | Class and purpose | Frequency | Origin → destination | Sequence/overlap | Interrupt/reverse/cancel | Reduced alternative | Focus/input contract | Risk | Proof |
 |---|---|---|---|---|---|---|---|---|---|---|

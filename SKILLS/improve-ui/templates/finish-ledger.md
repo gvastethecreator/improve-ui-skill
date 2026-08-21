@@ -1,6 +1,6 @@
-# Finish Ledger
+# Finish ledger
 
-Keep `finish-ledger.json` and this Markdown companion synchronized. `failed` continues the correction loop; `blocked` limits the claim.
+Keep `finish-ledger.json` and this Markdown companion synchronized. `failed` continues the correction loop. `blocked` limits the claim.
 
 | Dimension | Status | Evidence | Observation | Corrective action |
 |---|---|---|---|---|
@@ -14,7 +14,7 @@ Keep `finish-ledger.json` and this Markdown companion synchronized. `failed` con
 | capture legibility | `passed | failed | blocked` | | | |
 | responsive detail | `passed | failed | blocked` | | | |
 
-## Comparison Identity
+## Comparison identity
 
 - route:
 - state:
