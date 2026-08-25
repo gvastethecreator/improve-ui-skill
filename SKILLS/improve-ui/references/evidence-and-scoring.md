@@ -2,6 +2,17 @@
 
 Audits, deep reviews, production-readiness, structured verdicts. Findings lead; scores are optional summaries — never manufacture certainty from missing evidence.
 
+## Contents
+
+- [Separate report layers](#separate-report-layers)
+- [Build evidence coverage](#build-evidence-coverage)
+- [Assess dimensions](#assess-dimensions)
+- [Score only observed dimensions](#score-only-observed-dimensions)
+- [Use severity independently](#use-severity-independently)
+- [Set the verdict](#set-the-verdict)
+- [Report shape](#report-shape)
+- [Reproducibility](#reproducibility)
+
 ## Separate report layers
 
 - `assessment`: Quality observations by dimension. Each is `unknown` or `observed`. Score is `null` or `0..4`.

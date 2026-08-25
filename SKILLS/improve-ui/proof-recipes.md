@@ -2,6 +2,20 @@
 
 Keep executable commands and JSON schemas here. Other references link here; do not copy CLI examples.
 
+## Contents
+
+- [Choose The Smallest Proof](#choose-the-smallest-proof)
+- [Static Detector](#static-detector)
+- [Review Harness](#review-harness)
+- [Strict Implementation Gate](#strict-implementation-gate)
+- [Proof Manifest](#proof-manifest)
+- [Action Groups And Assertions](#action-groups-and-assertions)
+- [Async UI Contract](#async-ui-contract)
+- [Artifacts And Report Layers](#artifacts-and-report-layers)
+- [Design Dossier](#design-dossier)
+- [Blocked Proof Language](#blocked-proof-language)
+- [Completion Rules](#completion-rules)
+
 ## Choose The Smallest Proof
 
 - Static audit: detector plus source inspection. State runtime and visual quality remain unverified.

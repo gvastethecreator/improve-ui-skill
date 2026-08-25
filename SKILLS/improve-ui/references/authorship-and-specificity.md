@@ -2,6 +2,17 @@
 
 When an existing interface or proposed repair feels generated, cheap, interchangeable, or over-templated, or the surface is visually busy without being designed. Causality test, not a blacklist of styles.
 
+## Contents
+
+- [Diagnose the real failure](#diagnose-the-real-failure)
+- [Run the causality test](#run-the-causality-test)
+- [Require real specificity](#require-real-specificity)
+- [Author a component ecology](#author-a-component-ecology)
+- [Spend detail where it changes belief](#spend-detail-where-it-changes-belief)
+- [Non-website surfaces](#non-website-surfaces)
+- [Cheap-generation gate](#cheap-generation-gate)
+- [Replacement language](#replacement-language)
+
 ## Diagnose the real failure
 
 Usually lacks a product-caused decision:

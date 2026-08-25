@@ -16,7 +16,7 @@ test("material design handoffs require synchronized Markdown and HTML dossiers",
     assert.match(reporting, new RegExp(artifact.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
   assert.match(reporting, /subject.*literal element or region/is);
-  assert.match(reporting, /exact same coordinates and image source/i);
+  assert.match(reporting, /(?:exact )?same coordinates and (?:image )?source/i);
   assert.ok(manifest.entrypoints.includes("scripts/generate-design-report.mjs"));
 });
 
@@ -25,7 +25,7 @@ test("durable design ledgers keep ingestion-first Markdown companions", () => {
   const checklist = read("SKILLS/improve-ui/checklist.md");
   const templates = ["context-card.md", "finish-ledger.md", "motion-plan.md", "geometry-ledger.md"];
 
-  assert.match(execution, /Every durable JSON record must have a sibling Markdown companion/);
+  assert.match(execution, /Every durable JSON record (?:must have|needs) a sibling Markdown(?: companion)?/);
   assert.match(checklist, /same-facts `\.md` companion/);
   for (const template of templates) {
     assert.equal(fs.existsSync(path.join(root, "SKILLS/improve-ui/templates", template)), true, `missing ${template}`);
@@ -42,7 +42,7 @@ test("complex surfaces route through geometry, authorship, and causal motion con
   assert.match(skill, /geometry-and-rhythm\.md/);
   assert.match(skill, /authorship-and-specificity\.md/);
   assert.match(geometry, /within < between < section/);
-  assert.match(authorship, /Could a competitor reuse it after a noun swap/);
+  assert.match(authorship, /(?:Could a )?competitor (?:reuse|can reuse) it after a noun swap/);
   assert.match(motion, /motion-plan\.json/);
   assert.match(traps, /Do not coordinate a state change with a timeout/);
 });

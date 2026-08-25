@@ -2,6 +2,19 @@
 
 Responsive layout, real content, localization, async states, network behavior, production resilience.
 
+## Contents
+
+- [Build a state matrix](#build-a-state-matrix)
+- [Responsive structure](#responsive-structure)
+- [Content resilience](#content-resilience)
+- [Async regions](#async-regions)
+- [Forms and concurrency](#forms-and-concurrency)
+- [Navigation and durable state](#navigation-and-durable-state)
+- [Locale, direction, and hydration](#locale-direction-and-hydration)
+- [Browser and feature resilience](#browser-and-feature-resilience)
+- [Data volume and long sessions](#data-volume-and-long-sessions)
+- [Verification](#verification)
+
 ## Build a state matrix
 
 List only states that apply to the changed surface; then run them.
