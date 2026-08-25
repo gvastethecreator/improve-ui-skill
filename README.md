@@ -100,7 +100,7 @@ Each case contains `before/`, `after/`, and the exact detector findings expected
 
 ## Develop And Verify
 
-Node 20.11 or newer is required for repository verification. The installed static detector itself has no third-party runtime dependency; browser proof loads Playwright explicitly when available.
+Node 22.13 or newer is required for repository verification (pnpm 11). The installed static detector itself has no third-party runtime dependency; browser proof loads Playwright explicitly when available.
 
 ```powershell
 pnpm install --frozen-lockfile
@@ -125,7 +125,7 @@ git diff --check
 
 The contract scenario suite in [evals/scenarios.json](./evals/scenarios.json) covers positive and negative routing, read-only authority, all three profiles, explicit roast, unavailable runtime, named-only states, invalid proof, advisory taste, and formal-compliance boundaries. Its structural validator does not pretend to grade an agent; [evals/README.md](./evals/README.md) describes leakage-free forward testing.
 
-CI runs validation and the full test suite on Windows and Ubuntu with Node 20 and 24.
+CI runs validation and the full test suite on Windows and Ubuntu with Node 22 and 24.
 
 ## Canonical Source And Local Junctions
 

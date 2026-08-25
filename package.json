@@ -6,7 +6,7 @@
   "description": "Evidence-gated Codex skill for improving existing web interfaces.",
   "type": "module",
   "engines": {
-    "node": ">=20.11"
+    "node": ">=22.13"
   },
   "scripts": {
     "test": "pnpm run test:full",
