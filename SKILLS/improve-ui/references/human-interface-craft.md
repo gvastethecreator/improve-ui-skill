@@ -4,6 +4,19 @@ Use this route when the defect is human behavior, not tokens: interruption, perm
 
 Sources: Apple's [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) and [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/). Transferable tests in original prose. Copies no HIG text, SF metrics, system colors, or material specs. Route native Apple-feel work to the platform skill.
 
+## Contents
+
+- [Anti-costume](#anti-costume)
+- [Principle tests](#principle-tests)
+- [Chrome versus content](#chrome-versus-content)
+- [Modality, destruction, and undo](#modality-destruction-and-undo)
+- [Large text and display settings](#large-text-and-display-settings)
+- [Permissions](#permissions)
+- [Onboarding, progress, and search](#onboarding-progress-and-search)
+- [Inclusion](#inclusion)
+- [Proof](#proof)
+- [Sources](#sources)
+
 ## Anti-costume
 
 Label each finding `practice` or `heuristic`. Never gate CI on taste from this file.

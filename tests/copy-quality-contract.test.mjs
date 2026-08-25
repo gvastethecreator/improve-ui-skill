@@ -22,13 +22,13 @@ test("copy work routes through one progressive quality reference", () => {
 test("copy quality preserves voice and facts while repairing named patterns", () => {
   const copy = read("SKILLS/improve-ui/references/copy-and-writing.md");
 
-  assert.match(copy, /Make the minimum useful edit/i);
-  assert.match(copy, /Preserve meaning[^.]+voice distinct/i);
-  assert.match(copy, /Never guess whether AI wrote/i);
-  assert.match(copy, /Binary contrast or negative list/);
+  assert.match(copy, /Minimum useful edit/i);
+  assert.match(copy, /Preserve meaning[^.]+distinct voice/i);
+  assert.match(copy, /Never guess AI authorship/i);
+  assert.match(copy, /Binary contrast, negative list/);
   assert.match(copy, /Synonym cycling/);
   assert.match(copy, /Dash clusters/);
-  assert.match(copy, /Loading or pending[\s\S]+Empty[\s\S]+Permission[\s\S]+Error[\s\S]+Success/);
+  assert.match(copy, /Loading(?: or|,) pending[\s\S]+Empty[\s\S]+Permission[\s\S]+Error[\s\S]+Success/);
   assert.match(copy, /variables, ICU tokens, markup[^.]+accessible names[^.]+translation keys/i);
   assert.match(copy, /practice.*heuristic/i);
 });
