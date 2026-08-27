@@ -1,6 +1,6 @@
 # Sources and provenance
 
-Last verified: **2026-08-12**.
+Last verified: **2026-08-27**.
 
 Ledger for findings that depend on a standard, browser feature, library behavior, or inherited material. Link the exact criterion or documentation near the claim; do not cite this index as a substitute.
 
@@ -43,17 +43,18 @@ Relevant WCAG 2.2: reflow, text spacing, non-text contrast, use of color, focus 
 
 ## Human interface practice
 
-Apple's Human Interface Guidelines are copyrighted. Link as conceptual `practice`; restate transferable tests in original prose. No HIG text, SF type metrics, system color values, or material specifications copied. Not a web standard; must not gate CI.
+Copyrighted design references are linked as conceptual `practice` or `heuristic`; restate transferable tests in original prose. No source text, images, type metrics, system colors, material specs, or numeric scales copied. Not web standards; must not gate CI.
 
 | Source | Authority and use | Notes |
 |---|---|---|
 | [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) | `practice`. Human-behavior craft for web UI | Use [human-interface-craft.md](human-interface-craft.md). Do not clone iOS/macOS chrome. |
+| [Refactoring UI](https://www.refactoringui.com/) | `heuristic`. Hierarchy, grouping, colored-surface text, action rank | Book by Adam Wathan and Steve Schoger. Conceptual tests only. No book text, images, or numeric scales copied. Must not gate CI. |
 | [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/) | `practice`. Purpose, agency, responsibility, familiarity, flexibility, simplicity, craft, delight | Tests, not slogans. Delight is a result, not confetti. |
 | [Inclusion](https://developer.apple.com/design/human-interface-guidelines/inclusion) | `practice`. Language and imagery | Transformed into copy tests. No HIG quotations. |
 | [Privacy](https://developer.apple.com/design/human-interface-guidelines/privacy) | `practice`. Permission timing and purpose copy | Ask in context. Keep denied states usable. |
 | [Onboarding](https://developer.apple.com/design/human-interface-guidelines/onboarding), [Searching](https://developer.apple.com/design/human-interface-guidelines/searching), [Progress indicators](https://developer.apple.com/design/human-interface-guidelines/progress-indicators), [Materials](https://developer.apple.com/design/human-interface-guidelines/materials) | `practice`. First-run, findability, progress, chrome-versus-content | Translucency only when the same spatial object remains behind chrome. Solid fallback for reduced transparency. |
 
-Last technically verified for this section: **2026-08-12**.
+Last technically verified for this section: **2026-08-27**.
 
 ## Browser and CSS behavior
 
@@ -93,6 +94,7 @@ Library docs are not a universal rule. Apply only when that library/version is p
 - [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, commit `61c21c351da4dcb40946a11fead978f2078a2c65`, MIT. [copy and writing quality](copy-and-writing.md) adapts editing principles and named pattern checks for UI copy and design reports. Prose and workflow rewritten; no upstream scripts or agent metadata imported. Last checked 2026-07-22. Preserve the full license in [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
 - Prior `motion-craft.md` mentioned "Apple-style fluid interface guidance" with no title, URL, revision, or license. Consolidated motion reference keeps only independently stated, broadly documented interaction principles; does not attribute or reproduce source-specific prose.
 - [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) and [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/) by Apple. [human-interface-craft.md](human-interface-craft.md) adapts transferable interaction, permission, onboarding, progress, search, inclusion, and display-setting tests for existing web UI. Last checked 2026-08-12. Apple materials remain Apple's; this skill only links them.
+- [Refactoring UI](https://www.refactoringui.com/) by Adam Wathan and Steve Schoger. [visual-quality.md](visual-quality.md) restates transferable hierarchy and surface tests in original prose. Last checked 2026-08-27. The book remains the authors'; this skill only links it. Reviewed [s0xDk/refactoring-ui-skill](https://github.com/s0xDk/refactoring-ui-skill) commit `48872143abb0a8feb6d9bf58e222afbd800210b0` as a third-party encoding of those concepts; no files, CSS tokens, or wording imported.
 - W3C, MDN, Playwright, Google, Motion, and Apple HIG/WWDC materials are linked as authorities. Not bundled or relicensed.
 - Executable fixtures and templates are local test assets. Expected results from executable checks, not narrative claims.
 - Optional runtimes (Playwright, axe, Motion, `web-vitals`) remain external. Follow their licenses and versioned APIs. Do not vendor them without recording license and source.

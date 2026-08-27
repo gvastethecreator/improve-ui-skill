@@ -37,6 +37,7 @@ Each named state needs setup, action, assertion, and artifact where visual proof
 - Account for safe areas on fixed, full-bleed mobile surfaces.
 - Contain scroll on purpose in dialogs, drawers, sheets, code, and wide data. Do not contain scroll on arbitrary wrappers.
 - Keep primary actions and recovery reachable without precision scrolling.
+- At narrower widths, large type and generous padding compress faster than body type and control chrome. Do not scale the whole composition by one factor.
 - Decide how tables transform: scroll with context, reflow to rows/cards, hide optional columns, or offer a detail view. Preserve headers and relationships.
 
 Test layout at actual supported breakpoints plus boundary widths where structure changes. Add a narrow-container test for embeddable components.

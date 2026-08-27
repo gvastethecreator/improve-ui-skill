@@ -141,6 +141,7 @@ Full-frame evidence for structure; DPR 2 or focused crops for finish. Record mea
 - Repeated gaps that drift without grouping.
 - Parallel columns with different starting lines.
 - Equal card surfaces masking unequal priority.
+- Nav or sidebar sized as a grid percentage instead of a content-fixed width, with the main area flexing.
 - Optional metadata that changes action alignment.
 - Nested scroll regions with no clear owner.
 - A sticky control covering the final row.

@@ -193,6 +193,22 @@ test("locale guidance rejects IP-derived language assumptions", () => {
   assert.match(hardening, /explicit[^.]+preference|locale negotiation/i);
 });
 
+test("visual hierarchy mechanics stay heuristic and token-preserving", () => {
+  const visual = read("SKILLS/improve-ui/references/visual-quality.md");
+  const sources = read("SKILLS/improve-ui/references/sources-and-provenance.md");
+
+  assert.match(visual, /## Mechanical hierarchy/);
+  assert.match(visual, /`heuristic`/);
+  assert.match(visual, /product's tokens and type scale/i);
+  assert.match(visual, /not gray and not white-at-opacity/i);
+  assert.match(visual, /destructive[^.]{0,80}confirm/i);
+  assert.doesNotMatch(visual, /4\s+8\s+12\s+16\s+24\s+32/);
+  assert.doesNotMatch(visual, /Never invent a value that isn't on one/);
+  assert.match(sources, /refactoringui\.com/);
+  assert.match(sources, /48872143abb0a8feb6d9bf58e222afbd800210b0/);
+  assert.match(sources, /no files, CSS tokens, or wording imported/i);
+});
+
 test("layout and asset guidance retain stable gutters and selective preconnect", () => {
   const visual = read("SKILLS/improve-ui/references/visual-quality.md");
   const performance = read("SKILLS/improve-ui/references/performance.md");

@@ -14,10 +14,10 @@ Repair the shared cause when a UI symptom repeats across components, routes, sta
 
 | Pattern | Source clues | Repair | Proof |
 |---|---|---|---|
-| Hierarchy inversion | Metadata, badges, diagnostics, or secondary controls dominate | Promote task/object/action; consolidate support | First readable object matches main task; focus order logical |
+| Hierarchy inversion | Metadata, badges, diagnostics, or secondary controls dominate; type-size jumps doing all the work | Soften competing neighbors first; promote task/object/action with weight and color before size | First readable object matches main task; type sizes stay in the existing scale; focus order logical |
 | Status duplication | Pills, banners, counters, icons, color repeat or contradict state | One state source and severity hierarchy | One canonical meaning per state across loading/error/permission/empty |
 | Nested surface debt | Cards inside cards, competing shadows/edges, wrapper proliferation | Flatten; cards only for real repeated/framed objects | Layout reads as one structure; state changes don't shift parent surfaces |
-| CTA democracy | Every action looks primary; destructive and routine match | One primary per decision region | Next action obvious; pending/disabled/destructive/focus states work |
+| CTA democracy | Every action looks primary; destructive and routine match | One primary per decision region; destructive primary only on confirm | Next action obvious; pending/disabled/destructive/focus states work |
 | Density confusion | Marketing spacing in operational UI or evidence hidden behind panels | summary → evidence → detail-on-demand | Scan/compare without opening every item; long/empty data aligns |
 | Missing state model | Default polished; loading/error/permission/stale conflict | Model async states; keep failures local | Each state run, asserted, recoverable, visually consistent |
 | Motion theater | Every mount/hover travels; keyframes fight interruption | Remove purposeless/high-frequency motion; reuse a bounded primitive | Rapid/reversed trigger and reduced motion remain clear |
@@ -28,7 +28,7 @@ Repair the shared cause when a UI symptom repeats across components, routes, sta
 | Native scrollbar leak | Scroll ownership exists but browser-default chrome breaks the surface | Style the actual shared scroll region; don't hide it or nest traps | Thumb/track, hover/active, themes, keyboard, wheel, touch, forced colors |
 | Vector icon drift | Hand-drawn paths vary in grid, weight, cap, silhouette, or centering | Product icon system or rebuild a justified custom family | Real-size and enlarged crops pass across controls and themes |
 | Token drift | Literal colors/spacing/radii/motion repeat inconsistently | Map roles to existing semantic tokens; add only missing shared roles | Representative components and states converge without regressions |
-| Copy scaffolding | Repeated labels, fake metadata, jargon, or generic prose | Remove duplication; name real object/action/consequence | Important state shorter and clearer without losing required meaning |
+| Copy scaffolding | Repeated labels, fake metadata, jargon, or generic prose | Remove duplication; drop labels the format already implies; name real object/action/consequence | Important state shorter and clearer without losing required meaning |
 | Focus/overlay breakage | Dialogs, drawers, sticky UI obscure or lose focus | Repair shared overlay/focus primitive | Open, tab, escape, close, return focus work across consumers |
 
 ## Scope Guard

@@ -7,6 +7,7 @@ Hierarchy, typography, color, surfaces, imagery, or generic visual language. Jud
 - [Choose the register](#choose-the-register)
 - [Calibrate before styling](#calibrate-before-styling)
 - [Repair hierarchy](#repair-hierarchy)
+- [Mechanical hierarchy](#mechanical-hierarchy)
 - [Typography](#typography)
 - [Color and contrast](#color-and-contrast)
 - [Surfaces and elevation](#surfaces-and-elevation)
@@ -53,14 +54,37 @@ Before decorative polish:
 - merge overlapping summaries into one source of truth
 - demote diagnostics and metadata into a stable support zone
 - promote the primary object, current state, next action, recovery path
-- one visually primary action per region
+- one visually primary action per region; destructive treatment only where it is that region's primary action, usually the confirm
 - flatten cards-inside-cards into spacing, sections, or one justified surface layer
 - comparable values in stable columns; density where comparison benefits
 - reveal advanced/destructive actions progressively; never hide essential recovery
 - navigation and persistent controls as a quieter functional layer
 - brand and expression in the content they serve
+- if format or context already names the value, drop the label or fold it in; remaining labels stay secondary unless the user is scanning for the label
 
-Do not say "improve spacing." Name which group gets tighter, which boundary gets larger, and why.
+Do not say "improve spacing." Name which group gets tighter, which boundary gets larger, and why. Vague cheap or cluttered complaints: [Mechanical hierarchy](#mechanical-hierarchy).
+
+## Mechanical hierarchy
+
+Vague "looks off," "cheap," or "cluttered" reports. `heuristic`. Stay on the product's tokens and type scale.
+
+- Reduce competitors before enlarging the primary: inactive nav, sidebar fill, metadata, equal-weight actions.
+- Rank with weight and color roles. Keep type sizes in the existing scale. Oversized primary plus tiny secondary means size is doing all the work.
+- Style actions by rank in that region: one solid primary, quieter secondary, tertiary text action. On lists and detail chrome, keep destructive tertiary until the confirm, where it becomes the primary.
+- Mixed type sizes on one line align to baseline, not the box center.
+
+| Complaint | First move |
+|---|---|
+| Equal visual weight | Soften secondary and tertiary |
+| Primary still lost | Fade neighbors, not a bigger hero |
+| Grouping ambiguous | More space around the group than inside it |
+| Data reads as a dump | Drop implied labels; fold the rest |
+| Loud control for a side action | Demote until confirm |
+| Section title dominates | Size it as a label, not as an `h1` |
+| Text on color looks dirty or disabled | Hue-matched foreground; [Color and contrast](#color-and-contrast) |
+| Icon shouts down its label | Lower icon contrast; keep drawn size |
+
+Done when the first readable object matches the main task, type sizes stay in the existing scale, and no in-scope row in the table stays unaddressed without a named blocker.
 
 ## Typography
 
@@ -74,7 +98,7 @@ Treat `-webkit-font-smoothing` and `-moz-osx-font-smoothing` as non-standard vis
 
 After real foreground/background and applicable criterion, treat WCAG contrast as a standard. Follow `accessibility.md` for the normative path.
 
-Visual direction: derive palette roles from existing tokens, a real brand artifact, subject matter, or an explicit reference; define background, surface, text, muted text, accent, focus, semantic-state roles; inactive quieter than primary and selected; tune text for colored backgrounds; do not reuse neutral gray blindly; one coherent accent strategy unless the product already owns a broader palette. Check light/dark, selected, disabled, error, high-contrast. Skip states the product does not support. Translucent chrome only if the same spatial object stays visible behind it and text stays legible. Solid fallback under reduced transparency. Do not choose a blur or material by the tint it happens to produce.
+Visual direction: derive palette roles from existing tokens, a real brand artifact, subject matter, or an explicit reference; define background, surface, text, muted text, accent, focus, semantic-state roles; inactive quieter than primary and selected; on a colored surface, pick a foreground that keeps that hue — not gray and not white-at-opacity — then meet the contrast criterion in [accessibility.md](accessibility.md); quiet status uses dark-on-tint rather than white-on-loud-fill; one coherent accent strategy unless the product already owns a broader palette. Check light/dark, selected, disabled, error, high-contrast. Skip states the product does not support. Translucent chrome only if the same spatial object stays visible behind it and text stays legible. Solid fallback under reduced transparency. Do not choose a blur or material by the tint it happens to produce.
 
 Cream, purple gradients, glass, neon glow, or monochrome editorial styling are not inherently wrong. Unearned, content-obscuring, or interchangeable across unrelated products → heuristics.
 
@@ -82,7 +106,7 @@ For gradients, judge the rendered field: role, stops, origin/angle, interpolatio
 
 ## Surfaces and elevation
 
-Use containment when it communicates grouping, repetition, elevation, or interaction. Prefer spacing, headings, dividers, background bands before adding another card. Nested radii optically related. `outer radius ≈ inner radius + padding` is useful for close concentric surfaces, not a law. One primary elevation model per surface: edge, tint, or shadow. Combine only when each has a distinct job. Preserve real borders for inputs, tables, separators, focus, structural regions. If media otherwise disappears into the background, give it a subtle edge. Align asymmetric icons optically, not only mathematically. Prefer the established product icon set or a coherent library. Custom SVG must declare grid, viewBox, stroke/fill and corner language, optical center, target sizes. Inspect at real size and enlarged crops before accepting. Pills for pill-like labels/controls. If the system owns them, large radii on cards can be valid. Every remaining scroll region is a designed component: theme-aware thumb/track, appropriate width, hover/active. Preserve platform behavior, visibility, contrast, forced colors, keyboard, wheel, touch, zoom. Never hide the scrollbar merely to avoid styling it. If width changes disrupt scanning, `scrollbar-gutter: stable` on important scroll regions.
+Use containment when it communicates grouping, repetition, elevation, or interaction. Prefer spacing, headings, dividers, background bands before adding another card. Nested radii optically related. `outer radius ≈ inner radius + padding` is useful for close concentric surfaces, not a law. One primary elevation model per surface: edge, tint, or shadow. Combine only when each has a distinct job. Preserve real borders for inputs, tables, separators, focus, structural regions. If media otherwise disappears into the background, give it a subtle edge. Align asymmetric icons optically, not only mathematically. Prefer the established product icon set or a coherent library. Custom SVG must declare grid, viewBox, stroke/fill and corner language, optical center, target sizes. Keep icons at their drawn size; a small glyph used large sits in a shaped container. Inspect at real size and enlarged crops before accepting. Pills for pill-like labels/controls. If the system owns them, large radii on cards can be valid. Every remaining scroll region is a designed component: theme-aware thumb/track, appropriate width, hover/active. Preserve platform behavior, visibility, contrast, forced colors, keyboard, wheel, touch, zoom. Never hide the scrollbar merely to avoid styling it. If width changes disrupt scanning, `scrollbar-gutter: stable` on important scroll regions.
 
 Do not fail a surface on a numeric radius, shadow width, or border opacity without rendered evidence.
 
