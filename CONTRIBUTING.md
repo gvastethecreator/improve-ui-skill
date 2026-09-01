@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for improving Improve UI. Keep changes focused on existing-interface diagnosis, repair, audit, or verification.
+Thank you for improving Improve UI. Keep changes focused on existing-interface diagnosis, repair, audit, or verification. Public documentation stays in American English.
 
 ## Local setup
 
@@ -20,3 +20,4 @@ pnpm run check
 - Preserve the canonical source at `SKILLS/improve-ui`; do not edit junction copies.
 
 Security reports belong in the private process described in [SECURITY.md](SECURITY.md), not in public issues.
+
