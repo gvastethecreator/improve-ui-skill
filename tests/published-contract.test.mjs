@@ -56,7 +56,7 @@ test("nontrivial implementation is isolated, builder-owned, and artifact-gated",
   assert.match(contract, /Five unrelated interfaces are five(?: isolated)? work units/i);
   for (const artifact of ["context-card.json", "proof/before.png", "proof/after.png", "proof/detail.png", "finish-ledger.json"]) assert.match(contract, new RegExp(escapeRegExp(artifact)));
   assert.match(contract, /same builder[^.]+produce/i);
-  assert.match(contract, /default native chrome fails/i);
+  assert.match(contract, /Native scrollbars can pass[^.]+visibility[^.]+behavior[^.]+visual fit/i);
   assert.match(contract, /applicable finish item[^.]+failed[^.]+blocked/i);
 });
 

@@ -11,7 +11,7 @@ Profile: `micro`, `focused`, or `deep`. Requested bar and stop condition. Captur
 1. Fix the highest-severity in-scope issue.
 2. Smallest systemic repair when instances share a cause.
 3. Preserve unrelated behavior and user changes.
-4. Narrowest relevant source/test/runtime check.
+4. Review the causal diff. Batch source/test/runtime verification at the task boundary; use a focused diagnostic during implementation only when a known failure blocks the next edit.
 5. Inspect the same state plus one relevant edge or recovery state.
 6. Repeat while evidence still shows an unresolved P0/P1 or repeated systemic P2 caused by the touched path.
 

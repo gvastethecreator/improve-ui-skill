@@ -2,6 +2,8 @@
 
 Implementation-level improvement of an existing web route, state, component, screenshot-backed defect, or running interface. Audit-only: same diagnosis, do not edit source.
 
+For open improvement requests, use [defect-hunt.md](references/defect-hunt.md) before choosing the repair. For a known defect, inspect only the relevant cause and neighboring consumers.
+
 ## Surgical Read
 
 Record before changing code:
@@ -13,7 +15,8 @@ Record before changing code:
 - visible failure and user consequence
 - likely source cause: primitive, token, shell, state model, data contract, component boundary, or isolated style
 - preservation rules
-- proof target and relevant edge/recovery state
+- observable acceptance condition, proof target, and relevant edge/recovery state
+- strongest reason the current design might be intentional; evidence that supports or defeats it
 
 Done when diagnosis connects a visible symptom and context delta to a source cause and archetype-specific testable outcome.
 
@@ -28,7 +31,7 @@ Done when diagnosis connects a visible symptom and context delta to a source cau
 
 If layout, scrolling, density, navigation, or motion belongs to another archetype, repair that mismatch before finish polish. Do not turn a studio into a dashboard, a command center into sci-fi analytics, or a game HUD into floating admin cards.
 
-Keep isolated defects local. Do not replace a design system or rewrite a page for a small bug.
+Keep isolated defects local. Do not replace a design system for a small bug. For a structural failure, the smallest repair must still remove the whole cause. State the visible before-to-after gain before choosing CSS values.
 
 ## Preserve
 
@@ -58,7 +61,7 @@ Do not claim the fix from a screenshot that differs in content, route, state, vi
 - Patch must touch the real user path.
 - Source cause must be removed or reduced.
 - Rerun the evidence that originally exposed the problem.
-- Reinspect the rendered result at readable detail after the last correction. Do not assume a local nudge removed the visible defect.
+- At final verification, compare the rendered result at readable detail. Name both the intended gain and any regression in density, information, brand character, or interaction. A flat comparison means the cause survived.
 - Keep untested behavior `unknown`.
 - Name files changed, proof, skipped checks, blockers, remaining risk.
 

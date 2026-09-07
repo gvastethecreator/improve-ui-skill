@@ -12,7 +12,9 @@ Apply only items relevant to the chosen profile and claim. Mark `n/a`, `unknown`
 
 ## Diagnosis And Change
 
-- [ ] Main task, visible symptom, user impact, source cause connected.
+- [ ] Main task, evidence, user impact, source cause, exact move, and observable acceptance connected. Observation and inference remain separate.
+- [ ] Major accusations survived their strongest counterargument. No invented defects, scores, or bans on conventions.
+- [ ] Matched comparison names the gain and any loss of information, density, character, or usability.
 - [ ] Context delta: what this archetype requires, what evidence shows, why the mismatch harms its real user loop.
 - [ ] P0/P1 handled before taste.
 - [ ] For `focused`/`deep` work, improvement inventory exists. Every in-scope row closed or `blocked` with a reason.
@@ -36,7 +38,7 @@ Apply only items relevant to the chosen profile and claim. Mark `n/a`, `unknown`
 
 - [ ] H/V anchors, baselines, control/icon centering, repeated row/column alignment inspected in rendered evidence.
 - [ ] Internal padding, sibling gaps, group gaps, section spacing distinguished and repeated intentionally.
-- [ ] Every actual scroll region has correct ownership and a minimal theme-aware custom scrollbar. Affordance, forced colors, keyboard, wheel, touch, zoom remain usable.
+- [ ] Scroll ownership, affordance, visual fit, forced colors, keyboard, wheel, touch, and zoom remain usable. Native or custom appearance is judged in context.
 - [ ] Gradients judged by role, stops, contrast, banding, clipping, fallback, themes, performance — not banned or approved by hue alone.
 - [ ] Icons use a coherent source or family. Custom vectors passed real-size and enlarged-crop inspection for geometry and optical centering.
 - [ ] Material report prose passed the copy/writing final read. Named patterns remain advisory unless project policy makes them a gate.
@@ -53,7 +55,7 @@ Apply only items relevant to the chosen profile and claim. Mark `n/a`, `unknown`
 - [ ] Exact commands, exit status, artifacts, environment metadata recorded where relevant.
 - [ ] Browser/runtime blockers and claim limits explicit.
 - [ ] Small-detail claims use device scale factor `2` evidence or readable focused crops. Compressed or tiny captures are not finish proof.
-- [ ] Every durable JSON record has a same-facts `.md` companion. Material reviews and proposals include synchronized `report.md`, `report.html`, and lossless local report assets.
+- [ ] Every durable JSON record has a same-facts `.md` companion. Requested durable reviews and proposals include synchronized `report.md`, `report.html`, and lossless local report assets.
 - [ ] Every screenshot annotation names one literal subject, matches its numbered overlay and automatic zoom, and records the same normalized geometry in Markdown.
 
 ## Closeout

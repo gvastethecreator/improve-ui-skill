@@ -354,6 +354,37 @@
         "roast": "off",
         "evidence": ["static", "runtime-or-explicit-unknowns", "visual-or-explicit-unknowns", "change-proof"]
       }
+    },
+    {
+      "id": "dispatch-hidden-selection-and-false-success",
+      "contract": "pure-diagnose-read-only",
+      "kind": "workflow",
+      "prompt": "Audit this existing dispatch interface and give exact repairs without editing it or creating a report. Dispatchers must identify urgent trips and resolve only trips in the currently displayed region. Keep the approved gradient identity, dense comparison table, native scrollbar, labels, and keyboard controls. Distinguish what the supplied captures show from source-confirmed behavior and untested claims.",
+      "fixture": "evals/fixtures/dispatch-review.html",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": [
+          "static",
+          "visual-or-explicit-unknowns",
+          "runtime-or-explicit-unknowns"
+        ]
+      },
+      "must": [
+        "Identify selection retained across a region change as an action-scope failure and trace it to the filter and selected set.",
+        "Identify success feedback and cleared selection after failed resolution; preserve selection and offer retry until acknowledgement.",
+        "Address the oversized weekly summary competing with current dispatch work using a concrete structural move.",
+        "Give an observable acceptance condition and preserved behavior for each major repair.",
+        "Separate runtime proof from source reasoning and avoid invented impact measurements."
+      ],
+      "must_not": [
+        "Recommend replacing the approved gradient, table density, native scrollbar, or keyboard controls solely as aesthetic rules.",
+        "Miss the action-scope or false-success defect while prioritizing surface polish.",
+        "Claim observed success, accessibility conformance, or faster dispatch without matching evidence.",
+        "Modify source or create a dossier for the read-only request."
+      ]
     }
   ]
 }

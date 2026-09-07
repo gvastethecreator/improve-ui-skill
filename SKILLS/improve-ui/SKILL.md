@@ -5,16 +5,11 @@ description: "Existing web UI: improve, diagnose, audit, critique, roast, harden
 
 # Improve UI
 
-Improve existing interface. Preserve its path. Trace weakness to its source. Smallest authorized systemic change. Limit claims to evidence.
+Find the highest-impact defects in an existing interface and remove their causes. Preserve what works. Meet the requested visual ambition and prove the gain.
 
 ## Contents
 
-- [Entry](#mandatory-entry-frame)
-- [Profiles](#choose-a-profile)
-- [Process](#process)
-- [Router](#context-router)
-- [Harness](#deep-review-harness)
-- [Closeout](#output-contract)
+[Entry](#mandatory-entry-frame) · [Profiles](#choose-a-profile) · [Process](#process) · [Router](#context-router) · [Harness](#deep-review-harness) · [Closeout](#output-contract)
 
 ## Mandatory Entry Frame
 
@@ -37,13 +32,13 @@ Do not escalate to `deep` only because references or scripts exist. State profil
 ## Process
 
 1. Inspect rules, tree, framework, tokens, primitives, route, and run/test commands. Preserve unrelated changes.
-2. Frame one surface: archetype, user mode, artifact, pressure, input, spatial model, costly states, hierarchy, cause, constraints, proof matrix. Split unrelated archetypes into isolated units.
-3. Choose one Context Router row. Combine only in-scope domains.
-4. Builder owns baseline capture -> inspect -> correct -> recapture. If reproduction is missing, change only a clear source-backed cause. Label proof provisional.
-5. `focused`/`deep`: inventory applicable dimensions before editing (`dimension - damage - planned move - severity`). Clean rows `pass`; uninspected `unknown`. Implementation: P0/P1 first, in-scope P2 and taste. Diagnose/audit/verify: report with evidence; do not edit. Close each row or record why `blocked`.
+2. Frame the user's decision, primary artifact, intended attention order, costly transition, and preserved strengths. Split unrelated archetypes into isolated units. Keep context in concise working notes.
+3. `focused`/`deep` diagnosis: use [defect-hunt.md](references/defect-hunt.md) to inspect task, relationships, and detail. Challenge each major finding with the strongest counterargument. Choose only relevant Context Router references.
+4. Connect evidence -> consequence -> cause -> exact move -> acceptance. Separate observation from inference and severity from confidence. Builder owns baseline capture -> inspect -> correct -> recapture. Missing reproduction limits proof.
+5. Keep a short improvement inventory of confirmed causes and visual opportunities, not one invented defect per dimension. Implementation: P0/P1 first, then repeated costs and the largest visual mismatch. Diagnose/audit/verify: report with evidence; do not edit. Close each in-scope row or name its blocker.
 6. Check by profile. `micro`: exact defect state and viewport. `focused`: main path plus one edge or recovery. `deep`: declared relevant state-family and viewport matrix.
-7. Run `structure` and `finish`. Persist context, before/after/detail proof, and finish ledger from execution contract. Stop when applicable dimensions pass, or a named blocker limits the claim.
-8. Material reviews or proposals: [reporting](references/reporting.md). Synchronized Markdown and HTML from one manifest.
+7. At the verification boundary, judge `structure` and `finish` against matched evidence. Name gain and regression; classify the comparison `better | flat | worse | inconclusive`. Trace a surviving cause instead of adding decoration. Stop when the scoped outcome is evidenced or a named blocker limits it.
+8. Requested durable reviews or proposals: [reporting](references/reporting.md). Otherwise keep findings and proof references in a concise response; do not create a dossier by default.
 
 Implementation: start with [interface-surgery.md](interface-surgery.md). Add [surgical-patterns.md](surgical-patterns.md) only when a symptom repeats. Do not preload other core refs.
 
@@ -65,7 +60,7 @@ Choose one primary row. Union only domain references and proof obligations the s
 | Modality, permissions, onboarding, progress, search, undo, large text, inclusion | [references/human-interface-craft.md](references/human-interface-craft.md) | Pattern's costly state from that file's proof table |
 | Responsive, content, i18n, async, real-data states | [references/responsive-hardening.md](references/responsive-hardening.md) | Run states, assertions, relevant viewports |
 | Motion or gesture | [references/motion.md](references/motion.md). Add [motion implementation traps](references/motion-implementation.md) while editing. Add [performance](references/performance.md) only for runtime cost | Repeated or interrupted trigger, reduced motion, visual/runtime evidence |
-| Material review or proposal | [references/reporting.md](references/reporting.md) plus the diagnosis route | Synchronized reports, local assets, exact annotation mapping, proof limits |
+| Requested durable review or proposal | [references/reporting.md](references/reporting.md) plus the diagnosis route | Synchronized reports, local assets, exact annotation mapping, proof limits |
 | Frontend performance | [references/performance.md](references/performance.md), [proof-recipes.md](proof-recipes.md) | Measured interaction or limited source-only claim |
 | Landing or pricing page | [references/marketing.md](references/marketing.md). Add [visual quality](references/visual-quality.md) only for art direction | First viewport, proof/decision section, mobile |
 | Canvas/WebGL/3D already present | [references/immersive.md](references/immersive.md), [performance](references/performance.md) | Readability, fallback, offscreen pause, cleanup, runtime |
@@ -91,17 +86,15 @@ Incomplete when any condition holds:
 - read-only request edited product source without implementation authority
 - implementation request stopped at advice despite editable, reachable path
 - missing target or zero supported source files reported as clean
-- frontend code changed without rendered proof, skipped applicable finish dimension, used unreadable detail evidence, or lacked explicit proof blocker
-- named state not run and asserted successfully
+- visual changes claimed successful without matched rendered evidence, readable detail, or an explicit proof blocker
 - `focused` or `deep` started editing without an improvement inventory, or ended with in-scope rows neither closed nor `blocked` with a reason
 - run completed only cosmetic inventory rows while higher-severity rows stayed open without a named blocker
-- prose, a pathless success message, or mismatched artifacts used as change proof
 - detector heuristic reported as objective design truth
 - repair used a generic cross-context prescription, left primary archetype unknown, or skipped its costly states
-- unrelated primary archetypes batched into one implementation work unit, or builder delegated its proof loop to a later coordinator
 - unresolved in-scope P0/P1 findings hidden by an aggregate score
-- unknown dimensions initialized, scored, or presented as passing
 - formal conformance or production-readiness language exceeded inspected scope
+- proposed repair has no observable acceptance condition, repeats the surviving cause, or removes useful information to look cleaner
+- verdict punishes a convention without checking intent, or treats functioning controls as proof of strong visual design
 
 ## Output Contract
 
@@ -109,9 +102,9 @@ Incomplete when any condition holds:
 - Implementations: result first, inventory (row status, files, proof, skipped checks, blockers, remaining risk).
 - Separate report usefulness from claim status. Evidence can be partial while completion stays blocked.
 - Cite file/line for source findings; viewport, state, and artifact for visual findings. Finish ledger for nontrivial visual work.
-- Label rules `standard`, `practice`, `heuristic`, or `preference`. Never block on taste alone.
+- Label rules `standard`, `practice`, `heuristic`, or `preference`. A missed visual brief can fail design quality; taste cannot fail functional correctness or conformance.
 - Match user language and tone. For UI copy or report prose, apply [copy and writing quality](references/copy-and-writing.md). Preserve voice and facts. Critique decisions and user effects.
-- Material reviews and proposals: one-manifest `report.md` + `report.html`. Ids, annotation geometry, decisions, proof states, and limitations must match.
+- Requested durable reviews and proposals: one-manifest `report.md` + `report.html`. Ids, annotation geometry, decisions, proof states, and limitations must match.
 - Use [checklist.md](checklist.md) before nontrivial final claim.
 
 ## Reference Files

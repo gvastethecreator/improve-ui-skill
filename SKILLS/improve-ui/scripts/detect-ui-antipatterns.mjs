@@ -707,7 +707,7 @@ function runFileRules(file, text) {
           severity: "P2",
           classification: "advisory",
           confidence: "medium",
-          message: "A declared scroll region has no scrollbar treatment in the same source. Confirm the shared/global system or add a minimal theme-aware custom scrollbar without hiding the affordance.",
+          message: "A declared scroll region has no local scrollbar treatment. Inspect native or shared styling for visibility, visual fit, and input behavior. Native appearance alone is not a defect; add custom treatment only for a demonstrated mismatch or explicit brief.",
         },
         file,
         text,

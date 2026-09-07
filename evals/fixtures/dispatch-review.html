@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay Dispatch</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; background: #f3f5fa; color: #182235; font: 15px/1.45 system-ui, sans-serif; }
+button, select { font: inherit; }
+button, select, a { border-radius: 6px; }
+button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #146cc0; outline-offset: 3px; }
+header { height: 64px; display: flex; align-items: center; gap: 32px; padding: 0 32px; background: #fff; border-bottom: 1px solid #d5dce8; }
+header strong { font-size: 20px; }
+header a { color: #33455c; text-decoration: none; padding: 8px; }
+header a[aria-current] { font-weight: 700; text-decoration: underline; }
+main { max-width: 1280px; margin: auto; padding: 28px 32px; }
+.summary { min-height: 430px; padding: 44px; color: white; background: linear-gradient(120deg,#07576b,#5d3291); border-radius: 14px; }
+.summary h1 { font-size: 44px; line-height: 1.08; margin: 0 0 26px; }
+.summary .metric { font-size: 96px; font-weight: 750; letter-spacing: -5px; line-height: 1.1; margin: 16px 0; }
+.summary p { max-width: 60ch; }
+section.queue { margin-top: 32px; padding: 24px; border: 1px solid #d5dce8; border-radius: 10px; background: #fff; }
+.toolbar { display: flex; gap: 14px; align-items: center; margin: 16px 0; }
+h2 { margin: 0; font-size: 22px; }
+label { display: inline-flex; gap: 8px; align-items: center; }
+select, button { min-height: 40px; padding: 8px 14px; border: 1px solid #8e9caf; background: #fff; color: #182235; }
+button.primary { margin-left: auto; background: #174e87; color: #fff; border-color: #174e87; font-weight: 650; }
+.table-scroll { max-height: 225px; overflow: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th, td { padding: 10px 12px; border-bottom: 1px solid #d5dce8; }
+th { background: #edf1f7; }
+td:first-child { width: 40px; }
+#feedback { min-height: 22px; color: #31445b; }
+.badge { display: inline-block; border-radius: 4px; padding: 2px 6px; font-size: 13px; font-weight: 600; background: #ffeac7; color: #653600; }
+footer { margin-top: 18px; font-size: 13px; color: #47586f; }
+</style>
+</head>
+<body>
+<header><strong>Relay</strong><a href="#queue" aria-current="page">Dispatch</a><a href="#summary">Weekly summary</a></header>
+<main>
+<section class="summary" id="summary" aria-labelledby="summary-title">
+<h1 id="summary-title">A week in motion</h1>
+<div class="metric">98.4%</div>
+<p>On-time arrivals across all regions · previous 7 days</p>
+<p>1,250 completed trips. Updated today at 09:40.</p>
+</section>
+<section class="queue" id="queue" aria-labelledby="queue-title">
+<h2 id="queue-title">Exceptions needing dispatch</h2>
+<div class="toolbar">
+<label for="region">Region <select id="region"><option value="all">All regions</option><option value="east">East</option><option value="west">West</option></select></label>
+<span id="scope"></span>
+<button type="button" class="primary" id="resolve">Resolve selected (1)</button>
+</div>
+<div class="table-scroll"><table><thead><tr><th scope="col">Select</th><th scope="col">Trip</th><th scope="col">Region</th><th scope="col">Owner</th><th scope="col">Due</th><th scope="col">Status</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p role="status" id="feedback">One trip selected.</p>
+</section>
+<footer>Dispatch workspace · Fixture data for evaluation</footer>
+</main>
+<script>
+const trips = [
+  {id:'E-102', region:'east', owner:'Mara', due:'09:45', state:'Unassigned driver'},
+  {id:'W-203', region:'west', owner:'Jules', due:'09:46', state:'Vehicle unavailable'},
+  {id:'W-204', region:'west', owner:'Jules', due:'09:50', state:'Route blocked'},
+  {id:'E-105', region:'east', owner:'Mara', due:'09:55', state:'Unassigned driver'},
+  {id:'W-206', region:'west', owner:'Noah', due:'10:00', state:'Route blocked'},
+  {id:'E-107', region:'east', owner:'Noah', due:'10:05', state:'Vehicle unavailable'}
+];
+const selected = new Set(['E-102']);
+const filter = document.querySelector('#region');
+const rows = document.querySelector('#rows');
+const resolveButton = document.querySelector('#resolve');
+const feedback = document.querySelector('#feedback');
+function visibleTrips() { return trips.filter(t => filter.value === 'all' || t.region === filter.value); }
+function render() {
+  rows.replaceChildren();
+  for (const trip of visibleTrips()) {
+    const row = document.createElement('tr');
+    const selection = document.createElement('td');
+    const check = document.createElement('input');
+    check.type = 'checkbox';
+    check.checked = selected.has(trip.id);
+    check.setAttribute('aria-label','Select trip '+trip.id);
+    check.addEventListener('change', () => { check.checked ? selected.add(trip.id) : selected.delete(trip.id); render(); });
+    selection.append(check);
+    row.append(selection);
+    for (const key of ['id','region','owner','due','state']) { const cell = document.createElement('td'); cell.textContent = trip[key]; row.append(cell); }
+    rows.append(row);
+  }
+  document.querySelector('#scope').textContent = visibleTrips().length+' trips in this region';
+  resolveButton.textContent = 'Resolve selected ('+selected.size+')';
+  resolveButton.disabled = selected.size === 0;
+}
+filter.addEventListener('change', render);
+async function sendResolution(ids) {
+  if (new URLSearchParams(location.search).has('offline')) throw new Error('Connection unavailable');
+  for (const trip of trips) if (ids.includes(trip.id)) trip.state = 'Resolved';
+}
+resolveButton.addEventListener('click', async () => {
+  resolveButton.disabled = true;
+  feedback.textContent = 'Resolving…';
+  try { await sendResolution([...selected]); }
+  catch (error) { console.warn(error.message); }
+  finally { feedback.textContent = 'Selected trips resolved.'; selected.clear(); render(); }
+});
+render();
+</script>
+</body>
+</html>

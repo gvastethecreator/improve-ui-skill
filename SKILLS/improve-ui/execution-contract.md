@@ -1,48 +1,40 @@
 # Implementation Execution Contract
 
-Required for every nontrivial authorized implementation. A coordinator can add constraints, but must not remove these gates while claiming Improve UI was applied.
+Use for nontrivial authorized implementation. The contract is a causal repair and inspected result. Files organize evidence; their existence does not prove design quality.
 
 ## One Work Unit, One Primary Surface
 
-A work unit owns one primary product archetype, route, or tightly coupled flow. Five unrelated interfaces are five work units even if they share a benchmark, model, repo, or deadline. Do not ask one builder to improve a studio, dashboard, command center, HUD, and landing page in one pass — context switching collapses inspection into generic theming.
+Five unrelated interfaces are five work units. Give each its own task, spatial model, costly state, and acceptance condition. Work sequentially unless delegation is authorized. Shared primitives can form one unit when the same cause and proof cover the affected consumers; inspect a representative sibling for regressions.
 
-Shared primitives can form one work unit only when the same causal edit and proof matrix cover their consumers. Record bounded secondary regions on the context card. Split if spatial, scrolling, interaction, content, or costly-state models are incompatible.
+## Keep Decisions Proportional
 
-## Required Builder-Owned Artifacts
+Before editing, record target, profile, user task, intended hierarchy, evidence, cause or hypothesis, preserved strengths, exact move, and observable acceptance. Use concise working notes or an existing task document. Do not create parallel inventories for the same facts.
 
-Use coordinator-supplied paths when present. Else keep temporary evidence in the OS temp directory and report exact paths. Do not put evidence in product source only to keep a record.
+An ordinary improvement needs a short finding list and evidence references, not a dossier. Persist the structured records below only when a requested handoff, benchmark, existing project contract, or strict harness requires them. Use supplied paths or temporary storage outside product source.
 
-Before the first edit, create or explicitly return `context-card.json` containing:
+## Structured Evidence Format
 
-- work-unit id, profile, target route, primary archetype, secondary regions, user mode and primary artifact
-- frequency, pressure, input, spatial model, costly states and intended hierarchy
-- source cause, preserved contracts, constraints, state/viewport matrix and proof targets
+For those structured runs, the same builder must produce:
 
-For a rendered change, the same builder must produce:
+- `context-card.json`: target, profile, archetype, task, constraints, preserved contracts, costly states, state/viewport matrix, causes and proof targets.
+- `proof/before.png` and `proof/after.png`: matched route, viewport, state, content, theme, and auth context.
+- `proof/detail.png` or named readable crops for the small details actually judged.
+- `finish-ledger.json`: applicable structure and finish dimensions, evidence paths, observation, corrective action, and status `passed | failed | not-applicable | blocked`.
 
-- `proof/before.png` at the representative state and viewport
-- `proof/after.png` at the same route, state, viewport, theme, content and auth context
-- `proof/detail.png` or named DPR 2 crops for alignment, spacing, dense rows, scrollbars, gradients and icon/vector craft
-- `finish-ledger.json` with `alignment`, `spacing-rhythm`, `overflow`, `scrollbars`, `gradients`, `icons-vector-craft`, `content-integrity`, `capture-legibility`, and `responsive-detail`
+A greenfield or unavailable baseline is not a before capture. Name missing evidence rather than fabricating it. An absent gradient or icon family can be not-applicable; an uninspected relevant state is unknown or blocked.
 
-Each ledger item records `status: passed | failed | not-applicable | blocked`, evidence paths, observation, and corrective action. Always applicable: alignment, spacing, overflow, content integrity, capture legibility, responsive detail. Scrollbar N/A only with no scroll region; if scrolling exists, default native chrome fails until a minimal theme-aware treatment is proven or a platform limitation is named. Icons and gradients N/A only when absent.
-
-Every durable JSON record needs a sibling Markdown from the same facts: [context card](templates/context-card.md), [finish ledger](templates/finish-ledger.md), proof-manifest summary, and any direction/decision ledger used by the work. Markdown is the fast-ingestion and correction surface; JSON remains the machine contract. A missing or contradictory companion blocks handoff. Temporary read-only diagnostics can stay ephemeral.
+Every durable JSON record needs a sibling Markdown from the same facts: [context card](templates/context-card.md), [finish ledger](templates/finish-ledger.md), and any proof or decision manifest. This companion rule applies when creating durable structured records; it does not require those records for every task.
 
 ## Capture, Judge, Correct
 
-Loop:
+Capture the baseline before visual changes when available. Inspect the relevant source, remove the cause, then compare matched rendered evidence at the task's verification boundary. The builder owns the comparison and any needed correction. A screenshot file is only captured until inspected.
 
-1. Capture before.
-2. Implement the smallest systemic repair that satisfies the authorized scope.
-3. Capture after and DPR 2 details.
-4. Inspect the images visually at readable scale before using source to explain them.
-5. Correct every applicable failed dimension and recapture the same evidence.
+Judge structure and finish separately. Name what visibly improved and what became worse. Check the changed main path and a relevant edge or recovery state. Add viewports for responsive changes, the requested scope, or a demonstrated risk. Native scrollbars can pass when their visibility, behavior, and visual fit serve the product; custom styling needs a reason.
 
-Coordinator screenshots can compare later — they do not substitute for this loop. A screenshot file is only `captured`, not `passed`.
+If the same defect survives, revisit the responsible primitive, layout, state, content, or asset rule. Correct the cause and rerun the affected failed proof. Do not repeat unrelated passed checks or create extra reports to demonstrate effort.
 
 ## Completion Gate
 
-Blocked when: an artifact is absent; a route, control, or state did not run; an applicable finish item is `failed` or `blocked`; the before/after frames are mismatched; the visual result still contradicts the context card.
+A required interaction that failed, mismatched comparison, unresolved major cause, material regression, or applicable finish item marked failed or blocked prevents the affected quality claim. A missing artifact blocks only a contract that actually requires it.
 
-Use `implemented, not fully verified` and name the blocker. Do not record `complete`, `production-ready`, or a visual-quality win.
+Use `implemented, not fully verified` when proof is blocked and name the exact missing action or evidence. Completion requires the scoped outcome, preserved contracts, and evidence that supports the claim. A functional pass cannot substitute for a requested visual improvement.

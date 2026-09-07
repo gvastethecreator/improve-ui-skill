@@ -19,8 +19,8 @@ Do not pass finish from source, tokens, a detector, or a full-page thumbnail. Co
 ## Overflow And Scrollbars
 
 - Inventory page, panel, menu, table, code, drawer, modal, and nested scroll ownership. Remove accidental overflow and nested scroll traps first.
-- Style remaining scrollbars minimally to fit the interface. Define thumb, track, width, radius, hover/active, contrast, and supported-theme behavior with `scrollbar-width`/`scrollbar-color` and `::-webkit-scrollbar*` where relevant.
-- Do not hide the affordance. Preserve keyboard, wheel, track, thumb, touch, zoom, and forced-colors. If scrollbar appearance can shift aligned content, use `scrollbar-gutter: stable`.
+- Judge native and custom scrollbars by visibility, fit, and behavior. Style them when an observed mismatch or the brief calls for it; define thumb, track, width, contrast, and supported-theme behavior. Native appearance alone is not a failed finish state.
+- Do not hide the affordance. Preserve keyboard, wheel, track, thumb, touch, zoom, and forced-colors. Use `scrollbar-gutter: stable` where scrollbar appearance shifts aligned content.
 - Exercise the scroll region. A static screenshot cannot prove scroll ownership, sticky interaction, or nested-wheel behavior.
 
 ## Gradients
@@ -69,4 +69,4 @@ Any applicable `failed` continues the loop. Any `blocked` limits the claim. If a
 
 ## Resolution Standard
 
-Do not solve weak craft only by deleting it. Supply the better move: stronger anchor, clearer spacing, fitted scrollbar, deliberate gradient, coherent icon source, or product-specific copy. If the first fix is only competent and generic, generate two materially different bounded alternatives, choose one against the task and product system, and prove it.
+Do not solve weak craft only by deleting it. Supply the better move: stronger anchor, clearer grouping, deliberate material, coherent icon source, or product-specific copy. Check whether removing clutter also removed decision evidence or character. If the result misses the visual brief, compare materially different bounded repairs and choose against a visible acceptance condition. A functional pass does not establish visual quality.

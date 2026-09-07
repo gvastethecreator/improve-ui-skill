@@ -26,6 +26,8 @@ If the capture is too small, compressed, or blurry to resolve the claimed detail
 
 ## Analyze
 
+Use [defect-hunt.md](references/defect-hunt.md) to inspect decision costs and state transitions, challenge accusations, and define falsifiable repairs. A checklist category is a search prompt, not a required finding.
+
 1. Identify archetype, bounded regions, user mode, primary artifact, pressure, input, spatial model, and costly states.
 2. State product intent, audience, main task, and context-specific hierarchy.
 3. State what the rendered interface accidentally prioritizes and whether its interaction model belongs to another archetype.
@@ -43,9 +45,9 @@ Avoid vague findings. Replace "reduce clutter" with the exact elements to remove
 Compact unless the user requests another artifact:
 
 1. **Verdict**: context card plus one paragraph on the central conflict between product behavior and interface.
-2. **Findings**: P0/P1 first, then systemic P2. Each includes evidence, impact, source cause or limitation, and exact fix.
+2. **Findings**: P0/P1 first, then systemic P2 and the largest visual opportunity. Each includes evidence, impact, source cause or limitation, exact fix, and an observable acceptance condition.
 3. **Cross-reference**: table only when it clarifies several visual-to-source mappings.
-4. **First cuts**: three to five ordered removals, merges, promotions, or structural repairs.
+4. **First cuts**: only the justified removals, merges, promotions, or structural repairs, ordered by impact.
 5. **Preserve**: what already works and must survive.
 6. **Target experience**: how the corrected surface must read and behave.
 7. **Evidence limits**: uninspected paths, states, or browsers.

@@ -11,7 +11,7 @@ Material critique, screenshot review, improvement or redesign proposal. One deci
 - [Content order](#content-order)
 - [Report quality gate](#report-quality-gate)
 
-Skip tiny implementation notes, routine status, or code-only work with no visual proposal. Generate if the user must evaluate, approve, compare, hand off, or continue later.
+Use when the user requests a durable report, proposal artifact, or handoff, or an established project contract requires it. An ordinary audit or critique stays in the response with evidence links. Do not infer permission to create project reports from the need to explain findings.
 
 ## Required Artifacts
 
