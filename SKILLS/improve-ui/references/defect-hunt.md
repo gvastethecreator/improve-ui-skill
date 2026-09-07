@@ -24,6 +24,8 @@ Select probes that can change the verdict. Inspect broad structure first, then r
 | Weak visual system | Which repeated mismatch makes the surface harder to read or visibly unfinished? | Type roles, contrast roles, control heights, baselines, spacing relationships, asset crops, icon family |
 | Product mismatch | Is the interface organized around its actual object and workflow, or around generic feature boxes? | Space given to artifact versus chrome, order of decisions, context-specific costly state |
 
+When a repair hides decision information, changes interruption/recovery, or automates a choice, use [experience quality](experience-quality.md) to trace shifted effort and lasting effects. A smaller screen, faster acknowledgement, or higher acceptance rate can conceal a worse task outcome.
+
 Use reversible fixtures for failure states. Do not create destructive actions, production errors, or new infrastructure just to complete a checklist. Unsupported states stay unknown.
 
 ## Build A Finding That Can Survive Rebuttal

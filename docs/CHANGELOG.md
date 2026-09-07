@@ -2,6 +2,10 @@
 
 ## 2026-09-07
 
+- Adapted selected experience-design practices for shifted decision effort, interruption, partial results, cancellation, AI review, and outcome measurement.
+- Added a self-contained experience-quality reference with primary sources, reading limits, and explicit separation of research, synthetic checks, and human outcomes.
+- Added three experience-focused evaluation cases. Package, evaluation, and quick validators passed; the new cases were checked structurally, not executed as agent trials. Runtime suites were not repeated for this guidance-only addition.
+
 - Added causal defect probes for attention, grouping, decision costs, action scope, state contradictions, and visual craft.
 - Added counterarguments, observable acceptance conditions, and before/after judgments that expose regressions.
 - Kept strict evidence formats for structured handoffs while removing mandatory dossiers from ordinary improvements.

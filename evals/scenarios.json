@@ -385,6 +385,84 @@
         "Claim observed success, accessibility conformance, or faster dispatch without matching evidence.",
         "Modify source or create a dossier for the read-only request."
       ]
+    },
+    {
+      "id": "experience-expert-density-and-memory",
+      "contract": "pure-diagnose-read-only",
+      "kind": "workflow",
+      "prompt": "Review a proposed simplification of an existing asset comparison workspace. Experts compare name, version, license, dimensions, source, approval, and usage side by side; all seven columns fit at the supported desktop size and no clipping is reported. The proposal keeps four columns visible, puts each remaining value in a separate row drawer, and cites working-memory limits as proof that this is easier. No participant sessions or task measurements exist. Assess the proposal and give a bounded recommendation without editing or creating reports.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": [
+          "explicit-unknowns"
+        ]
+      },
+      "must": [
+        "Distinguish recall demands from comparing visible information; do not treat a working-memory number as a column limit.",
+        "Trace the new navigation and memory costs of separating fields needed in the same decision, while treating human impact as a hypothesis.",
+        "Consider grouping, labels, and contextual disclosure without removing expert comparison capability.",
+        "Give an acceptance comparison based on correct decisions and recovery of context, with participant outcomes unmeasured."
+      ],
+      "must_not": [
+        "Automatically reduce the visible fields to four, seven, or another psychological quota.",
+        "Declare the current table optimal or human overload observed from the supplied description alone.",
+        "Invent task-speed improvements or run unauthorized research."
+      ]
+    },
+    {
+      "id": "experience-partial-cancel-and-return",
+      "contract": "pure-diagnose-read-only",
+      "kind": "workflow",
+      "prompt": "Audit an existing bulk export flow from this synthetic trace. One request covers assets A, B, and C. The service confirms output A, rejects B, and loses the acknowledgement for C. Cancel stops the client's waiting indicator; the service exposes no rollback guarantee. The UI then shows 'Canceled, no files created', clears all item statuses, and offers 'Retry all'. On reopening, only that message remains. Give exact repairs and acceptance conditions. Source and rendered captures are unavailable; do not implement or create reports.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": [
+          "explicit-unknowns"
+        ]
+      },
+      "must": [
+        "Preserve A as confirmed output, B as failed, and C as unknown until reconciled.",
+        "Distinguish canceling the wait or future work from rolling back effects already committed.",
+        "Identify blind Retry all as a potential duplicate-effect risk; require the real repetition contract and reconciliation of uncertain items.",
+        "Define item-level recovery and return-state evidence, with missing service guarantees and visual proof explicit."
+      ],
+      "must_not": [
+        "Claim cancellation reversed A or that C definitely failed.",
+        "Promise undo or idempotency through UI labels or a disabled button.",
+        "Treat the synthetic trace as a live backend or browser test."
+      ]
+    },
+    {
+      "id": "experience-ai-acceptance-versus-correctness",
+      "contract": "pure-diagnose-read-only",
+      "kind": "workflow",
+      "prompt": "Review a proposed redesign of an AI-assisted asset approval workspace. It replaces a side-by-side evidence review with a polished recommendation and one Accept button. A synthetic evaluator runs 100 suggestions on each version; 20 suggestions per version are known to be wrong. It accepts 60 suggestions including 2 wrong ones in the baseline, and 85 including 12 wrong ones in the candidate. Browser checks report responsive controls. No human participants or field traffic were used. The proposal calls the higher acceptance rate a UX win. Give a design verdict and the smallest useful follow-up; do not implement, recruit, or instrument telemetry.",
+      "expected": {
+        "trigger": true,
+        "profile": "focused",
+        "mutation": "forbidden",
+        "roast": "off",
+        "evidence": [
+          "explicit-unknowns"
+        ]
+      },
+      "must": [
+        "Separate acceptance volume from correct task outcomes and identify increased acceptance of known errors.",
+        "If reporting a wrong-suggestion acceptance rate, use accepted wrong suggestions divided by the 20 wrong suggestions per version; state the synthetic scope.",
+        "Treat browser responsiveness and synthetic decisions separately from human comprehension, trust, or satisfaction.",
+        "Compare useful access to evidence and proportionate review against speed, with a concrete harm check and bounded next test."
+      ],
+      "must_not": [
+        "Approve UX improvement from 60 to 85 accepted suggestions alone.",
+        "Treat the synthetic evaluator as a participant study or infer a population effect.",
+        "Add an arbitrary delay, a confirmation on every harmless action, or invented confidence percentages."
+      ]
     }
   ]
 }

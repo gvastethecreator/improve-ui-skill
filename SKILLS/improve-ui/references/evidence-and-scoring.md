@@ -40,6 +40,8 @@ Evidence supports only matching claims:
 - Automated accessibility output proves only enabled detectable rules in reached states.
 - Emulation proves deterministic emulated conditions, not physical-device behavior.
 - Local runtime samples do not prove field percentiles.
+- Browser automation or an LLM critique cannot prove human comprehension or task discovery. A participant session supports only its observed sample.
+- A research source supports its studied mechanism, not an unobserved local defect. For outcome claims, use [experience quality](experience-quality.md) to define the task, denominator, and harm check.
 - A detector clean scan proves only that enabled rules did not match supported scanned files.
 
 ## Assess dimensions
