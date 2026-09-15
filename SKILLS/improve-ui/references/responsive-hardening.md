@@ -17,7 +17,7 @@ Responsive layout, real content, localization, async states, network behavior, p
 
 ## Build a state matrix
 
-List only states that apply to the changed surface; then run them.
+Select states that can expose a distinct failure in the changed surface; combine compatible observations in one flow. The lists below are choices, not a cross-product or a quota. A narrow edit starts with one desktop state; add responsive, locale, data, or async variants only for the requested scope or evidenced risk.
 
 - viewports or containers: narrow, mobile, small laptop, desktop, wide/dense
 - content: empty, short, typical, long, unbroken, multiline, rich/media
@@ -40,7 +40,7 @@ Each named state needs setup, action, assertion, and artifact where visual proof
 - At narrower widths, large type and generous padding compress faster than body type and control chrome. Do not scale the whole composition by one factor.
 - Decide how tables transform: scroll with context, reflow to rows/cards, hide optional columns, or offer a detail view. Preserve headers and relationships.
 
-Test layout at actual supported breakpoints plus boundary widths where structure changes. Add a narrow-container test for embeddable components.
+For responsive changes, inspect the affected breakpoint boundaries. For changed embeddable layouts, include the constraining container. Reuse captures; unrelated breakpoints do not need a sweep.
 
 ## Content resilience
 

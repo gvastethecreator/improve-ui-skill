@@ -34,7 +34,7 @@ Repair the shared cause when a UI symptom repeats across components, routes, sta
 ## Scope Guard
 
 - Fix the shared layer only when repeated evidence justifies its blast radius.
-- Add or update regression tests for existing consumers before widening a primitive change.
+- Inspect existing consumer coverage before widening a primitive change. Add one short regression only for a meaningful uncovered failure; at final integration, select affected consumers and reuse valid evidence.
 - Preserve legitimate variants. Do not force unrelated surfaces into one visual treatment.
 - Keep taste heuristics advisory unless the product system explicitly bans the pattern.
 - If the shared fix is riskier than two isolated defects, keep the repair local and record the debt.
