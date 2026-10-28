@@ -26,7 +26,7 @@ Objective rules can cover:
 
 - explicit `<img>` without `alt` when no spread attribute can supply it
 - truly empty native button with no explicit accessible-name attribute
-- explicit interactive role plus pointer handler that demonstrably lacks focusability or keyboard activation, when no spread can supply the contract
+- explicit interactive role plus pointer handler with no local focus/keyboard contract, when no spread or recognized ancestor focus manager can supply it
 - `transition: all` / `transition-all`
 - empty media source
 - `will-change: all` and explicit layout-heavy `will-change` hints. Initial value `will-change: auto` is neutral and must not be reported.
@@ -41,6 +41,7 @@ Advisory rules can surface:
 - empty-looking buttons with spread props that can supply children or an accessible name
 - icon-only buttons whose rendered icon component can supply a title or accessible name
 - generic `div`/`span` handlers that may be event delegation or analytics, not a custom control
+- options inside a listbox that declares `aria-activedescendant`, focusability, and keyboard handling. Missing local handlers alone cannot establish a failure; verify the actual composite interaction. This source recognition does not resolve opaque components or external ownership through `aria-controls`.
 - missing reserved media dimensions, fixed-size/overflow risks, and file-local reduced-motion gaps handled elsewhere
 - layout read/write proximity and mass-layering patterns that need runtime confirmation
 - generic gradients, cream palettes, glass, glow, stripes, or oversized radii

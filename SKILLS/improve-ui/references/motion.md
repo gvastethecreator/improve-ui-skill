@@ -21,7 +21,7 @@ Decide whether motion belongs; implement it coherently; review behavior. Timing 
 
 Name one job: spatial continuity; state change; explain a relationship; acknowledge input or completion; soften a confusing layout/content change. Delete motion with no job.
 
-Frequency: keyboard shortcuts, command palettes, repeated list nav, high-frequency tools: instant, avoid travel; hover and repeated controls: color, opacity, or a tiny transform only when it clarifies feedback; occasional modals, drawers, popovers, toasts, panels: restrained spatial motion when it explains origin; rare onboarding, completion, editorial, or brand: more expression; do not block reading or interaction.
+For frequent keyboard, command-palette and list-navigation actions, consider an instant update when motion adds delay without clarity; input modality alone does not decide. For hover and repeated controls: color, opacity, or a tiny transform only when it clarifies feedback; occasional modals, drawers, popovers, toasts, panels: restrained spatial motion when it explains origin; rare onboarding, completion, editorial, or brand: more expression; do not block reading or interaction.
 
 Match existing motion tokens and primitives before a new library or vocabulary.
 
@@ -44,7 +44,7 @@ performance risk:
 proof state + capture:
 ```
 
-Tie state commits to `transitionend`/`animationend`, a framework completion callback, a timeline label/promise, or another observable rendered milestone. Never sync product state to a copied duration timeout — interruption, reduced mode, background tabs, and future token changes desynchronize it. Load [motion-implementation.md](motion-implementation.md) for transform ownership, static-first enhancement, focus continuity, and cleanup traps.
+Commit real operation state when the operation completes. Coordinate a view change with a rendered milestone only when its interaction contract requires it: a filtered completion event, framework callback or timeline milestone, with cancellation and an immediate reduced-motion path. A copied duration timeout cannot establish completion. Load [motion-implementation.md](motion-implementation.md) for transform ownership, static-first enhancement, focus continuity, and cleanup traps.
 
 ## Choose The Mechanism
 
@@ -58,13 +58,13 @@ Tuning ranges: press `100–160ms`; tooltip or small popover `125–200ms`; drop
 
 Easing by job: open/close/enter/exit → responsive ease-out; movement between visible positions or morphs → ease-in-out or a suitable spring; hover/color → subtle existing token; constant loop → linear.
 
-Avoid `ease-in` for UI opening/entry — it delays visible response. Durations over `300ms`, bounce, or overshoot are review prompts, not automatic failures. Frequency, distance, register, and proof decide.
+Check the actual trajectory and first visible response before changing an easing; `ease-in` alone does not establish a defect. Durations over `300ms`, bounce, or overshoot are review prompts, not automatic failures. Frequency, distance, register, and proof decide.
 
 Keep exit quieter or faster than enter unless spatial continuity requires otherwise.
 
 ## Origins And Continuity
 
-Scale and rotate from a believable origin. Anchor menus, popovers, tooltips to the trigger side or library-provided origin. Centered modals stay centered. Avoid entry from `scale(0)`; small visible scale range only when scale communicates the surface. Drawers/sheets from their edge. Percentage translation when travel is defined by the element's own size. Shared-element/layout transitions only when one logical object persists between states. Shared IDs unique. Check interruption, scroll, and route behavior.
+Scale and rotate from a believable origin. Anchor menus, popovers, tooltips to the trigger side or library-provided origin. Centered modals stay centered. Choose a start scale that communicates the actual surface and inspect its reduced-motion result; no fixed scale recipe applies. Drawers/sheets from their edge. Percentage translation when travel is defined by the element's own size. Shared-element/layout transitions only when one logical object persists between states. Share IDs across related endpoints; scope unrelated transition groups. Check interruption, scroll, and route behavior.
 
 For SVG transforms, if viewport geometry creates a false center, set the transform box/origin on the actual graphic group.
 
@@ -120,7 +120,7 @@ Reduced transparency is not universally available. Never make the fallback depen
 
 ## Performance
 
-Name exact transitioned properties. Avoid `transition: all`. Prefer transform and opacity for frequent motion; measure paint/composite; do not assume every filter, clip, or transform is cheap. Avoid layout-property motion in frequent interactions. Bounded low-frequency size changes OK when the size change is the actual object and proof is smooth. If profiling shows individual transform shorthand blocked by main-thread work, treat full `transform` strings in Motion as a targeted optimization — do not rewrite all shorthand speculatively. Avoid high-frequency inherited CSS-variable updates across large subtrees. Add `will-change` only after observed performance evidence. Follow `performance.md`. Pause ambient/canvas loops offscreen and in hidden tabs.
+Name exact transitioned properties. Avoid `transition: all`. Prefer transform and opacity for frequent motion; measure paint/composite; do not assume every filter, clip, or transform is cheap. Avoid layout-property motion in frequent interactions. Bounded low-frequency size changes OK when the size change is the actual object and proof is smooth. Check the installed Motion version and actual rendering path; current independent-transform acceleration makes shorthand alone insufficient evidence for a rewrite. Avoid high-frequency inherited CSS-variable updates across large subtrees. Add `will-change` only after observed performance evidence. Follow `performance.md`. Pause ambient/canvas loops offscreen and in hidden tabs.
 
 ## Review Protocol
 

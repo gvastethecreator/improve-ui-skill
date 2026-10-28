@@ -1,0 +1,383 @@
+{
+  "schema_version": 2,
+  "source_commit": "5b71b187c5b05f89fa74efb403295c10b8fd8a44",
+  "working_tree_dirty": true,
+  "generated_at": "2026-10-28T05:00:58Z",
+  "generation_id": "56967a8c53bf0e1fd5d7f6acae9e213d041e6f0b0e28010c154e8178f49d512d",
+  "analysis": {
+    "version": "syntax-1",
+    "digest": "aac5588c813568478eb34b9cb090e19685ad183efe6d8b3496f261834a7c0f44"
+  },
+  "inventory": {
+    "policy": {
+      "inventory": "working-tree",
+      "scope": [
+        "."
+      ],
+      "exclude": [
+        ".agents",
+        ".cache",
+        ".git",
+        ".hg",
+        ".next",
+        ".nuxt",
+        ".obsidian",
+        ".scratch",
+        ".svn",
+        ".turbo",
+        ".venv",
+        ".vscode",
+        "__pycache__",
+        "build",
+        "coverage",
+        "dist",
+        "docs/codemap",
+        "generated",
+        "node_modules",
+        "out",
+        "target",
+        "vendor",
+        "venv"
+      ],
+      "config_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "files": [
+      {
+        "path": "SKILLS/improve-ui/SKILL.md",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "05c9e13adf887429f7d3b1cbf6238a1756a55320e9c6452e563790c5d1cc99d8",
+        "size": 12252
+      },
+      {
+        "path": "SKILLS/improve-ui/fixtures/cases/component-polish/after/CommandMenu.js",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "afb34ae3e0b57473ccb0faf233fcd572d4a5e567650ffc4703e2c426b5c24e8d",
+        "size": 2648
+      },
+      {
+        "path": "SKILLS/improve-ui/fixtures/cases/component-polish/before/CommandMenu.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "3d2aba201f586d35866fd83fc2558f57d658868bd1ac29b045112cae6b54f551",
+        "size": 363
+      },
+      {
+        "path": "SKILLS/improve-ui/fixtures/cases/dashboard-surgery/after/AccountTable.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "9cc639b05fd76b98c078fdd2d49b89253055f04890ec58a498fdd791d88603f6",
+        "size": 311
+      },
+      {
+        "path": "SKILLS/improve-ui/fixtures/cases/dashboard-surgery/before/AccountTable.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "685789eb6052dd427f3ddecb8bf4e7977fb1d6e6f5cd0ba2e5c0eabf7857b359",
+        "size": 287
+      },
+      {
+        "path": "SKILLS/improve-ui/fixtures/cases/landing-repair/after/Hero.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "ed3d496d1a25b5e60db30adeaffec9d9deef4b9a5c0f2fded040320b55bc36e3",
+        "size": 416
+      },
+      {
+        "path": "SKILLS/improve-ui/fixtures/cases/landing-repair/before/Hero.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "9a39eda3f0569d1fc8d6071cf1565bf9cee7cbe21bb0560078402f5fd27e3dd0",
+        "size": 270
+      },
+      {
+        "path": "SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "07a4d4ace1d2060e78d1d457ccae038f186b2bdf819d4a4b31d3bf608f8909e7",
+        "size": 51076
+      },
+      {
+        "path": "SKILLS/improve-ui/scripts/generate-design-report.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "d133f4e5efb2834d8541df1b8899e6bccfe5c8f5cfaadca5cd7eb93fd2052b25",
+        "size": 81176
+      },
+      {
+        "path": "SKILLS/improve-ui/scripts/run-interface-review.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "6b0cdb2da2d23f2ba908b22452224d0848f22ced5a04c4022083cc0091ebebc0",
+        "size": 104247
+      },
+      {
+        "path": "package.json",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "654228e2c31751829a55c6b50a7b8867b938b145b659e42d0f8c38525aee2e0d",
+        "size": 1597
+      },
+      {
+        "path": "scripts/run-tests.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "91d51d2f75d02000e15e1a356a2a4e1007ad9d860c651d7fe97d5480b4e45415",
+        "size": 4247
+      },
+      {
+        "path": "scripts/validate-evals.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "373205bd9a82ccbafa9f06f8122f911574a6b1ea50be229045bc920f87c68296",
+        "size": 19304
+      },
+      {
+        "path": "scripts/validate-skill.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "f6bd3da2eb2fe6c5ae602fdbb2021fe47d0855950598776cf80cd4feb9f3d59b",
+        "size": 8962
+      },
+      {
+        "path": "tests/copy-quality-contract.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "7c986adcd60cb9bf29e9d7506904f383e9f2ae6eaa55d21da51e7aeec99fcff1",
+        "size": 2800
+      },
+      {
+        "path": "tests/detector-cli.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "a396a9d56f89cf962ecfb8820fe7d578c8074ce36ab4fc43708ce921e457fb15",
+        "size": 40554
+      },
+      {
+        "path": "tests/detector-fixtures/exceptions.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "f20f47cd9c94ab625d3b98d82e636fb44d70ab6a309b378a00ed652e30483a3b",
+        "size": 224
+      },
+      {
+        "path": "tests/detector-fixtures/negative.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "e2cf094e6f1eb3f51e20f02a5ce7d1d0c55dfffdd8e6e0d58a752ba77d18054b",
+        "size": 271
+      },
+      {
+        "path": "tests/detector-fixtures/positive.tsx",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "d1064be4f2f7252f9c22ee9a2c75a9a135c536e5a7048c72d7663fc9ab7ec23e",
+        "size": 249
+      },
+      {
+        "path": "tests/eval-suite.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "c2d5c678fd6bee8ebb4797d317e8078e16991f29e9df4f880b2d30668dee7052",
+        "size": 25479
+      },
+      {
+        "path": "tests/golden-fixtures.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "ab2ab5d4d0c364e300cfbfb386249dd5db5340ac06aa99471929b6f2c3ee573c",
+        "size": 2251
+      },
+      {
+        "path": "tests/helpers/cli.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "3504d646189c6cc7679f4ddbf76fdaeeab3455c62c5a23cd0079e352526662b4",
+        "size": 1617
+      },
+      {
+        "path": "tests/package-validation.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "e83c3d4b3acf08246d7428c0cffca22aae2c8051f95559b7a7d53c7d5000992b",
+        "size": 4938
+      },
+      {
+        "path": "tests/published-contract.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "ae870a5d5878fc6368702ebd5c33ba5aaaf75138553ac867284042939a261735",
+        "size": 14081
+      },
+      {
+        "path": "tests/quality-parity-contract.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "84716d27435fef69579d9b0584c8c380fa4a3b4c366bb925c145aa240641c8fa",
+        "size": 2572
+      },
+      {
+        "path": "tests/report/generate-design-report.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "4143f1235e36307e2737ca26f5a32ee4f4499843eff6c24a86b95c39481eb97a",
+        "size": 21030
+      },
+      {
+        "path": "tests/review-action-schema.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "ed70dc3827b5a9497b61dd444218ed8105d767817548a8caab7eebbe76ccae57",
+        "size": 3704
+      },
+      {
+        "path": "tests/review-assessment-separation.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "47255448cae5afc64a04b396dff047c656a861dccbe91e47808fb2d3b0c45c65",
+        "size": 5201
+      },
+      {
+        "path": "tests/review-cli-errors.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "caa6433d792cf48791394c685a54bc12aecc8de9ac960c9c5ebac7a4e1b15b8e",
+        "size": 5462
+      },
+      {
+        "path": "tests/review-dossier.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "53eef991b3778e2b94457c4ff665bdf5f12b7267cf20631e147d319c1381a55d",
+        "size": 2005
+      },
+      {
+        "path": "tests/review-helpers.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "eb9f1ea511a0331dccee470fd2108f859258431159c3f661e2a665ab32efd445",
+        "size": 2952
+      },
+      {
+        "path": "tests/review-metadata-git.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "7961a1e584ce3dae0c00f53bfb8b3b7aa14c70c651386d1d430ce690b14ab9fe",
+        "size": 1684
+      },
+      {
+        "path": "tests/review-output-ownership.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "99251d535d1a1b22b90f8d6948f439b5a3af9badd759886fc758ff46ff312174",
+        "size": 18526
+      },
+      {
+        "path": "tests/review-output-safety.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "8aaaac370f8b13444e8292f42ce2ee127a8839cf0ea22bf9babaad703fc42a93",
+        "size": 7833
+      },
+      {
+        "path": "tests/review-proof-manifest.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "4fd77c8f945d1f542efcc5c8192fd4f92850e27be065850c3b8208e46bf01689",
+        "size": 11127
+      },
+      {
+        "path": "tests/review-required-evidence.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "c3cee127f895c7f404faadb01b9cb9968c306c68e1e4157f52cc9f8077fc642f",
+        "size": 1919
+      },
+      {
+        "path": "tests/review-strict-policy.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "d7f8bb9e823d96b12a3935aa67186ec5851a3126065d282c58d133a58edac848",
+        "size": 4381
+      },
+      {
+        "path": "tests/review-target-validation.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "02ec05c13f37cb81672dea937eb3d0803b7c88468c1aab9a71373c8252114202",
+        "size": 2127
+      },
+      {
+        "path": "tests/runtime-artifact-integrity.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "1d3d6b431cddfd48fd38deff91db2bfcc0c0d0e0a8103090fb5a5717ef4bb42a",
+        "size": 5951
+      },
+      {
+        "path": "tests/runtime-async-states.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "0b1fe10c94589dfe30bdb9b25dbc0a0d8c3ada2e8bd85bc3c1f9692fe440fe6a",
+        "size": 4098
+      },
+      {
+        "path": "tests/runtime-evidence.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "e0fcd9f9e6774a6ba514a287130a68f48f948d5a03fb71a2ac49141f8adc7112",
+        "size": 10177
+      },
+      {
+        "path": "tests/runtime-golden-fixture-contract.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "104edf8c9ed6d8465093a3d56c3cdf36e588f088d27b54efcd87351177b11bd7",
+        "size": 2777
+      },
+      {
+        "path": "tests/runtime-hit-area.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "1fc010e830b6131acb2c30fb7e8df7dcaaaf06910a42be92e380fc8b35508cce",
+        "size": 1695
+      },
+      {
+        "path": "tests/runtime-http-contract.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "c0e4530fb76a07937bfefd7075a181e0ed675a57f368c5d4f52a8f0f1d9f17d7",
+        "size": 5547
+      },
+      {
+        "path": "tests/runtime-overflow.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "035e87cca39dd8a8219dce23e2702f41601e0a925b20228a196c021d97d47b7e",
+        "size": 1542
+      },
+      {
+        "path": "tests/runtime-review-output-ownership.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "8e5650f8380fc2db1b36c85741093f6d2c97736b241aef325fc83f44bf20d788",
+        "size": 3571
+      },
+      {
+        "path": "tests/runtime-taxonomy.test.mjs",
+        "origin": "tracked",
+        "state": "present",
+        "digest": "cb76581994ce757b11864f5c62da0acb7c614b24b9e793cace0fce8a381c1acc",
+        "size": 8689
+      }
+    ],
+    "digest": "cb9e0ac981b3ce94bccf276f8bf65f816c777950754c49a3c1d66ba39588eca3"
+  },
+  "source_digest": "cf23c8f97a04963233c0c598a592ed0dec3157e247bc138b954f4cf5b05bad4c",
+  "artifact_hashes": {
+    "codemap.json": "43a7e28d81b45afba953cf8fe2cb6f3528aa5a471fd767362e899c2ac36b3a4a",
+    "codemap.md": "acd5f4b73630434ec86596047c4eba145cc4e149c3e344324e63d4f06027c876",
+    "codemap.html": "25adb651f0ebd84dd4ce3c37625adc8c9df619b7d5bf1e9de3244b7a7c8cafd1"
+  }
+}

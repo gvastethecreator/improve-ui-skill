@@ -1,0 +1,127 @@
+diff --git "a/X:\\skills\\improve-ui-skill\\docs\\codemap\\.staging\\codemap.md" "b/X:\\skills\\improve-ui-skill\\docs\\codemap\\.staging\\codemap.md"
+new file mode 100644
+index 00000000..399b8996
+--- /dev/null
++++ "b/X:\\skills\\improve-ui-skill\\docs\\codemap\\.staging\\codemap.md"
+@@ -0,0 +1,121 @@
++# Code map: improve-ui-skill
++
++Generated: 2026-10-28T05:00:58Z | Commit: `5b71b187c5b0` | Schema: 2
++Generation: `56967a8c53bf0e1fd5d7f6acae9e213d041e6f0b0e28010c154e8178f49d512d`
++Scope: . | Inventory: working-tree
++Nodes: 59 | Edges: 260 | Flows: 0
++
++## Coverage
++
++- Analysis: **partial**; 47 analyzed of 47 included files.
++- Configuration files: 0; omitted untracked files: 0.
++- Unresolved references and analysis limits: 1911.
++- Static references and call paths do not prove runtime execution or test coverage.
++
++## Modules
++
++- `SKILLS/improve-ui/SKILL.md` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/fixtures/cases/component-polish/after/CommandMenu.js` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/fixtures/cases/component-polish/before/CommandMenu.tsx` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/fixtures/cases/dashboard-surgery/after/AccountTable.tsx` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/fixtures/cases/dashboard-surgery/before/AccountTable.tsx` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/fixtures/cases/landing-repair/after/Hero.tsx` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/fixtures/cases/landing-repair/before/Hero.tsx` | module | Repository | callers: none | callees: none | tests: 0 | entry: none
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs` | module | Repository | callers: none | callees: external:javascript:node:child_process, external:javascript:node:child_process, external:javascript:node:fs, external:javascript:node:path | tests: 0 | entry: none
++- `SKILLS/improve-ui/scripts/generate-design-report.mjs` | module | Repository | callers: SKILLS/improve-ui/scripts/run-interface-review.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs | callees: external:javascript:node:fs, external:javascript:node:path, external:javascript:node:process, external:javascript:node:url | tests: 0 | entry: none
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` | module | Repository | callers: none | callees: SKILLS/improve-ui/scripts/generate-design-report.mjs, SKILLS/improve-ui/scripts/generate-design-report.mjs, external:javascript:node:child_process, external:javascript:node:child_process | tests: 0 | entry: none
++- `external:javascript:node:assert` | external | External | callers: tests/copy-quality-contract.test.mjs, tests/detector-cli.test.mjs, tests/eval-suite.test.mjs, tests/golden-fixtures.test.mjs | callees: none | tests: 29 | entry: none
++- `external:javascript:node:child_process` | external | External | callers: SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs, SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs | callees: none | tests: 6 | entry: none
++- `external:javascript:node:crypto` | external | External | callers: SKILLS/improve-ui/scripts/run-interface-review.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs, tests/review-action-schema.test.mjs, tests/review-action-schema.test.mjs | callees: none | tests: 2 | entry: none
++- `external:javascript:node:events` | external | External | callers: tests/runtime-http-contract.test.mjs, tests/runtime-http-contract.test.mjs | callees: none | tests: 1 | entry: none
++- `external:javascript:node:fs` | external | External | callers: SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs, SKILLS/improve-ui/scripts/generate-design-report.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs, scripts/run-tests.mjs | callees: none | tests: 26 | entry: none
++- `external:javascript:node:module` | external | External | callers: SKILLS/improve-ui/scripts/run-interface-review.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs, scripts/run-tests.mjs, scripts/run-tests.mjs | callees: none | tests: 0 | entry: none
++- `external:javascript:node:os` | external | External | callers: SKILLS/improve-ui/scripts/run-interface-review.mjs, scripts/run-tests.mjs, tests/detector-cli.test.mjs, tests/helpers/cli.mjs | callees: none | tests: 6 | entry: none
++- `external:javascript:node:path` | external | External | callers: SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs, SKILLS/improve-ui/scripts/generate-design-report.mjs, SKILLS/improve-ui/scripts/run-interface-review.mjs, scripts/run-tests.mjs | callees: none | tests: 30 | entry: none
++- `external:javascript:node:process` | external | External | callers: SKILLS/improve-ui/scripts/generate-design-report.mjs | callees: none | tests: 0 | entry: none
++- `external:javascript:node:test` | external | External | callers: tests/copy-quality-contract.test.mjs, tests/copy-quality-contract.test.mjs, tests/detector-cli.test.mjs, tests/detector-cli.test.mjs | callees: none | tests: 28 | entry: none
++- Showing 20 of 59 nodes. Query `impact --module <path>` or open the HTML hierarchy for the rest.
++
++## Edges
++
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs` -> `external:javascript:node:child_process` | calls
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs` -> `external:javascript:node:child_process` | imports
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs` -> `external:javascript:node:fs` | imports
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs` -> `external:javascript:node:path` | imports
++- `SKILLS/improve-ui/scripts/generate-design-report.mjs` -> `external:javascript:node:fs` | imports
++- `SKILLS/improve-ui/scripts/generate-design-report.mjs` -> `external:javascript:node:path` | imports
++- `SKILLS/improve-ui/scripts/generate-design-report.mjs` -> `external:javascript:node:process` | imports
++- `SKILLS/improve-ui/scripts/generate-design-report.mjs` -> `external:javascript:node:url` | calls
++- `SKILLS/improve-ui/scripts/generate-design-report.mjs` -> `external:javascript:node:url` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `SKILLS/improve-ui/scripts/generate-design-report.mjs` | calls
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `SKILLS/improve-ui/scripts/generate-design-report.mjs` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:child_process` | calls
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:child_process` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:crypto` | calls
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:crypto` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:fs` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:module` | calls
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:module` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:os` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:path` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:url` | calls
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:url` | imports
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:zlib` | calls
++- `SKILLS/improve-ui/scripts/run-interface-review.mjs` -> `external:javascript:node:zlib` | imports
++- `scripts/run-tests.mjs` -> `external:javascript:node:child_process` | calls
++- `scripts/run-tests.mjs` -> `external:javascript:node:child_process` | imports
++- `scripts/run-tests.mjs` -> `external:javascript:node:fs` | imports
++- `scripts/run-tests.mjs` -> `external:javascript:node:module` | calls
++- `scripts/run-tests.mjs` -> `external:javascript:node:module` | imports
++- `scripts/run-tests.mjs` -> `external:javascript:node:os` | imports
++- `scripts/run-tests.mjs` -> `external:javascript:node:path` | imports
++- `scripts/validate-evals.mjs` -> `external:javascript:node:fs` | imports
++- `scripts/validate-evals.mjs` -> `external:javascript:node:path` | imports
++- `scripts/validate-skill.mjs` -> `external:javascript:node:child_process` | calls
++- `scripts/validate-skill.mjs` -> `external:javascript:node:child_process` | imports
++- `scripts/validate-skill.mjs` -> `external:javascript:node:fs` | imports
++- `scripts/validate-skill.mjs` -> `external:javascript:node:path` | imports
++- `tests/copy-quality-contract.test.mjs` -> `external:javascript:node:assert` | imports
++- `tests/copy-quality-contract.test.mjs` -> `external:javascript:node:fs` | imports
++- `tests/copy-quality-contract.test.mjs` -> `external:javascript:node:path` | imports
++- `tests/copy-quality-contract.test.mjs` -> `external:javascript:node:test` | calls
++- `tests/copy-quality-contract.test.mjs` -> `external:javascript:node:test` | imports
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:assert` | imports
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:child_process` | calls
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:child_process` | imports
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:fs` | imports
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:os` | imports
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:path` | imports
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:test` | calls
++- `tests/detector-cli.test.mjs` -> `external:javascript:node:test` | imports
++- Showing 50 of 260 edges; JSON contains every edge and its evidence.
++
++## Unknown
++
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:61`: object-member-call-not-resolved (path)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:62`: object-member-call-not-resolved (fs)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:68`: object-member-call-not-resolved (path)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:94`: object-member-call-not-resolved (fs)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:117`: object-member-call-not-resolved (fs)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:117`: object-member-call-not-resolved (path)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:117`: object-member-call-not-resolved (path)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:118`: object-member-call-not-resolved (fs)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:852`: object-member-call-not-resolved (path)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:1043`: object-member-call-not-resolved (fs)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:1044`: object-member-call-not-resolved (fs)
++- `SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs:1047`: object-member-call-not-resolved (path)
++
++## Flows
++
++- no source-backed call path from a recognized trigger
++
++## Architecture changes
++
++- Nodes: +59 / -0; edges: +260 / -0.
++- Boundary changes: 0; new cycles: 0.
++
++## Read next
++
++- Use `status` before relying on this generation.
++- Use `impact --changed` for possible impact and related test evidence.
++- Use `diff --before <model> --after <model>` for architecture changes.

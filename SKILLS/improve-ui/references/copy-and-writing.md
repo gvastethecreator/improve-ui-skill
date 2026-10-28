@@ -12,8 +12,8 @@ When a task changes user-visible text in existing interface, prose in material a
 ## Edit from job, voice
 
 1. Before isolated strings, read the full copy set for surface, state.
-2. Identify audience, user task, needed action, result. Voice signals (3–5): vocabulary, pace, bluntness, humor, uncertainty, formality.
-3. Minimum useful edit. Preserve meaning, product terms, strong lines, useful structure, distinct voice. If you reorder a report, interface flow, record why.
+2. Identify audience, user task, needed action, result. Voice traits: vocabulary, pace, bluntness, humor, uncertainty, formality.
+3. Minimum useful edit. Preserve meaning, product terms, strong lines, useful structure, distinct voice. If you reorder a report, interface flow, record why. If descriptive copy could fit unrelated products unchanged, replace filler with a supported fact, mechanism or consequence. Keep shared labels and required wording.
 4. If clearer, put the point first. Keep setup that adds needed context, trust, character. Vary structure with content.
 5. Concrete nouns, direct verbs, active voice, stable terms, exact facts. Repeat the correct product term; do not rotate synonyms. Split tangled sentences. Keep useful pace changes, fragments. If product voice allows, address the reader as `you` — not “the user.” Omit unneeded gender. People-first disability language. Plain wording over culture-bound idioms.
 6. Every claim stays within evidence. Name the source for metrics, quotes, awards, customer proof, research. Remove, flag, label unsupported, synthetic material.
@@ -31,7 +31,7 @@ Done: copy states the task, state, consequence, next action in product's voice. 
 | Rhetorical question with its own answer | Write the answer as statement. |
 | Dramatic colon reveal | Normal sentence. Colons for labels, lists, quoted material. |
 | Trailing clause that claims vague meaning | Name the real cause, effect, user result. |
-| Importance claim with no proof | State the concrete event, change. Let evidence carry importance. |
+| Unsupported importance claim or commentary that repeats the point | State the fact or consequence; keep necessary explanation and warnings. |
 | Vague source such as unnamed experts, studies | Cite the source, remove the claim, mark it for follow-up. |
 | Inflated verb phrase | Use `is`, `has`, `can`, the exact action when shorter. |
 | Synonym cycling | Repeat the stable product term. |

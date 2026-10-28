@@ -146,7 +146,7 @@ Check intent. An established system, real product data, or brand asset can make 
 
 ## Create distinction
 
-After competence, at most one or two signature moves tied to the subject:
+When distinction is part of the brief, use only the signature moves that earn their place through the subject:
 
 - product artifact or real output
 - typography or layout derived from the content
@@ -160,6 +160,6 @@ Skip distinction for tiny bug fixes, regulated workflows, or dense controls wher
 
 ## Visual proof
 
-Same route, viewport, state, content, theme, and data before/after. Viewport screenshots for fold and hierarchy; full-page only for page rhythm. Device scale factor `2` or higher. Icons, scrollbar surfaces, dense spacing, small alignment: focused crops. If layout changes, inspect narrow/mobile and a realistic small laptop. Check focus, hover, selected, disabled, long content, and one relevant edge state for component polish. Separate observation from interpretation: "CTA is below the fold at 1280×720" is evidence; "feels timid" is a heuristic. No rendered artifact: keep a visual claim `blocked` or `limited`.
+Same route, viewport, state, content, theme, and data before/after. Viewport screenshots for fold and hierarchy; full-page only for page rhythm. Use higher device scale or focused crops when icons, scrollbars, dense spacing, or small alignment cannot be resolved in the capture. For responsive changes, inspect the affected supported widths and breakpoint boundaries. Select the applicable focus, hover, selected, disabled, long-content, and edge states for component polish. Separate observation from interpretation: "CTA is below the fold at 1280×720" is evidence; "feels timid" is a heuristic. No rendered artifact: keep a visual claim `blocked` or `limited`.
 
 See [sources-and-provenance.md](sources-and-provenance.md) for the non-standard font-smoothing note and this reference's authority model. Chrome-versus-content, large-text reflow, anti-iOS-costume: [human-interface-craft.md](human-interface-craft.md).

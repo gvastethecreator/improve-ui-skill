@@ -116,7 +116,7 @@ If all five dimensions are observed, an optional `/20` summary:
 - `6–9`: poor
 - `0–5`: critical
 
-Bands summarize evidence. They do not override severity or gates.
+Bands are this skill's local judgment rubric, not validated measurement thresholds. They do not override severity or gates.
 
 ## Use severity independently
 

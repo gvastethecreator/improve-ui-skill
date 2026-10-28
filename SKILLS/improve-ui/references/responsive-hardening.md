@@ -55,7 +55,7 @@ Test content that exposes assumptions:
 
 Use `min-width: 0`/`min-inline-size: 0` where flex or grid children need to shrink. Use wrapping or `overflow-wrap` for unbroken content. If the complete value remains reachable and truncation is acceptable, clamp.
 
-Do not reserve a universal translation percentage. `30–40%` expansion can be a planning heuristic for some short labels; languages, words, and layouts vary. Test representative translations or pseudo-localization.
+Do not reserve a universal translation percentage. Languages, words, and layouts vary. Test representative translations or pseudo-localization.
 
 ## Async regions
 
@@ -82,7 +82,7 @@ Use live regions selectively for important async changes. Coordinate with `acces
 - two tabs or clients changing the same record when the product supports it
 - disabled controls with an understandable reason and recovery
 
-If repetition is harmful, disable or debounce. Do not trade duplicate protection for an unresponsive UI.
+If repetition is harmful, prevent accidental resubmission according to the operation contract. Disabling or debouncing a control does not prove server-side duplicate protection. Preserve a usable recovery path.
 
 ## Navigation and durable state
 
@@ -111,7 +111,7 @@ If users reasonably expect refresh, back/forward, sharing, or support links to k
 
 - Use feature detection instead of browser detection.
 - If the feature carries core meaning, provide a fallback for unsupported CSS. Decorative enhancements can disappear.
-- Progressive enhancement in the product contract: keep core content and the primary task usable without JavaScript.
+- Where progressive enhancement is part of the product contract, keep core content and the primary task usable without JavaScript. Verify that mode; do not add a new fallback by assumption.
 - Test the supported browser matrix at the feature boundary. Do not infer compatibility from source.
 
 ## Data volume and long sessions

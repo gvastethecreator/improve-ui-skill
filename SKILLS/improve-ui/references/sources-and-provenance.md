@@ -34,7 +34,7 @@ Standards can contain exceptions and applicability conditions; record them. Docu
 | [Target Size (Minimum), SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum) | AA criterion (informative) | Minimum `24×24 CSS px` or a documented exception including spacing |
 | [Target Size (Enhanced), SC 2.5.5](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced) | AAA criterion (informative) | `44×44 CSS px`. Also a product usability preference |
 | [Decorative Images tutorial](https://www.w3.org/WAI/tutorials/images/decorative/) | WAI practice aligned with WCAG techniques | Decorative/redundant `<img>` uses `alt=""`. Empty alt is not missing alt |
-| [Label in Name, SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name) | AA criterion (informative) | Visible label text within the accessible name for voice input |
+| [Label in Name, SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name) | A criterion (informative) | Name contains visible label text; exact equality is not required |
 | [Dragging Movements, SC 2.5.7](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements) | AA criterion (informative) | Single-pointer non-drag alternative unless an exception applies |
 | [WAI-ARIA APG patterns](https://www.w3.org/WAI/ARIA/apg/patterns/) | `practice`. Widget keyboard/state patterns | Test actual browser/framework/AT behavior. APG is not a conformance certificate |
 | [Modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) | `practice`. Focus, keyboard, naming, return behavior | Prefer native/proven project primitives where possible |
@@ -55,6 +55,8 @@ Copyrighted design references are linked as conceptual `practice` or `heuristic`
 | [Onboarding](https://developer.apple.com/design/human-interface-guidelines/onboarding), [Searching](https://developer.apple.com/design/human-interface-guidelines/searching), [Progress indicators](https://developer.apple.com/design/human-interface-guidelines/progress-indicators), [Materials](https://developer.apple.com/design/human-interface-guidelines/materials) | `practice`. First-run, findability, progress, chrome-versus-content | Translucency only when the same spatial object remains behind chrome. Solid fallback for reduced transparency. |
 
 Last technically verified for this section: **2026-08-27**.
+
+Scoped recheck on 2026-10-28: WCAG Label in Name and both Target Size explanations; Apple WWDC26 principles transcript, Inclusion, and Progress indicators. Clarified label containment and level, self-identification, and proof limited to the operation in scope. Other source dates remain as recorded.
 
 ## Browser and CSS behavior
 
@@ -83,7 +85,9 @@ Local harness signals remain diagnostics unless implementation and environment m
 
 | Source | Authority and use | Notes |
 |---|---|---|
-| [Motion animation performance](https://motion.dev/docs/performance) | Official Motion documentation | Individual transform shorthand can stay unaccelerated; full `transform` is a targeted option when acceleration matters |
+| [Motion animation performance](https://motion.dev/docs/performance) | Official Motion documentation | Current docs support accelerated independent transforms; browser, version and value constraints still need profiling |
+
+Motion performance guidance rechecked on 2026-10-28; other source dates remain as recorded.
 
 Library docs are not a universal rule. Apply only when that library/version is present and profiling shows relevance. Preserve project primitives and version constraints.
 
@@ -91,7 +95,7 @@ Library docs are not a universal rule. Apply only when that library/version is p
 
 - Skill package and local documentation: repository MIT license.
 - Refactors and consolidates previous skill material. No long external quotations or third-party code examples.
-- [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, commit `61c21c351da4dcb40946a11fead978f2078a2c65`, MIT. [copy and writing quality](copy-and-writing.md) adapts editing principles and named pattern checks for UI copy and design reports. Prose and workflow rewritten; no upstream scripts or agent metadata imported. Last checked 2026-07-22. Preserve the full license in [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
+- [No AI Slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, original adaptation at `61c21c351da4dcb40946a11fead978f2078a2c65`; reevaluated `000650b156983f5159695b441477f4e63b25dc85` on 2026-10-28, MIT. [copy and writing quality](copy-and-writing.md) adapts editing principles and named pattern checks for UI copy and design reports. Prose and workflow rewritten; no upstream scripts or agent metadata imported. Adopted the contextual portability check, redundant-commentary check and flexible voice traits from the current `skills/no-ai-slop/SKILL.md`; kept project wording and tone exceptions. Preserve the full license in [Third-Party Notices](../THIRD_PARTY_NOTICES.md).
 - Prior `motion-craft.md` mentioned "Apple-style fluid interface guidance" with no title, URL, revision, or license. Consolidated motion reference keeps only independently stated, broadly documented interaction principles; does not attribute or reproduce source-specific prose.
 - [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) and [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/) by Apple. [human-interface-craft.md](human-interface-craft.md) adapts transferable interaction, permission, onboarding, progress, search, inclusion, and display-setting tests for existing web UI. Last checked 2026-08-12. Apple materials remain Apple's; this skill only links them.
 - [Refactoring UI](https://www.refactoringui.com/) by Adam Wathan and Steve Schoger. [visual-quality.md](visual-quality.md) restates transferable hierarchy and surface tests in original prose. Last checked 2026-08-27. The book remains the authors'; this skill only links it. Reviewed [s0xDk/refactoring-ui-skill](https://github.com/s0xDk/refactoring-ui-skill) commit `48872143abb0a8feb6d9bf58e222afbd800210b0` as a third-party encoding of those concepts; no files, CSS tokens, or wording imported.

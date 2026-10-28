@@ -55,13 +55,13 @@ If a border changes box size, do not add it on hover or validation. Reserve the 
 
 ## Make rhythm legible
 
-Small family of related distances, then tune optically. Exact ratio is contextual; ordering is not:
+Start with a small family of related distances, then tune optically. A useful grouping heuristic is:
 
 ~~~text
 within < between < section
 ~~~
 
-Edge clearance: tighter in a cockpit, larger on a rare decision screen. Dense ≠ cramped. Spacious ≠ objects floating without a relationship.
+Check that ordering against the actual groups; it is not a universal spacing law. Edge clearance can be tighter in a cockpit and larger on a rare decision screen. Dense ≠ cramped. Spacious ≠ objects floating without a relationship.
 
 Repeated siblings need parity unless a subgroup intentionally changes cadence. For a visible series: (1) capture bounding boxes (2) list adjacent gaps (3) explain every material delta (4) trace unexplained drift to margin collapse, line height, variable content, absolute positioning, grid tracks, or nested padding (5) repair the shared primitive, not each symptom.
 
@@ -141,7 +141,7 @@ Full-frame evidence for structure; DPR 2 or focused crops for finish. Record mea
 - Repeated gaps that drift without grouping.
 - Parallel columns with different starting lines.
 - Equal card surfaces masking unequal priority.
-- Nav or sidebar sized as a grid percentage instead of a content-fixed width, with the main area flexing.
+- Nav or sidebar width that crowds its labels or the main artifact as the viewport changes.
 - Optional metadata that changes action alignment.
 - Nested scroll regions with no clear owner.
 - A sticky control covering the final row.

@@ -2,6 +2,8 @@
 
 Nontrivial visual repair, audit, redesign, or quality verdict: diagnose context before importing layout, density, motion, or polish rules. Same dark shell can be a studio, command center, game menu, or decorative landing — repair follows the user loop.
 
+The proof lists are candidate probes. Select reachable states affected by the change and the supported devices in scope; do not manufacture features, a full matrix, or extra artifacts to fill them.
+
 ## Contents
 
 - [Context Read](#context-read)

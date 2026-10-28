@@ -10,15 +10,15 @@ Delay the first tooltip enough to avoid accidental hover; skip or cut that delay
 
 For SVG transforms, if transform origins or mixed primitives fight the browser, wrap the moving shape in a `<g>`. Set and check `transform-box: fill-box` plus intended `transform-origin`. Inspect the bounding box — do not guess from the `viewBox`.
 
-Every shared-layout transition needs unique, stable identity in its rendered scope — duplicate layout IDs make unrelated objects teleport. Coordinate exit and entry with `AnimatePresence` or the framework equivalent. Mount both endpoints only when the transition contract expects it.
+Shared-layout endpoints intentionally share identity; unrelated transition groups need distinct scopes so they do not match accidentally. Check the selected library's layout and presence contract before changing IDs or coordinating exit and entry. Mount both endpoints only when that contract expects it.
 
 Animate between interpolable values. Resolve classes, CSS variables, `auto`, percentages, filters, and compound transforms to compatible start/end values before blaming the library. Do not hide a discrete layout jump behind an easing curve.
 
-If the mounted state already represents saved or interactive reality, use `initial={false}` — an entrance animation falsely replays a change. Keep true first-run entrances explicit; do not disable them globally.
+When a remount restores an already displayed state, avoid replaying a first-run change; `initial={false}` can serve that contract in Motion. Deliberate panel openings or genuine first-run entrances remain valid; do not disable them globally.
 
 ## Measure The Shipped Path
 
-For complex, continuous, gesture-driven, canvas/WebGL, or performance-sensitive motion, profile before and after on a production build, lower-end hardware, and a normal target. Record only falsifying metrics: frame time, long tasks, layout/paint cost, memory, or input latency. Bounded microtransition: inspect interruption, repetition, and reduced motion in the shipped build; profile if evidence suggests cost. Dev-mode stutter and flagship-laptop smoothness are unreliable. Preserve route, device, state, capture or metrics, and reduced-motion result with the verdict.
+For a performance claim or observed stutter, compare the affected cost under representative build and workload settings. Add device classes only when the claimed target requires them. Use the metric that observes the failure: frame time, long tasks, layout/paint cost, memory or input latency. Bounded microtransition: inspect interruption, repetition, and reduced motion in the shipped build; profile if evidence suggests cost. Dev-mode stutter and flagship-laptop smoothness are unreliable. Preserve route, device, state, capture or metrics, and reduced-motion result with the verdict.
 
 ## Synchronize To Rendered Milestones
 

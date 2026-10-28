@@ -27,7 +27,7 @@ Keep executable commands and JSON schemas here. Other references link here; do n
 - Gesture: slow drag, flick, reversal, release outside bounds, cancellation, non-drag alternative, reduced motion.
 - Responsive/content: breakpoint boundaries, 320 CSS px/reflow where applicable, long/unbroken content, relevant locale/direction.
 - Async/data: seven required async groups for a deep async review. Smaller explicitly scoped set for focused work.
-- Performance: measured affected interaction and environment. Source-only work supports a risk-reduction claim.
+- Performance: measure the affected interaction and environment. Source-only work supports the implementation change; its runtime effect remains unknown.
 - Immersive: visible render, fallback, mobile/narrow, reduced motion, offscreen pause, cleanup, runtime behavior.
 
 ## Static Detector
@@ -218,7 +218,7 @@ Inspect `review.json`, generated README, screenshots, process exit status. A gen
 
 ## Design Dossier
 
-Material critique, proposal, or redesign handoff: generate both durable views from one manifest:
+When a durable critique, proposal, or redesign handoff is requested or required by the project contract, generate both views from one manifest:
 
 ```powershell
 node SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets

@@ -94,7 +94,7 @@ Search: if it is a primary way in, give it one obvious home. Recents or suggesti
 
 ## Inclusion
 
-Product voice allows it: address the reader as `you`. Do not write "the user" in UI copy. Omit gender unless the product needs it; if required, give inclusive options. People-first language about disability — never use a disability as a negative metaphor. Replace culture-specific jokes, idioms, and security questions with plain language. If people are depicted, show a range; avoid occupational and family stereotypes. Keep a non-color cue for status. Check locale meaning when color carries a claim.
+When product voice allows it, address the reader directly. Omit gender unless the product needs it; if required, give inclusive options. Respect how a person or community self-identifies when writing about disability; never use disability as a negative metaphor. Replace unclear culture-specific jokes, idioms, and security questions with plain language. If people are depicted, show a range; avoid occupational and family stereotypes. Keep a non-color cue for status. Check locale meaning when color carries a claim.
 
 Named writing-pattern repairs: [copy-and-writing.md](copy-and-writing.md). WCAG criteria: [accessibility.md](accessibility.md).
 
@@ -109,7 +109,7 @@ A claim about a pattern here requires its costly state, not the happy path.
 | Large text | Largest supported size or 200% zoom. Essential text untruncated |
 | Permission | Denied and unavailable. Product still usable |
 | Onboarding | Skip, first real action, later-launch absence |
-| Progress | One known-duration and one unknown-duration operation |
+| Progress | The operation in scope; determinate only when progress can be estimated, with honest pending and stalled states |
 | Search | No-results with reset. Recents if offered |
 | Transparency | `prefers-reduced-transparency` or solid fallback on frosted chrome |
 | Inclusion | The actual string, not a paraphrase |

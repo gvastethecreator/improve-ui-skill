@@ -511,15 +511,24 @@ test("generic delegated handlers are advisory while incomplete explicit interact
   const delegated = path.join(target, "delegated.tsx");
   const incomplete = path.join(target, "incomplete.tsx");
   const complete = path.join(target, "complete.tsx");
+  const managed = path.join(target, "managed.tsx");
+  const incompleteManaged = path.join(target, "incomplete-managed.tsx");
   fs.writeFileSync(delegated, '<div onClick={track}><button type="button">Save</button></div>');
   fs.writeFileSync(incomplete, '<div role="button" onClick={save}>Save</div>');
   fs.writeFileSync(complete, '<div role="button" tabIndex={0} onClick={save} onKeyDown={onSaveKey}>Save</div>');
+  const managedSource = '<div role="listbox" tabIndex={0} aria-activedescendant="one" onKeyDown={move}><div id="one" role="option" onClick={select}>One</div></div>';
+  fs.writeFileSync(managed, managedSource);
+  fs.writeFileSync(incompleteManaged, managedSource.replace(' onKeyDown={move}', ''));
 
   const delegatedResult = runDetector(["--strict", "--json", delegated]);
   const delegatedPayload = JSON.parse(delegatedResult.stdout);
   const incompleteResult = runDetector(["--strict", "--json", incomplete]);
   const incompletePayload = JSON.parse(incompleteResult.stdout);
   const completePayload = JSON.parse(runDetector(["--json", complete]).stdout);
+  const managedResult = runDetector(["--strict", "--json", managed]);
+  const managedPayload = JSON.parse(managedResult.stdout);
+  const incompleteManagedResult = runDetector(["--strict", "--json", incompleteManaged]);
+  const incompleteManagedPayload = JSON.parse(incompleteManagedResult.stdout);
   const delegatedFinding = delegatedPayload.findings.find(({ id }) => id === "interactive-div");
   const incompleteFinding = incompletePayload.findings.find(({ id }) => id === "interactive-role-contract");
 
@@ -536,6 +545,18 @@ test("generic delegated handlers are advisory while incomplete explicit interact
   assert.equal(
     completePayload.findings.some(({ id }) => ["interactive-div", "interactive-role-contract"].includes(id)),
     false,
+  );
+  assert.equal(managedResult.status, 0);
+  assert.deepEqual(
+    managedPayload.findings.filter(({ id }) => id === "interactive-role-contract")
+      .map(({ severity, classification }) => ({ severity, classification })),
+    [{ severity: "P2", classification: "advisory" }],
+  );
+  assert.equal(incompleteManagedResult.status, 1);
+  assert.equal(
+    incompleteManagedPayload.findings.some(({ id, severity, classification }) =>
+      id === "interactive-role-contract" && severity === "P1" && classification === "objective"),
+    true,
   );
 });
 

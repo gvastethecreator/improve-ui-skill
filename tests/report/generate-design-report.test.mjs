@@ -199,6 +199,24 @@ test("supports an explicit Markdown path and materializes embedded evidence loss
   assert.equal(summary.markdownPath, markdownPath);
   assert.match(markdown, /report-assets\/before-default\.png/);
   assert.equal(fs.readFileSync(assetPath).equals(tinyPng), true);
+
+  const originalManifest = fs.readFileSync(manifestPath);
+  const aliasPath = path.join(dir, "input-alias.html");
+  fs.linkSync(manifestPath, aliasPath);
+  for (const destination of [manifestPath, aliasPath]) {
+    const collision = runGenerator(["--manifest", manifestPath, "--out", destination]);
+    assert.equal(collision.status, 2, collision.stderr || collision.stdout);
+    assert.match(collision.stderr, /aliases an input/i);
+    assert.deepEqual(fs.readFileSync(manifestPath), originalManifest);
+  }
+  const regenerated = runGenerator(["--manifest", manifestPath, "--out", outPath]);
+  assert.equal(regenerated.status, 0, regenerated.stderr || regenerated.stdout);
+  manifest.screenshots[0].src = path.relative(dir, assetPath);
+  const replayPath = path.join(dir, "portable.json");
+  fs.writeFileSync(replayPath, JSON.stringify(manifest));
+  const replayed = runGenerator(["--manifest", replayPath, "--out", outPath, "--markdown-out", markdownPath, "--strict-assets"]);
+  assert.equal(replayed.status, 0, replayed.stderr || replayed.stdout);
+  assert.deepEqual(fs.readFileSync(assetPath), tinyPng);
 });
 
 test("keeps annotation badges visible when evidence touches a screenshot edge", () => {
@@ -365,6 +383,12 @@ test("strict asset mode rejects missing and corrupt screenshots", () => {
 
   assert.equal(corruptResult.status, 2, corruptResult.stderr || corruptResult.stdout);
   assert.match(corruptResult.stderr, /corrupt or unsupported/i);
+
+  fs.writeFileSync(path.join(corruptDir, "capture.png"), tinyPng.subarray(0, 8));
+  const headerOnly = runGenerator(["--manifest", corruptManifest, "--out", path.join(corruptDir, "report.html"), "--strict-assets"]);
+  assert.equal(headerOnly.status, 2, headerOnly.stderr || headerOnly.stdout);
+  assert.match(headerOnly.stderr, /corrupt or unsupported/i);
+  assert.equal(fs.existsSync(path.join(corruptDir, "report.html")), false);
 });
 
 test("strict asset mode validates embedded image bytes and declared MIME type", () => {
@@ -458,6 +482,6 @@ test("maps improve-ui runtime and hash-verified proof artifacts without inventin
     ["runtime-1", "detail"],
   ]);
   assert.ok(manifest.screenshots.every((item) => item.annotations.length === 0));
-  assert.equal(manifest.findings[0].screenshotId, "proof-before");
+  assert.equal(Object.hasOwn(manifest.findings[0], "screenshotId"), false);
   assert.match(manifest.limitations.join(" "), /does not invent annotation coordinates/i);
 });

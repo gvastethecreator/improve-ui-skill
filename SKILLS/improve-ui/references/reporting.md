@@ -32,6 +32,8 @@ node SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/impr
 
 Writes `report.md` and `report.html` from the same normalized manifest. Alternate: `--markdown-out <path.md>`.
 
+Before writing, the generator rejects outputs that alias the input manifest, source images, or another output, and destinations inside the installed skill package. Existing report files can be regenerated; unchanged source images already in `report-assets/` are reused without writing them. Image metadata checks do not replace opening the rendered evidence and checking that it decodes correctly.
+
 Harness emits `report.md`, `report-assets/`, and `report.html` beside `review.json` and its `README.md`:
 
 ~~~powershell
@@ -52,7 +54,7 @@ Visual layout can stay the forensic dossier; information order changes by mode. 
 
 ## Manifest Contract
 
-The generator accepts version 1:
+The generator accepts version 1. The examples below use synthetic content to illustrate the schema; they are not observed findings or study results.
 
 ~~~json
 {
@@ -157,7 +159,7 @@ One marker, one literal subject. Split broad claims across focused crops or mult
   "severity": "P1",
   "title": "Every panel shouts at the same volume",
   "evidence": "Six first-viewport panels share surface, heading, and spacing treatment.",
-  "damage": "Operators must read every region before identifying the next decision.",
+  "damage": "Competing panels may make the next decision harder to locate; verify in the actual task.",
   "cause": "The composition inventories widgets instead of modeling incident flow.",
   "solution": "Build one incident spine and move ambient metrics to a quiet rail.",
   "roast": "The command center is organized like a sticker collection.",
@@ -188,7 +190,7 @@ Use selected, rejected, or explored. Directions must be incompatible at IA, comp
   "priority": "01",
   "title": "Rebuild the first viewport around incident priority",
   "detail": "Replace the equal panel matrix with an incident spine and one telemetry rail.",
-  "proof": "A five-second test identifies incident, owner, severity, and next action."
+  "proof": "In a defined triage task, check whether participants identify incident, owner, severity, and next action; record help, errors, and uncertainty."
 }
 ~~~
 

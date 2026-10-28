@@ -819,12 +819,14 @@ async function inspectViewport(browser, viewport, actionGroup) {
       };
       const backgroundFor = (node) => {
         let current = node;
-        let color = { r: 255, g: 255, b: 255, a: 1 };
+        const layers = [];
         while (current && current.nodeType === Node.ELEMENT_NODE) {
           const parsed = parseColor(getComputedStyle(current).backgroundColor);
-          if (parsed && parsed.a > 0) color = parsed.a >= 1 ? parsed : blend(parsed, color);
+          if (parsed && parsed.a > 0) layers.push(parsed);
           current = current.parentElement;
         }
+        let color = { r: 255, g: 255, b: 255, a: 1 };
+        for (const layer of layers.reverse()) color = layer.a >= 1 ? layer : blend(layer, color);
         return color;
       };
       const directText = (node) => [...node.childNodes]
@@ -1214,7 +1216,7 @@ function runtimeFindings(viewport, state, metrics, consoleErrors, requestFailure
   }
   if (metrics.smallHitAreas.length) push("small-hit-area", "P2", "accessibility", "Visible controls are below the 24px WCAG size lead; verify spacing exceptions and product touch requirements (44px is enhanced/preference, not this gate).", JSON.stringify(metrics.smallHitAreas[0]), "advisory", "medium");
   if (metrics.clippedText.length) push("clipped-text", "P2", "resilience", "Text may be clipped or horizontally overflowing; inspect whether truncation is intentional and recoverable.", JSON.stringify(metrics.clippedText[0]), "advisory", "medium");
-  if (metrics.nativeScrollbarRisks?.length) push("native-scrollbar-runtime", "P2", "quality", "A rendered scroll region still relies on an uncustomized native scrollbar; style it minimally without hiding or breaking the affordance.", JSON.stringify(metrics.nativeScrollbarRisks[0]), "advisory", "medium");
+  if (metrics.nativeScrollbarRisks?.length) push("native-scrollbar-runtime", "P2", "quality", "A rendered scroll region uses a native scrollbar; inspect its fit, visibility and behavior. Native treatment alone is not a defect.", JSON.stringify(metrics.nativeScrollbarRisks[0]), "advisory", "medium");
   if (metrics.iconAlignmentIssues?.length) push("icon-text-misalignment", "P2", "quality", "A rendered control icon is vertically misaligned with its text; confirm the detail crop and repair the shared control/icon primitive.", JSON.stringify(metrics.iconAlignmentIssues[0]), "advisory", "medium");
   if (metrics.repeatedSpacingIssues?.length) push("inconsistent-repeated-spacing", "P2", "quality", "A repeated rendered list has materially inconsistent sibling gaps; confirm intentional grouping or repair the spacing source.", JSON.stringify(metrics.repeatedSpacingIssues[0]), "advisory", "medium");
   if (metrics.gradientSurfaces?.length) push("gradient-finish-review", "P3", "quality", "Rendered gradients are present. Inspect their role, stops, contrast, banding, clipping, and fallback; their presence alone is not a failure.", JSON.stringify(metrics.gradientSurfaces.slice(0, 3)), "advisory", "low");
@@ -1614,7 +1616,7 @@ function renderMarkdown(targetReview, jsonPath) {
     "- This harness is an evidence pack, not the final design critique.",
     `- For design analysis, screenshot critique, UI audit, or roast, complete the bundled reference \`${forensicReference}\` before writing the final verdict.`,
     `- Cross-reference: screenshots=${screenshotPaths.length ? screenshotPaths.join(", ") : "none"}; source=${targetReview.target.path || "none"}; blockers=${targetReview.ledger.blockers.length ? "see ledger" : "none"}`,
-    "- Required read: product intent, main user task, intended hierarchy, accidental priority, visual problem, source/code cause, concrete fix, first five cuts.",
+    "- Required read: product intent, main user task, intended hierarchy, accidental priority, visual problem, source/code cause, concrete fix, and justified cuts without a quota.",
     "",
     "Findings:",
   ];

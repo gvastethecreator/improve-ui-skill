@@ -221,24 +221,28 @@ export function generateDesignReport({
     throw new Error("Manifest is not valid JSON: " + error.message);
   }
   const absoluteOut = path.resolve(outPath || path.join(path.dirname(absoluteManifest), "design-report.html"));
-  return writeDesignReport({
+  return writeReport({
     manifest: input,
     outPath: absoluteOut,
     markdownOutPath,
     baseDir: path.dirname(absoluteManifest),
     embedImages,
     strictAssets,
-  });
+  }, absoluteManifest);
 }
 
-export function writeDesignReport({
+export function writeDesignReport(options = {}) {
+  return writeReport(options);
+}
+
+function writeReport({
   manifest,
   outPath,
   markdownOutPath,
   baseDir = process.cwd(),
   embedImages = true,
   strictAssets = false,
-} = {}) {
+} = {}, sourceManifestPath) {
   if (!outPath) throw new Error("Missing outPath");
   const absoluteOut = path.resolve(outPath);
   const absoluteMarkdownOut = path.resolve(markdownOutPath || companionMarkdownPath(absoluteOut));
@@ -256,13 +260,21 @@ export function writeDesignReport({
     }),
   );
   const markdownAssets = prepareMarkdownAssets(screenshots, absoluteMarkdownOut);
+  const sourcePaths = normalized.screenshots
+    .filter((item) => !/^(?:https?:|data:)/i.test(item.src))
+    .map((item) => path.resolve(baseDir, item.src));
+  if (sourceManifestPath) sourcePaths.push(sourceManifestPath);
+  const assetWrites = markdownAssets.files.filter((asset) => !sourcePaths.some((source) =>
+    samePhysicalFile(asset.path, source) && fs.readFileSync(asset.path).equals(asset.bytes),
+  ));
+  assertSafeWritePlan([absoluteOut, absoluteMarkdownOut, ...assetWrites.map((item) => item.path)], sourcePaths);
   const report = { ...normalized, screenshots: markdownAssets.screenshots };
   const html = renderDesignReport(report, warnings);
   const markdown = renderDesignReportMarkdown(report, warnings);
   fs.mkdirSync(path.dirname(absoluteOut), { recursive: true });
   fs.mkdirSync(path.dirname(absoluteMarkdownOut), { recursive: true });
   if (markdownAssets.files.length) fs.mkdirSync(markdownAssets.assetsDir, { recursive: true });
-  for (const asset of markdownAssets.files) fs.writeFileSync(asset.path, asset.bytes);
+  for (const asset of assetWrites) fs.writeFileSync(asset.path, asset.bytes);
   fs.writeFileSync(absoluteOut, html, "utf8");
   fs.writeFileSync(absoluteMarkdownOut, markdown, "utf8");
   return {
@@ -277,6 +289,55 @@ export function writeDesignReport({
     missingImages: report.screenshots.filter((item) => !item.available).length,
     warnings,
   };
+}
+
+function assertSafeWritePlan(outputs, inputs) {
+  const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
+  const packageDir = path.resolve(scriptsDir, "..");
+  const protectedRoot = canonicalPath(fs.existsSync(path.join(packageDir, "skill-manifest.json")) ? packageDir : scriptsDir);
+  const planned = outputs.map((item) => ({ path: item, canonical: canonicalPath(item) }));
+  const sources = inputs.map((item) => ({ path: item, canonical: canonicalPath(item) }));
+  const overlaps = (left, right) => left === right || (!path.relative(left, right).startsWith(".." + path.sep) && !path.isAbsolute(path.relative(left, right)) && path.relative(left, right) !== "..");
+  for (let index = 0; index < planned.length; index += 1) {
+    const output = planned[index];
+    if (overlaps(protectedRoot, output.canonical)) throw new Error("Report output must be outside the skill package or standalone scripts directory");
+    if (fs.existsSync(output.path) && !fs.statSync(output.path).isFile()) throw new Error("Report output must be a regular file");
+    for (const other of [...sources, ...planned.slice(0, index)]) {
+      if (output.canonical === other.canonical || samePhysicalFile(output.path, other.path)) {
+        throw new Error("Report output aliases an input or another output");
+      }
+    }
+    for (const other of planned.slice(0, index)) {
+      if (overlaps(output.canonical, other.canonical) || overlaps(other.canonical, output.canonical)) {
+        throw new Error("Report output paths cannot contain another output");
+      }
+    }
+  }
+}
+
+function canonicalPath(filename) {
+  let existing = path.resolve(filename);
+  const suffix = [];
+  while (true) {
+    try {
+      fs.lstatSync(existing);
+      break;
+    } catch (error) {
+      if (error.code !== "ENOENT" || path.dirname(existing) === existing) throw error;
+      suffix.unshift(path.basename(existing));
+      existing = path.dirname(existing);
+    }
+  }
+  if (suffix.length && !fs.statSync(existing).isDirectory()) throw new Error("Report output parent must be a directory");
+  const resolved = path.join(fs.realpathSync(existing), ...suffix);
+  return process.platform === "win32" ? resolved.toLowerCase() : resolved;
+}
+
+function samePhysicalFile(left, right) {
+  if (!fs.existsSync(left) || !fs.existsSync(right)) return false;
+  const a = fs.statSync(left, { bigint: true });
+  const b = fs.statSync(right, { bigint: true });
+  return a.ino !== 0n && a.dev === b.dev && a.ino === b.ino;
 }
 
 function companionMarkdownPath(htmlPath) {
@@ -350,7 +411,6 @@ export function designReportManifestFromReview(review, { baseDir = process.cwd()
     damage: "The collected evidence indicates a production or finish risk. Human judgment is still required to establish user impact.",
     cause: textOr(finding.snippet, "The automated evidence pack did not establish a source cause."),
     solution: "Confirm this lead in the rendered context, repair the shared source or state contract, then recapture the same route, state, and viewport.",
-    screenshotId: screenshots.length ? screenshots[index % screenshots.length].id : undefined,
   }));
   const context = review.ledger?.context || {};
   const assessment = textOr(review.assessment?.verdict, "blocked");
@@ -875,7 +935,7 @@ function resolveScreenshot(item, context) {
   if (dataMatch) {
     const bytes = Buffer.from(dataMatch[2].replace(/\s/g, ""), "base64");
     const detected = sniffImageMime(bytes);
-    if (!detected || detected !== dataMatch[1].toLowerCase()) {
+    if (!detected || detected !== dataMatch[1].toLowerCase() || !readImageDimensions(bytes, detected)) {
       return unavailableScreenshot(item, "Embedded screenshot data is corrupt or its MIME type is incorrect", context);
     }
     if (bytes.length > MAX_IMAGE_BYTES) return unavailableScreenshot(item, "Embedded screenshot exceeds the 25 MB limit", context);
@@ -897,7 +957,7 @@ function resolveScreenshot(item, context) {
   const bytes = fs.readFileSync(absolute);
   if (bytes.length > MAX_IMAGE_BYTES) return unavailableScreenshot(item, "Screenshot exceeds the 25 MB limit: " + sourceLabel, context);
   const mime = sniffImageMime(bytes);
-  if (!mime) return unavailableScreenshot(item, "Screenshot asset is corrupt or unsupported: " + sourceLabel, context);
+  if (!mime || !readImageDimensions(bytes, mime)) return unavailableScreenshot(item, "Screenshot asset is corrupt or unsupported: " + sourceLabel, context);
   if (context.embedImages) {
     return resolvedScreenshot(item, {
       renderedSrc: "data:" + mime + ";base64," + bytes.toString("base64"),

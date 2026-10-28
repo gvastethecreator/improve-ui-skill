@@ -54,7 +54,7 @@ High severity when the effect:
 - demonstrated major jank, crashes, context loss, or uncontrolled resource growth
 - continues substantial work after leaving the surface; ignores a required reduced-motion path
 
-Visual disconnect or excessive decoration is a heuristic; if it harms readability, trust, or a documented brand requirement, it isn't.
+Visual disconnect or excessive decoration starts as a heuristic. Report demonstrated harm or a violated project requirement at its supported severity; that does not turn taste into a standard.
 
 ## Completion
 

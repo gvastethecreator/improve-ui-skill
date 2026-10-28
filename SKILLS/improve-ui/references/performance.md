@@ -28,7 +28,7 @@ When reporting CLS, use the `web-vitals` implementation or a tool that follows t
 
 ## Motion And Compositing
 
-Prefer transform and opacity for frequent motion; check the target browser's rendering path. CSS and WAAPI can keep eligible motion off the main JavaScript thread, but not every property or implementation is accelerated. Gesture tracking stays on the pointer — do not wait for unrelated reconciliation. For Motion, if hardware acceleration matters and profiling shows individual transform shorthand contributes to jank, consider a full `transform` string. Filters, clip paths, masks, and backdrop blur are conditional: size, area, browser, and overlap determine cost. Low-frequency size/layout animation stays bounded when it communicates the actual object and remains smooth.
+Prefer transform and opacity for frequent motion; check the target browser's rendering path. CSS and WAAPI can keep eligible motion off the main JavaScript thread, but not every property or implementation is accelerated. Gesture tracking stays on the pointer — do not wait for unrelated reconciliation. Check the installed Motion version and rendering path. Current Motion documentation supports accelerated independent transforms; `x`/`y`/`scale` syntax alone does not prove main-thread work or justify rewriting it. Filters, clip paths, masks, and backdrop blur are conditional: size, area, browser, and overlap determine cost. Low-frequency size/layout animation stays bounded when it communicates the actual object and remains smooth.
 
 If behavior and accessibility, not only cost, are part of the change, read `motion.md`.
 

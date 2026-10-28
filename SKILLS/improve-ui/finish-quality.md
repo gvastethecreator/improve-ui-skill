@@ -7,7 +7,7 @@ For every rendered polish, visual repair, redesign, screenshot review, or final 
 1. `structure` pass: task hierarchy, composition, content, state, responsive fit, interaction.
 2. `finish` pass: alignment, spacing rhythm, overflow/scrollbars, gradients, icons/vector craft, copy/prose, capture legibility.
 
-Do not pass finish from source, tokens, a detector, or a full-page thumbnail. Compare the same route, viewport, state, theme, content, and auth context after each correction.
+Do not pass finish from source, tokens, a detector, or a full-page thumbnail. At the verification boundary and after repairing failed proof, compare the same route, viewport, state, theme, content and auth context.
 
 ## Alignment And Spacing
 

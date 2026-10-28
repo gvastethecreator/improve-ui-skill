@@ -32,7 +32,7 @@ Apply only items relevant to the chosen profile and claim. Mark `n/a`, `unknown`
 - [ ] Changed UI copy preserves facts, product voice, stable terms, legal text, variables, translation tokens, visible and accessibility name alignment, and the user's action or consequence.
 - [ ] Loading, empty, no-result, permission, error, success, recovery copy verified in each changed state and relevant viewport.
 - [ ] Motion has purpose, interruption behavior, reduced-motion path, and appropriate input gating.
-- [ ] Performance claims use measured evidence. Source-only cleanup labeled as risk reduction.
+- [ ] Performance claims use measured evidence. Source-only changes name the actual correction and remaining runtime uncertainty.
 
 ## Finish Craft
 

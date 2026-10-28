@@ -41,9 +41,9 @@ state where it earns its cost:
 kill condition:
 ~~~
 
-Cause is only a style adjective → costume. A competitor can transplant the whole surface by replacing nouns → not authored yet.
+If a change is justified only by a style adjective, look for the product or brief behind it. Reuse after a noun swap can expose missing context, but does not by itself prove poor design or AI authorship. Familiar controls and proven layouts can be the right choice.
 
-At least one major decision must come from the actual artifact, workflow, data shape, or proof object. Brand personality can sharpen that decision; it must not replace it.
+Tie material changes to the actual artifact, workflow, data shape, proof object, or requested brand direction. Do not add novelty to satisfy a finding quota.
 
 ## Require real specificity
 

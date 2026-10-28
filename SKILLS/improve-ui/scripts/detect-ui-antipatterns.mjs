@@ -147,7 +147,7 @@ function rules() {
       id: "side-stripe-border",
       category: "slop",
       severity: "P2",
-      message: "Thick one-sided accent borders read as generated UI. Prefer full borders, tints, icons, or simpler structure.",
+      message: "Inspect the accent border's grouping or state role and design-system fit. Its presence alone does not establish generated authorship or a defect.",
       patterns: [
         /border-(?:left|right)(?:-width)?\s*:\s*(?:[2-9]|\d{2,})px/gi,
         /\bborder-[lr]-(?:2|4|8|\[(?:[2-9]|\d{2,})px\])/gi,
@@ -187,7 +187,7 @@ function rules() {
       id: "icon-tile-stack",
       category: "slop",
       severity: "P2",
-      message: "Rounded icon tile above heading is a generated feature-card template. Use a more specific layout.",
+      message: "Inspect whether repeated icon tiles support grouping or navigation. A layout pattern does not establish authorship or justify replacing it.",
       patterns: [
         /(?:rounded-(?:xl|2xl|3xl)|border-radius\s*:\s*(?:1[2-9]|[2-9]\d)px)[\s\S]{0,260}(?:<svg|\bIcon\b)[\s\S]{0,360}<h[1-4]\b/gi,
       ],
@@ -204,7 +204,7 @@ function rules() {
       id: "oversized-radius",
       category: "slop",
       severity: "P2",
-      message: "Very large radii on cards/panels/inputs often look soft and generic. Keep big radii for pills only.",
+      message: "Judge large radii against component size, clipping, shape and design-system role. The value alone does not establish a defect.",
       patterns: [
         /border-radius\s*:\s*(?:3[2-9]|[4-9]\d)px/gi,
         /\brounded-\[(?:3[2-9]|[4-9]\d)px\]|\brounded-3xl\b|\brounded-\[2rem\]/gi,
@@ -214,7 +214,7 @@ function rules() {
       id: "wide-shadow-border",
       category: "slop",
       severity: "P3",
-      message: "Hairline border plus wide shadow is a common generated-card recipe. Prefer one elevation model.",
+      message: "Inspect the border and shadow roles in the rendered surface. Keep both when they serve intentional contrast, grouping or elevation.",
       patterns: [
         /border\s*:\s*1px[^;\n]*;[\s\S]{0,220}box-shadow\s*:[^;\n]*(?:1[6-9]|[2-9]\d)px/gi,
         /box-shadow\s*:[^;\n]*(?:1[6-9]|[2-9]\d)px[^;\n]*;[\s\S]{0,220}border\s*:\s*1px/gi,
@@ -238,7 +238,7 @@ function rules() {
       id: "heavy-blur-effect",
       category: "performance",
       severity: "P2",
-      message: "20px+ blur is expensive and should be a functional material/crossfade choice with runtime proof.",
+      message: "Blur cost depends on area, overlap and browser. Profile the affected path before attributing a slowdown or replacing the material.",
       patterns: [
         /(?:filter|backdrop-filter|backdropFilter)\s*:?\s*["']?[^;"'\n]*blur\(\s*(?:2\d|[3-9]\d|\d{3,})px\s*\)/gi,
         /\b(?:blur|backdrop-blur)-\[(?:2\d|[3-9]\d|\d{3,})px\]/gi,
@@ -288,7 +288,7 @@ function rules() {
       id: "fake-product-preview",
       category: "slop",
       severity: "P2",
-      message: "Div-based mock browser/dashboard/terminal previews are weak evidence. Use a real screenshot, live component state, generated bitmap, or no preview.",
+      message: "Establish whether this preview is a real component, intentional illustration, skeleton or unsupported product claim before changing it.",
       patterns: [
         /\b(?:fake|mock|placeholder)[-_ ]*(?:dashboard|terminal|browser|screenshot|preview)\b/gi,
         /class(?:Name)?=["'][^"']*(?:browser|terminal|dashboard|screenshot|preview)[^"']*["'][\s\S]{0,900}class(?:Name)?=["'][^"']*(?:skeleton|line|bar|dot|row)[^"']*["']/gi,
@@ -298,7 +298,7 @@ function rules() {
       id: "fake-version-metadata",
       category: "slop",
       severity: "P3",
-      message: "Decorative version, branch, sync, or build metadata adds fake specificity. Keep only operational metadata users need.",
+      message: "Verify whether version, branch, sync or build text is real and useful. A keyword match cannot establish fabricated or decorative metadata.",
       patterns: [
         /\b(?:last\s+sync|synced|branch|commit|build|main)\b[\s\S]{0,80}\b(?:v?\d+\.\d+(?:\.\d+)?(?:[-.][\w.]+)?|[0-9a-f]{7,})\b/gi,
       ],
@@ -309,7 +309,7 @@ function rules() {
       severity: "P2",
       classification: "objective",
       confidence: "high",
-      message: "Broad transitions hide bugs and animate unintended properties. Name exact properties.",
+      message: "A broad transition is declared. Check which properties actually change; use explicit properties when they prevent unintended motion or cost.",
       patterns: [/\btransition-all\b|transition\s*:\s*all\b/gi],
     },
     {
@@ -330,7 +330,7 @@ function rules() {
       severity: "P2",
       classification: "advisory",
       confidence: "medium",
-      message: "ease-in on UI entry/opening feels delayed. Prefer ease-out or a strong custom curve.",
+      message: "Inspect the actual trajectory and responsiveness. An easing name alone does not establish delay or a wrong transition.",
       patterns: [
         /(?:transition(?:-timing-function)?|animation(?:-timing-function)?)\s*:[^;\n]*(?<![\w-])ease-in(?!-out|\w)/gi,
         /\bease-in(?!-out)\b/gi,
@@ -342,7 +342,7 @@ function rules() {
       severity: "P2",
       classification: "advisory",
       confidence: "medium",
-      message: "scale(0) makes elements appear from nowhere. Start around scale(0.9-0.97) plus opacity.",
+      message: "Inspect origin, silhouette, clipping and reduced motion. Choose a start scale for this transition rather than applying a fixed recipe.",
       patterns: [
         /scale(?:3d|X|Y)?\(\s*0(?:\.0+)?(?:\s|,|\))/gi,
         /\bscale-0\b|\bscale-\[0(?:\.0+)?\]/gi,
@@ -352,7 +352,7 @@ function rules() {
       id: "center-origin-anchored-motion",
       category: "motion",
       severity: "P2",
-      message: "Anchored popovers, dropdowns, menus, and tooltips should scale from the trigger, not center.",
+      message: "Check whether the origin explains the surface's relationship to its trigger, respecting actual placement and design intent.",
       patterns: [
         /(?:popover|dropdown|tooltip|menu)[\s\S]{0,260}(?:transform-origin|transformOrigin)\s*:?\s*["']?center/gi,
         /(?:transform-origin|transformOrigin)\s*:?\s*["']?center[\s\S]{0,260}(?:popover|dropdown|tooltip|menu)/gi,
@@ -362,7 +362,7 @@ function rules() {
       id: "keyframes-dynamic-ui",
       category: "motion",
       severity: "P2",
-      message: "Keyframes restart from zero. Rapidly triggered UI such as toasts, toggles, menus, and drawers should usually retarget through transitions or springs.",
+      message: "Verify interruption and reversal in the real component. Syntax alone does not establish snapping; keyframes, transitions and springs need lifecycle handling.",
       patterns: [
         /@keyframes[\s\S]{0,1200}(?:toast|toggle|switch|drawer|popover|dropdown|menu)/gi,
         /(?:toast|toggle|switch|drawer|popover|dropdown|menu)[\s\S]{0,1200}@keyframes/gi,
@@ -382,7 +382,7 @@ function rules() {
       id: "framer-motion-shorthand-risk",
       category: "motion",
       severity: "P2",
-      message: "Framer Motion x/y/scale shorthand can drop frames under load. Use full transform strings for busy-page motion.",
+      message: "Check the installed Motion version and rendering path. Compare transform strategies only when profiling identifies an acceleration or responsiveness issue.",
       patterns: [
         /<motion\.[\w.]+[\s\S]{0,500}(?:animate|initial|exit)=\{\{[\s\S]{0,220}\b(?:x|y|scale)\s*:/gi,
       ],
@@ -400,7 +400,7 @@ function rules() {
       id: "layout-read-write-risk",
       category: "performance",
       severity: "P2",
-      message: "Layout reads near DOM writes can force sync layout. Batch reads before writes or move work out of hot handlers.",
+      message: "Nearby reads and writes are a profiling lead. A forced-layout claim needs an invalidation/read sequence or trace, not proximity alone.",
       patterns: [
         /(?:getBoundingClientRect|offset(?:Height|Width|Top|Left)|scroll(?:Top|Left|Height|Width)|client(?:Height|Width))[\s\S]{0,360}(?:style\.|classList\.|set[A-Z]\w*\(|setState\()/gi,
         /(?:style\.|classList\.|set[A-Z]\w*\(|setState\()[\s\S]{0,360}(?:getBoundingClientRect|offset(?:Height|Width|Top|Left)|scroll(?:Top|Left|Height|Width)|client(?:Height|Width))/gi,
@@ -412,7 +412,7 @@ function rules() {
       severity: "P2",
       classification: "objective",
       confidence: "high",
-      message: "will-change must name sparse exact properties. Broad or layout-heavy hints cost memory and can hurt performance.",
+      message: "Broad or layout-property will-change hints need justification. Check actual animation, layers and memory effects before attributing a cost.",
       patterns: [
         /will-change\s*:\s*(?:all|width|height|top|left|right|bottom|padding|margin)/gi,
         /\bwill-change-\[(?:all|width|height|top|left|right|bottom|padding|margin)[^\]]*\]/gi,
@@ -546,14 +546,14 @@ function rules() {
       id: "tiny-text",
       category: "quality",
       severity: "P2",
-      message: "Body text below 12px is hard to read. Reserve tiny text for nonessential metadata.",
+      message: "Inspect small text at its real role, rendered size and supported scaling. A font-size match alone does not establish unreadable body copy.",
       patterns: [/font-size\s*:\s*(?:[0-9]|1[01])px|\btext-\[(?:[0-9]|1[01])px\]/gi],
     },
     {
       id: "all-caps-body",
       category: "quality",
       severity: "P3",
-      message: "All-caps text is only for short labels. Verify it is not used on body copy.",
+      message: "Check text length, role, product voice and rendered legibility. Uppercase alone is not a defect.",
       patterns: [/text-transform\s*:\s*uppercase|\buppercase\b/gi],
     },
     {
@@ -576,6 +576,7 @@ function rules() {
 function runPatternRules(file, text) {
   const out = [];
   const source = maskEmbeddedTagAngles(maskComments(text));
+  const managedOptions = managedListboxOptions(source);
   const suppressTestP1 = isTestFixture(file) && !options.includeTestFixtures;
   for (const rule of RULES) {
     if (suppressTestP1 && rule.severity === "P1" && ruleClassification(rule) === "objective") continue;
@@ -585,12 +586,48 @@ function runPatternRules(file, text) {
       while ((match = pattern.exec(source))) {
         const snippet = text.slice(match.index, match.index + match[0].length);
         if (rule.matchFilter && !rule.matchFilter(snippet)) continue;
-        out.push(toFinding(rule, file, text, match.index, snippet));
+        const findingRule = rule.id === "interactive-role-contract" && managedOptions.has(match.index)
+          ? {
+              ...rule,
+              severity: "P2",
+              classification: "advisory",
+              confidence: "medium",
+              message: "This option declares ancestor-managed focus and keyboard handling. Verify the listbox interaction; missing local handlers alone do not prove a defect.",
+            }
+          : rule;
+        out.push(toFinding(findingRule, file, text, match.index, snippet));
         if (match.index === pattern.lastIndex) pattern.lastIndex += 1;
       }
     }
   }
   return out;
+}
+
+function managedListboxOptions(source) {
+  const offsets = new Set();
+  const stack = [];
+  for (const match of source.matchAll(/<(\/?)([A-Za-z][\w:.-]*)\b[^>]*>/g)) {
+    const tag = match[2].toLowerCase();
+    if (match[1]) {
+      const index = stack.findLastIndex((entry) => entry.tag === tag);
+      if (index !== -1) stack.length = index;
+      continue;
+    }
+
+    const opening = match[0];
+    const inherited = stack.at(-1)?.managed ?? false;
+    // Source declares a focus manager; this is not runtime accessibility proof.
+    const managed = /\brole\s*=\s*["']listbox["']/i.test(opening)
+      ? /\baria-activedescendant\s*=/i.test(opening) &&
+        /\btabindex\s*=/i.test(opening) &&
+        /\bonkey(?:down|up)\s*=/i.test(opening)
+      : inherited;
+    if (inherited && /\brole\s*=\s*["']option["']/i.test(opening)) offsets.add(match.index);
+    if (!/\/\s*>$/.test(opening) && !/^(?:area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)$/.test(tag)) {
+      stack.push({ tag, managed });
+    }
+  }
+  return offsets;
 }
 
 function runFileRules(file, text) {

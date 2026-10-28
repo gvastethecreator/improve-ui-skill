@@ -18,7 +18,7 @@ node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --include-advis
 node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --include-advisory SKILLS/improve-ui/fixtures/cases/dashboard-surgery/after
 ```
 
-Compare finding IDs with `expectedBefore` and `expectedAfterAbsent` in `case.json`, or run the repository test suite.
+Compare finding IDs with `expectedBefore` and `expectedAfterAbsent` in `case.json`, or run the named repository test.
 
 ## Claim limit
 

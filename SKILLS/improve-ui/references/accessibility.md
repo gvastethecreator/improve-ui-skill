@@ -25,7 +25,7 @@ Automated tools find only a subset of accessibility problems. Never convert a cl
 
 ## Semantics and names
 
-Native HTML before ARIA: `button` for actions; links for navigation. Associate controls with visible labels; accessible name must match visible text so voice users can invoke it. Icon-only controls: concise accessible name. Preserve headings, landmarks, lists, tables, and structure-communicating relationships. ARIA only if native semantics cannot express the interaction; keep roles, states, properties in sync. Avoid clickable `div`/`span` repairs that add only `role` — keyboard, focusability, name, and state must also work. If adjacent text already names the action, hide decorative icons from assistive technology.
+Native HTML before ARIA: `button` for actions; links for navigation. Associate controls with visible labels. Under WCAG 2.5.3 (A), the accessible name contains the visible label text; putting it first is a practice, not an exact-equality requirement. Icon-only controls: concise accessible name. Preserve headings, landmarks, lists, tables, and structure-communicating relationships. ARIA only if native semantics cannot express the interaction; keep roles, states, properties in sync. Avoid clickable `div`/`span` repairs that add only `role` — keyboard, focusability, name, and state must also work. If adjacent text already names the action, hide decorative icons from assistive technology.
 
 Do not reason only from JSX. Inspect the computed accessibility tree for complex components.
 
@@ -75,7 +75,7 @@ Frequent, risky, coarse-pointer, or edge-positioned controls: `44×44 CSS px` as
 
 Also check: target regions do not overlap or trigger adjacent actions; down events do not commit irreversible actions before cancellation is possible; multipoint/path gestures have a simpler alternative when required; drag functionality has a single-pointer non-drag alternative unless essential; hover-only content is also reachable by keyboard and is not the only touch affordance; visible labels remain part of accessible names for speech input.
 
-Use `touch-action: manipulation` only if it fits the gesture contract. Set tap highlight deliberately ? not an accidental mobile artifact.
+Use `touch-action: manipulation` only if it fits the gesture contract. Change the tap highlight deliberately and preserve a visible activation cue.
 
 ## Dialogs and composite widgets
 
