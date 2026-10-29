@@ -2,6 +2,8 @@
 
 Material critique, screenshot review, improvement or redesign proposal. One decision artifact, two views: Markdown for ingestion/correction; HTML for visual inspection. Both carry evidence, diagnosis, moves, preservation contract, and proof targets.
 
+Resolve `<skill-root>` to this installed skill folder. Keep report outputs in the target project and invoke the bundled scripts by absolute path.
+
 ## Contents
 
 - [Required artifacts](#required-artifacts)
@@ -27,7 +29,7 @@ Manifest is source of truth. Generate both views in one command. Never hand-edit
 Bundled generator:
 
 ~~~powershell
-node SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
+node "<skill-root>/scripts/generate-design-report.mjs" --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
 ~~~
 
 Writes `report.md` and `report.html` from the same normalized manifest. Alternate: `--markdown-out <path.md>`.
@@ -37,7 +39,7 @@ Before writing, the generator rejects outputs that alias the input manifest, sou
 Harness emits `report.md`, `report-assets/`, and `report.html` beside `review.json` and its `README.md`:
 
 ~~~powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --detail-capture
+node "<skill-root>/scripts/run-interface-review.mjs" --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --detail-capture
 ~~~
 
 Strict assets for the final dossier. Missing or corrupt capture: draft may show an explicit evidence placeholder and warning. Never let a broken-image icon masquerade as evidence.

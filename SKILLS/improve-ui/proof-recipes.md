@@ -2,6 +2,8 @@
 
 Keep executable commands and JSON schemas here. Other references link here; do not copy CLI examples.
 
+Resolve `<skill-root>` to the installed folder containing `SKILL.md`. Invoke its scripts by absolute path from the target project; no repository checkout or sibling skill is required.
+
 ## Contents
 
 - [Choose The Smallest Proof](#choose-the-smallest-proof)
@@ -35,13 +37,13 @@ Keep executable commands and JSON schemas here. Other references link here; do n
 Read-only source triage writes JSON to stdout:
 
 ```powershell
-node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json <frontend-path>
+node "<skill-root>/scripts/detect-ui-antipatterns.mjs" --json <frontend-path>
 ```
 
 Objective P0/P1 strict gate:
 
 ```powershell
-node SKILLS/improve-ui/scripts/detect-ui-antipatterns.mjs --json --strict --out output/improve-ui/<slug>/static-findings.json <frontend-path>
+node "<skill-root>/scripts/detect-ui-antipatterns.mjs" --json --strict --out output/improve-ui/<slug>/static-findings.json <frontend-path>
 ```
 
 Report always labels advisory signals for contextual review. `--include-advisory` opts them into the selected failure threshold only during calibration or explicit local policy. Ordinary `--fail-on` applies to objective rules only; mutually exclusive with detector `--strict`. `--include-test-fixtures` only calibrates normally suppressed test/spec/story/snapshot surfaces. Missing/unreadable target, or zero supported UI files, is blocked — not a clean result.
@@ -51,13 +53,13 @@ Report always labels advisory signals for contextual review. `--include-advisory
 Runtime review: named state, explicit viewports:
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group default=output/improve-ui/<slug>/default.actions.json --viewport 1280x800 --viewport 390x844
+node "<skill-root>/scripts/run-interface-review.mjs" --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group default=output/improve-ui/<slug>/default.actions.json --viewport 1280x800 --viewport 390x844
 ```
 
 Static-only when no runnable URL exists:
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path>
+node "<skill-root>/scripts/run-interface-review.mjs" --path <frontend-path>
 ```
 
 Static-only output cannot support visual, interaction, responsive-runtime, measured-performance claims.
@@ -79,7 +81,7 @@ Useful controls:
 Final claim an editable interface improved:
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group main=output/improve-ui/<slug>/main.actions.json --action-group edge=output/improve-ui/<slug>/edge.actions.json --strict --p2-policy systemic --systemic-p2-count 2 --require-runtime --require-change-proof --proof-manifest output/improve-ui/<slug>/proof.json --detail-capture
+node "<skill-root>/scripts/run-interface-review.mjs" --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --action-group main=output/improve-ui/<slug>/main.actions.json --action-group edge=output/improve-ui/<slug>/edge.actions.json --strict --p2-policy systemic --systemic-p2-count 2 --require-runtime --require-change-proof --proof-manifest output/improve-ui/<slug>/proof.json --detail-capture
 ```
 
 Strict mode blocks:
@@ -195,7 +197,7 @@ Every strict state needs ≥1 meaningful assertion and must finish successfully.
 Example invocation pattern:
 
 ```powershell
-node SKILLS/improve-ui/scripts/run-interface-review.mjs --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --async-ui --action-group empty=<empty.json> --action-group loading=<loading.json> --action-group error=<error.json> --action-group permission=<permission.json> --action-group long-content=<long-content.json> --action-group slow-network=<slow-network.json> --action-group rapid-click=<rapid-click.json> --strict --require-runtime
+node "<skill-root>/scripts/run-interface-review.mjs" --path <frontend-path> --url <local-url> --out output/improve-ui/<slug> --async-ui --action-group empty=<empty.json> --action-group loading=<loading.json> --action-group error=<error.json> --action-group permission=<permission.json> --action-group long-content=<long-content.json> --action-group slow-network=<slow-network.json> --action-group rapid-click=<rapid-click.json> --strict --require-runtime
 ```
 
 Fixtures, mock routes, request interception, or product state controls reach each state. Naming groups or passing `--states` is not coverage. Each async group needs state-specific action/assertion evidence. Reusing one identical combined action-and-assertion signature under seven names is blocked.
@@ -221,7 +223,7 @@ Inspect `review.json`, generated README, screenshots, process exit status. A gen
 When a durable critique, proposal, or redesign handoff is requested or required by the project contract, generate both views from one manifest:
 
 ```powershell
-node SKILLS/improve-ui/scripts/generate-design-report.mjs --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
+node "<skill-root>/scripts/generate-design-report.mjs" --manifest output/improve-ui/<slug>/report-manifest.json --out output/improve-ui/<slug>/report.html --strict-assets
 ```
 
 Also writes `report.md` and lossless `report-assets/`. Follow [references/reporting.md](references/reporting.md) for manifest, annotation, portability, language, report-quality rules. Harness-generated `README.md` is a compact machine-run index, not a dossier replacement.
