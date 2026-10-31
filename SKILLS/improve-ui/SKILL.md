@@ -14,7 +14,7 @@ Find the highest-impact defects in an existing interface and remove their causes
 ## Mandatory Entry Frame
 
 - Code, screenshots, and runtime prove different claims; source cannot prove visual quality. Nontrivial implementation: [execution-contract.md](execution-contract.md), [product contexts](references/product-contexts.md), [finish quality](finish-quality.md).
-- Scope: existing web UI. Route blank-canvas, native UI, specialist renderer/game/3D elsewhere. Keep web HUD, overlay, fallback, and integration here.
+- Scope: existing web UI. Out of scope: blank-canvas design, native UI, and specialist renderer/game/3D work. Keep web HUD, overlay, fallback, and integration here.
 - Preserve IA, routes, labels, contracts, analytics, SEO, legal copy, and accessibility wins unless scoped. Never claim WCAG certification.
 - `diagnose`, `verify`, `audit`, `review`, `critique`, and `roast` stay read-only. Do not edit source or persistent artifacts. Durable reports only when requested.
 - Explicit `improve`, `fix`, `repair`, `polish`, `redesign`, `implement`, or `harden`: edit only requested path. Mixed requests diagnose briefly, then fix in scope.

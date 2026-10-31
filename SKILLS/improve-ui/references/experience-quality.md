@@ -66,7 +66,7 @@ If participants, traffic, or instrumentation are unavailable, deliver the decisi
 
 ## Adaptation And Reading Limits
 
-Adapted on 2026-09-07 from the local `experience-design` candidate, research-check 2026-09-05: `MEM-03/04`, `DEC-01/07`, `INT-02`, `AI-02/05`, `PERF-01`, and `RES-01`; with its interaction, evidence, AI, and validation references. This package contains the needed guidance and does not require that skill to be installed.
+Adapted on 2026-09-07 from local experience design research (research-check 2026-09-05; source IDs `MEM-03/04`, `DEC-01/07`, `INT-02`, `AI-02/05`, `PERF-01`, and `RES-01`) and its interaction, evidence, AI, and validation notes. This file contains all the guidance it needs.
 
 Adopted task-cost and effect-contract probes; adapted measurement to bounded interface work; retained this skill's visual craft and execution rules. Excluded the full principle catalog, workbench, report schema, and unverified empirical claims.
 

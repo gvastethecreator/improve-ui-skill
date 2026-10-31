@@ -1,6 +1,6 @@
 # Existing Immersive Web UI
 
-Use only when existing UI already contains canvas, WebGL, Three.js, shaders, particles, maps/globes, physics, or scroll-led visual layers. Route substantial renderer, game, or 3D work to the specialist skill; Improve UI owns integration quality and proof.
+Use only when existing UI already contains canvas, WebGL, Three.js, shaders, particles, maps/globes, physics, or scroll-led visual layers. Substantial renderer, game, or 3D work is out of scope; Improve UI owns integration quality and proof.
 
 ## Purpose Gate
 
@@ -28,7 +28,7 @@ Don't fix foreground readability with an opaque overlay that destroys the effect
 
 - Reuse the repo renderer, lifecycle, asset pipeline, performance controls. Don't add a 3D/motion runtime to imitate a reference.
 - Isolate visual effects from product state and navigation; couple only when interaction requires it. Stabilize camera, lighting, material, resize before decorative postprocessing.
-- Keep render-loop ownership explicit; avoid multiple independent RAF loops. Specialist implementation owns shader, physics, renderer, asset correctness.
+- Keep render-loop ownership explicit; avoid multiple independent RAF loops. Shader, physics, renderer, and asset correctness are out of scope.
 
 ## Accessibility And Preferences
 

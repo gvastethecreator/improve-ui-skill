@@ -2,7 +2,7 @@
 
 Use this route when the defect is human behavior, not tokens: interruption, permission, first-run, progress, search, undo, large text, or copy that excludes. Every rule here is `practice`. If a named WCAG criterion or a project contract promotes it, treat it at that higher authority.
 
-Sources: Apple's [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) and [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/). Transferable tests in original prose. Copies no HIG text, SF metrics, system colors, or material specs. Route native Apple-feel work to the platform skill.
+Sources: Apple's [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines) and [Principles of great design (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/250/). Transferable tests in original prose. Copies no HIG text, SF metrics, system colors, or material specs. Native Apple-platform feel is out of scope.
 
 ## Contents
 

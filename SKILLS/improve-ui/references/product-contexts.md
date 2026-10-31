@@ -54,7 +54,7 @@ Decompose hybrids by region and moment:
 
 - Product page with a live preview: landing around a bounded product artifact.
 - Level editor is a studio even though it creates a game; play-test can become game context.
-- Browser game with HTML/CSS HUD and menus stays in scope. Renderer, shader, camera, and gameplay-system implementation routes to a specialist.
+- Browser game with HTML/CSS HUD and menus stays in scope. Renderer, shader, camera, and gameplay-system implementation is out of scope.
 - Analytics inside a studio form a dashboard region but must not demote canvas or timeline.
 - Command center can contain charts, but incident lifecycle and response govern the shell.
 

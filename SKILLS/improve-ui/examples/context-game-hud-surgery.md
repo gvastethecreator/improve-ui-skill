@@ -37,4 +37,4 @@ Treating the HUD as a dashboard yields floating cards, a web-app sidebar, tiny o
 
 ## Claim limit
 
-This example covers existing web UI integration only. Renderer fidelity, gameplay balance, camera behavior, and engine systems require their specialist workflows.
+This example covers existing web UI integration only. Renderer fidelity, gameplay balance, camera behavior, and engine systems are out of scope.
