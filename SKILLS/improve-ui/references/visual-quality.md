@@ -96,7 +96,7 @@ Treat `-webkit-font-smoothing` and `-moz-osx-font-smoothing` as non-standard vis
 
 ## Color and contrast
 
-After real foreground/background and applicable criterion, treat WCAG contrast as a standard. Follow `accessibility.md` for the normative path.
+After real foreground/background and applicable criterion, treat WCAG contrast as a standard. Follow `accessibility.md` for the normative path. OKLCH lightness bounds for planning a passing pair, and starting values for a surface without tokens: [thresholds-and-defaults.md](thresholds-and-defaults.md).
 
 Visual direction: derive palette roles from existing tokens, a real brand artifact, subject matter, or an explicit reference; define background, surface, text, muted text, accent, focus, semantic-state roles; inactive quieter than primary and selected; on a colored surface, pick a foreground that keeps that hue — not gray and not white-at-opacity — then meet the contrast criterion in [accessibility.md](accessibility.md); quiet status uses dark-on-tint rather than white-on-loud-fill; one coherent accent strategy unless the product already owns a broader palette. Check light/dark, selected, disabled, error, high-contrast. Skip states the product does not support. Translucent chrome only if the same spatial object stays visible behind it and text stays legible. Solid fallback under reduced transparency. Do not choose a blur or material by the tint it happens to produce.
 

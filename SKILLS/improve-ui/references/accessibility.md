@@ -93,6 +93,8 @@ Read `motion.md` for implementation patterns.
 
 Smallest matrix that supports the claim: Source (semantics, names, labels, state ownership, DOM order, ARIA use); Keyboard (core path, reverse traversal, focus movement/return, escape and recovery); Visual (focus, contrast, zoom, reflow, text spacing, high contrast/theme states); Pointer (coarse pointer, target size/spacing, cancellation, drag alternative); Screen reader (names, roles, values, instructions, status, reading order when available); Automation (axe or equivalent against each reached state, not only initial load); Content/state (loading, error, permission, validation, long text, and dynamic updates).
 
+Pass values, the harness metric for each, and Playwright probes for text spacing, user preferences, mobile input zoom, and focus visibility: [thresholds-and-defaults.md](thresholds-and-defaults.md).
+
 Report the matrix and gaps. If only source and automation ran, say so.
 
 See [sources-and-provenance.md](sources-and-provenance.md) for WCAG 2.2, WAI image guidance, ARIA APG, and Playwright/axe limitations verified for this material.

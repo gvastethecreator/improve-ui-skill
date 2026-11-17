@@ -19,6 +19,7 @@ Open after `SKILL.md` selects a concern. Do not preload every document.
 ## Domain References
 
 - [Product contexts](references/product-contexts.md)
+- [Thresholds and defaults](references/thresholds-and-defaults.md)
 - [Foundation](references/foundation.md)
 - [Visual quality](references/visual-quality.md)
 - [Geometry and rhythm](references/geometry-and-rhythm.md)
